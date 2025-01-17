@@ -5,7 +5,7 @@ import WelcomeScreen from './component/WelcomePage'; // Welcome screen
 import LoginScreen from './component/LoginScreen';
 import SignUpScreen from './component/SignupScreen';
 import TabNavigator from './(tabs)/tabnavigator';
-
+import i18n from './i18n';
 // Create navigators
 const Stack = createNativeStackNavigator();
 

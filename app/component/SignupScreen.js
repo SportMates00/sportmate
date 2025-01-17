@@ -8,20 +8,20 @@ const SignUpScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{t('signupPage')}</Text>
+      <Text style={styles.title}>{"t('signupPage')"}</Text>
       
       <TextInput
         style={styles.input}
-        placeholder={t('email')}
+        placeholder={'email'}
       />
       <TextInput
         style={styles.input}
-        placeholder={t('password')}
+        placeholder={"t('password')"}
         secureTextEntry
       />
       
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>{t('signupBtn')}</Text>
+        <Text style={styles.buttonText}>{"t('signupBtn')"}</Text>
       </TouchableOpacity>
     </View>
   );

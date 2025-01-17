@@ -2,7 +2,7 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useTranslation } from 'react-i18next';
-
+import LangChanger from './langChanger';
 const LoginScreen = () => {
   const { t } = useTranslation();
 
@@ -23,6 +23,7 @@ const LoginScreen = () => {
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>{t('loginBtn')}</Text>
       </TouchableOpacity>
+      <LangChanger />
     </View>
   );
 };
