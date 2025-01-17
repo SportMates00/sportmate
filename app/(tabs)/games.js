@@ -4,7 +4,7 @@ import React from 'react'
 const games = () => {
   return (
     <View>
-      <Text>games</Text>
+      <Text>gamejouns</Text>
     </View>
   )
 }
