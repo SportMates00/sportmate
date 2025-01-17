@@ -5,7 +5,7 @@ const explore = () => {
   return (
     <View>
       <Text>explore</Text>
-      <Text>explore</Text>
+      <Text>explornhb e</Text>
       <Text>explore</Text>
     </View>
   );
