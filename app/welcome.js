@@ -7,7 +7,7 @@ export default function WelcomeScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome to Sport Mate</Text>
+      <Text style={styles.title}>Welcome to Sjjkport Mate</Text>
       <Button
         title="Get Started"
         onPress={() => navigation.navigate('Main')} // Navigate to TabNavigator
