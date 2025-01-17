@@ -34,7 +34,6 @@
     ],
     "experiments": {
       "typedRoutes": true
-    },
-    "main": "./app/welcome.js" // Entry point updated to Navigation.js
+    }
   }
 }
