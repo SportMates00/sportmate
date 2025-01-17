@@ -6,7 +6,8 @@ import WelcomeScreen from './welcome'; // Welcome screen
 import HomeScreen from './(tabs)/index'; // Home tab
 import ExploreScreen from './(tabs)/explore'; // Explore tab
 import GamesScreen from './(tabs)/games'; // Games tab
-import
+import LoginScreen from './LoginScreen';
+import SignUpScreen from './SignupScreen';
 
 // Create navigators
 const Stack = createNativeStackNavigator();
