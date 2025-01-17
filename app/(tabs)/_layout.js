@@ -25,7 +25,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
@@ -34,18 +34,18 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="games"
         options={{
-          title: "Explore",
+          title: "Games",
           tabBarIcon: ({ color }) => (
             <IconSymbol size={28} name="paperplane.fill" color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="games"
+        name="activity"
         options={{
-          title: "Games",
+          title: "Activity",
           tabBarIcon: ({ color }) => (
             <Entypo size={28} name="game-controller" color={color} />
           ),

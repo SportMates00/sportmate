@@ -2,9 +2,9 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import WelcomeScreen from './welcome'; // Welcome screen
-import HomeScreen from './(tabs)/index'; // Home tab
-import ExploreScreen from './(tabs)/explore'; // Explore tab
+import WelcomeScreen from '.'; // Welcome screen
+import HomeScreen from './(tabs)/activity'; // Home tab
+import ExploreScreen from './(tabs)/home'; // Explore tab
 import GamesScreen from './(tabs)/games'; // Games tab
 import LoginScreen from './LoginScreen';
 import SignUpScreen from './SignupScreen';
@@ -28,10 +28,10 @@ function TabNavigator() {
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Welcome">
+      <Stack.Navigator initialRouteName="welcome">
         {/* Welcome screen */}
         <Stack.Screen
-          name="Welcome"
+          name="welcome"
           component={WelcomeScreen}
           options={{ headerShown: false }}
         />
@@ -42,7 +42,7 @@ export default function Navigation() {
           options={{ headerShown: false }}
         />
 
-<Stack.Screen name="Welcome" component={WelcomeScreen} />
+<Stack.Screen name="welcome" component={WelcomeScreen} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="SignUp" component={SignUpScreen} />
       </Stack.Navigator>
