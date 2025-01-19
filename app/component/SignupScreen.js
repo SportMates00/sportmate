@@ -1,27 +1,59 @@
 // app/SignUpScreen.js
 import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useNavigation } from '@react-navigation/native'; // For navigation
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const SignUpScreen = () => {
   const { t } = useTranslation();
+  const navigation = useNavigation(); // For navigating between screens
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{"t('signupPage')"}</Text>
-      
+      {/* Back Button */}
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+      <Ionicons name="arrow-back-outline" size={24} color="black" />
+      </TouchableOpacity>
+
+      {/* Logo */}
+      <Image
+        source={require('../../assets/images/icon.png')} // Adjust the path to your logo
+        style={styles.logo}
+      />
+
+      <Text style={styles.title}>{t('signupPage')}</Text>
+
       <TextInput
         style={styles.input}
-        placeholder={'email'}
+        placeholder={t('firstName')}
       />
       <TextInput
         style={styles.input}
-        placeholder={"t('password')"}
+        placeholder={t('lastName')}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder={t('email')}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder={t('password')}
         secureTextEntry
       />
-      
+      <TextInput
+        style={styles.input}
+        placeholder={t('confirmPassword')}
+        secureTextEntry
+      />
+
       <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>{"t('signupBtn')"}</Text>
+        <Text style={styles.buttonText}>{t('signupBtn')}</Text>
+      </TouchableOpacity>
+
+      {/* Sign-In Link */}
+      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.signInText}>{t("Already Have Account? Sign in")}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -33,6 +65,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    zIndex: 1,
+  },
+  backButtonText: {
+    fontSize: 18,
+    color: '#4CAF50',
+  },
+  logo: {
+    width: 100, // Adjust the size as needed
+    height: 100, // Adjust the size as needed
+    marginBottom: 20,
   },
   title: {
     fontSize: 30,
@@ -56,6 +103,11 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 18,
+  },
+  signInText: {
+    color: '#4CAF50',
+    fontSize: 16,
+    marginTop: 20,
   },
 });
 
