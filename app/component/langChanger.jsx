@@ -1,54 +1,63 @@
-import { View, Text, FlatList,TouchableOpacity, Modal, StyleSheet } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, FlatList, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
 import Fontisto from '@expo/vector-icons/Fontisto';  // Import Fontisto for the world icon
 import { useTranslation } from 'react-i18next';
 
+const LangChanger = () => {
+  const { i18n } = useTranslation();  // Hook to access translations
+  const [modalVisible, setModalVisible] = useState(false);  // Track modal visibility
 
-const langChanger = () => {
-      const { t, i18n } = useTranslation();  // Hook to access translations
-      const [modalVisible, setModalVisible] = useState(false);  // Track modal visibility
-      const handleLanguageChange = (value) => {
-        i18n.changeLanguage(value);  // Change language in i18n
-        setModalVisible(false);  // Close the modal after language selection
-      };
+  const handleLanguageChange = (value) => {
+    i18n.changeLanguage(value);  // Change language in i18n
+    setModalVisible(false);  // Close the modal after language selection
+  };
+
   return (
     <>
-    <TouchableOpacity style={styles.iconContainer} onPress={() => setModalVisible(true)}>
-        <Fontisto name="world" size={24} color="black" />  {/* Fontisto World Icon */}
-      </TouchableOpacity>
-    <Modal
-            visible={modalVisible}
-            transparent={true}
-            animationType="fade"
-            onRequestClose={() => setModalVisible(false)}
-          >
-            <View style={styles.modalOverlay}>
-              <View style={styles.modalContent}>
-                <FlatList
-                  data={[
-                    { label: 'Armenia', value: 'am' },
-                    { label: 'English', value: 'en' },
-                    { label: 'Russian', value: 'ru' },
-                    // Add more languages here
-                  ]}
-                  renderItem={({ item }) => (
-                    <TouchableOpacity onPress={() => handleLanguageChange(item.value)} style={styles.languageOption}>
-                      <Text style={styles.languageText}>{item.label}</Text>
-                    </TouchableOpacity>
-                  )}
-                  keyExtractor={(item) => item.value}
-                />
-                <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeModalButton}>
-                  <Text style={styles.closeModalText}>Close</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </Modal>
-          </>
-  )
-}
+     <TouchableOpacity
+  style={styles.iconContainer}
+  onPress={() => setModalVisible(true)}
+  accessible={true}
+  accessibilityLabel="Change Language"
+>
+<Text>
+    <Fontisto name="world" size={24} color="black" />  {/* Fontisto World Icon */}
+  </Text>
+</TouchableOpacity>
 
-export default langChanger
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContent}>
+            <FlatList
+              data={[
+                { label: 'Armenia', value: 'am' },
+                { label: 'English', value: 'en' },
+                { label: 'Russian', value: 'ru' },
+                // Add more languages here
+              ]}
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => handleLanguageChange(item.value)} style={styles.languageOption}>
+                  <Text style={styles.languageText}>{item.label}</Text>  {/* Ensure text is wrapped in <Text> */}
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item.value}
+            />
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeModalButton}>
+              <Text style={styles.closeModalText}>Close</Text>  {/* Ensure text is wrapped in <Text> */}
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </>
+  );
+};
+
+export default LangChanger;
 
 const styles = StyleSheet.create({
   iconContainer: {
@@ -91,4 +100,3 @@ const styles = StyleSheet.create({
     color: '#007BFF',
   }
 });
-

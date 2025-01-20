@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native'; // For navigation
-import LangChanger from './langChanger';
+import LangChanger from './LangChanger';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 const LoginScreen = () => {
