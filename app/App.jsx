@@ -1,13 +1,11 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import WelcomeScreen from './component/WelcomePage'; // Welcome screen
-import LoginScreen from './component/LoginScreen';
-import SignUpScreen from './component/SignupScreen';
+import WelcomeScreen from './component/welcome pages/WelcomePage'; // Welcome screen
+import LoginScreen from './component/welcome pages/LoginScreen';
+import SignUpScreen from './component/welcome pages/SignupScreen';
 import i18n from './i18n';
 import TabNavigator from './(tabs)/Tabnavigator';
-import LangChanger from './component/LangChanger';
-import { View } from 'react-native';
 // Create navigators
 const Stack = createNativeStackNavigator();
 

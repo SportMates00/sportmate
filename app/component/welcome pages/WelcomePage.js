@@ -2,8 +2,8 @@
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import mainPicture from '../../assets/images/mainpicture.jpg'
-import LangChanger from './LangChanger';
+import mainPicture from '../../../assets/images/mainpicture.jpg'
+import LangChanger from '../LangChanger';
 const WelcomeScreen = () => {
   const { t, i18n } = useTranslation();  // Hook to access translations
   const navigation = useNavigation();

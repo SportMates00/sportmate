@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native'; // For navigation
-import LangChanger from './LangChanger';
+import LangChanger from '../LangChanger';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { users_list } from '../js files/users';
+import { users_list } from '../../js files/users';
 import { useRouter } from 'expo-router';
 
 const LoginScreen = () => {
@@ -44,7 +44,7 @@ const LoginScreen = () => {
 
       {/* Logo */}
       <Image
-        source={require('../../assets/images/icon.png')} // Make sure to add your logo in the assets folder
+        source={require('../../../assets/images/icon.png')} // Make sure to add your logo in the assets folder
         style={styles.logo}
       />
 

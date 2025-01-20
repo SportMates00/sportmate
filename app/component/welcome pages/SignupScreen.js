@@ -4,6 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native'; // For navigation
 import Ionicons from '@expo/vector-icons/Ionicons';
+import LangChanger from '../LangChanger';
 
 const SignUpScreen = () => {
   const { t } = useTranslation();
@@ -18,7 +19,7 @@ const SignUpScreen = () => {
 
       {/* Logo */}
       <Image
-        source={require('../../assets/images/icon.png')} // Adjust the path to your logo
+        source={require('../../../assets/images/icon.png')} // Adjust the path to your logo
         style={styles.logo}
       />
 
@@ -55,6 +56,8 @@ const SignUpScreen = () => {
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.signInText}>{t("Already Have Account? Sign in")}</Text>
       </TouchableOpacity>
+
+      <LangChanger />
     </View>
   );
 };
