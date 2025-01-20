@@ -1,15 +1,40 @@
 // app/LoginScreen.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native'; // For navigation
 import LangChanger from './LangChanger';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { users_list } from '../js files/users';
+import { useRouter } from 'expo-router';
 
 const LoginScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation(); // To navigate between screens
+  const [user, setUser] = useState({
+    email:'',
+    password:''
+  });
+  const [error, setError] = useState(false);
+  const [userMap, setUserMap] = useState(new Map());
+  const router = useRouter();
 
+  useEffect(() => {
+    // Preprocess user_list into a Map for fast lookups
+    const map = new Map();
+    users_list.forEach((u) => map.set(u.email.toLowerCase(), u));
+    setUserMap(map);
+  }, []);
+
+  const handleLogin = () => {
+    const foundUser = userMap.get(user.email.toLowerCase()); // O(1) lookup
+    if (foundUser && foundUser.password == user.password) {
+      navigation.navigate('HomeTabs')
+      setError(false); // Login successful
+    } else {
+      setError(true); // Email not found or password incorrect
+    }
+  };
   return (
     <View style={styles.container}>
       {/* Back Button */}
@@ -28,14 +53,17 @@ const LoginScreen = () => {
       <TextInput
         style={styles.input}
         placeholder={t('email')}
+        onChangeText={(value) => setUser({...user, email:value})}
       />
       <TextInput
         style={styles.input}
         placeholder={t('password')}
+        onChangeText={(value) => setUser({...user, password:value})}
         secureTextEntry
       />
-      
-      <TouchableOpacity style={styles.button}>
+      {error && <Text style={styles.error}>Invalid email or password</Text>}
+      <TouchableOpacity style={styles.button} 
+      onPress={handleLogin}>
         <Text style={styles.buttonText}>{t('loginBtn')}</Text>
       </TouchableOpacity>
 
@@ -94,6 +122,10 @@ const styles = StyleSheet.create({
     color: '#4CAF50',
     fontSize: 16,
     marginTop: 20,
+  },
+  error: {
+    color: 'red',
+    marginTop: 10,
   },
 });
 
