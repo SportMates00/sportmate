@@ -2,10 +2,10 @@ import TabsLayout from './_layout';
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
-const Home = () => {
+const Players = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Welcome to the Home Page!</Text>
+      <Text style={styles.text}>Welcome to the Players Page!</Text>
     </View>
   );
 };
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Home;
+export default Players;

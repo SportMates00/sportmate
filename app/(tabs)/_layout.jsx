@@ -19,16 +19,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
-        options={{
-          title: "Home",
-          tabBarIcon: ({ color }) => (
-            <Entypo size={28} name="game-controller" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="games"
+        name="Games"
         options={{
           title: "Games",
           tabBarIcon: ({ color }) => (
@@ -37,9 +28,27 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="activity"
+        name="Players"
+        options={{
+          title: "Players",
+          tabBarIcon: ({ color }) => (
+            <Entypo size={28} name="game-controller" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Activity"
         options={{
           title: "Activity",
+          tabBarIcon: ({ color }) => (
+            <Entypo size={28} name="game-controller" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Inbox"
+        options={{
+          title: "Inbox",
           tabBarIcon: ({ color }) => (
             <Entypo size={28} name="game-controller" color={color} />
           ),
