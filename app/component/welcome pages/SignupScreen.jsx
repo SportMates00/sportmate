@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native'; // For navigation
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LangChanger from '../LangChanger';
 import { users_list } from '@/app/js files/users';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignUpScreen = () => {
   const { t } = useTranslation();
@@ -19,7 +20,8 @@ const SignUpScreen = () => {
       lastName:'',
       email:'',
       password:'',
-      confirmPassword:''
+      confirmPassword:'',
+      profileInfo:{ game:'', sport:'', availibility:{}}
     }
   );
   const [userMap, setUserMap] = useState(new Map());
@@ -30,7 +32,7 @@ const SignUpScreen = () => {
       setUserMap(map);
     }, [users_list.length]);
 
-  function handleSignUp(){
+  async function handleSignUp(){
     const foundUser = userMap.get(user.email.toLowerCase());
     if(foundUser){
       setEmailExist(true);
@@ -42,12 +44,16 @@ const SignUpScreen = () => {
       setEmailExist(false);
       setFieldError(false)
     }else if(user.firstName !== '' & user.lastName !=='' & user.email !== '' & user.email !== '' & user.password !== '' & user.confirmPassword !== ''){
-      setEmailExist(false)
-      setPasswordError(false)
-      navigation.navigate('HomeTabs')
-      users_list.push(user)
-      console.log(users_list)
-    }else {
+      try{
+        await AsyncStorage.setItem('loggedInUser', JSON.stringify(user));
+        setEmailExist(false)
+        setPasswordError(false)
+        navigation.navigate('HomeTabs')
+        users_list.push(user)
+      }catch(e){
+        console.error('Failed to load user info:', e);
+      }
+      }else {
       setFieldError(true)
       setEmailExist(false)
       setPasswordError(false)

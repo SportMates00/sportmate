@@ -1,9 +1,16 @@
 import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import favicon from '@/assets/images/favicon.png';
-import { launchImageLibrary } from 'react-native-image-picker'; // For image selection
+import { users_list } from '@/app/js files/users';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+// import { launchImageLibrary } from 'react-native-image-picker'; // For image selection
 
 const Profile = ({ navigation }) => {
+
+  const [loggedUser, setLoggedUser] = useState(
+    {firstName:'', lastName: '', email:'', password:'', profileInfo:{ game:'', sport:'', availibility:{}}}
+  );
   const handleBackPress = () => {
     navigation.navigate('HomeTabs'); // Navigates back to the previous screen
   };
@@ -14,13 +21,28 @@ const Profile = ({ navigation }) => {
   };
 
   const handleEditProfilePicture = () => {
-    launchImageLibrary({ mediaType: 'photo' }, (response) => {
-      if (response.assets) {
-        const selectedImage = response.assets[0].uri;
-        // Handle the selected image, e.g., upload or display
-      }
-    });
+    // launchImageLibrary({ mediaType: 'photo' }, (response) => {
+    //   if (response.assets) {
+    //     const selectedImage = response.assets[0].uri;
+    //     // Handle the selected image, e.g., upload or display
+    //   }
+    // });
   };
+  useEffect(() => {
+    const loadUserInfo = async () => {
+      try {
+        const savedUser = await AsyncStorage.getItem('loggedInUser');
+        if (savedUser) {
+          setLoggedUser(JSON.parse(savedUser));
+        }
+      } catch (e) {
+        console.error('Failed to load user info:', e);
+      }
+    };
+
+    loadUserInfo();
+console.log(loggedUser)
+  },[loggedUser.email])
 
   return (
     <View style={styles.container}>
@@ -51,7 +73,7 @@ const Profile = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-      
+      <Text>{loggedUser.firstName} {loggedUser.lastName}</Text>
       {/* Add the rest of the profile content here */}
     </View>
   );

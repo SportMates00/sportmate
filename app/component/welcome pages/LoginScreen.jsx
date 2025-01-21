@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native'; // For navigation
 import LangChanger from '../LangChanger';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { users_list } from '../../js files/users';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const LoginScreen = () => {
   const { t } = useTranslation();
@@ -24,11 +26,16 @@ const LoginScreen = () => {
     setUserMap(map);
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const foundUser = userMap.get(user.email.toLowerCase()); // O(1) lookup
     if (foundUser && foundUser.password == user.password) {
-      navigation.navigate('ClientInfo')
-      setError(false); // Login successful
+      try{
+        await AsyncStorage.setItem('loggedInUser', JSON.stringify(foundUser));
+        navigation.navigate('ClientInfo')
+        setError(false); // Login successful  
+      }catch (e) {
+        console.error('Failed to save user data:', e);
+      }
     } else {
       setError(true); // Email not found or password incorrect
     }

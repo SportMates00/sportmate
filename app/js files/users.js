@@ -1,6 +1,6 @@
 const users = [
-    {name:'Mher', lastName: 'Kevorkian', email:'mherkevorkian99@gmail.com', password:'kak'},
-    {name:'Mher', lastName: 'Kevorkian', email:'1', password:'1', availability:{}}
+    {name:'lol', lastName: 'Kevorkian', email:'om', password:'kak'},
+    {name:'Mher', lastName: 'Kevorkian', email:'1', password:'1', profileInfo:{ game:'', sport:'', availibility:{}}}
 ]
 
 
