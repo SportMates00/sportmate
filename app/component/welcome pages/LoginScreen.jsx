@@ -29,7 +29,7 @@ const LoginScreen = () => {
   const handleLogin = () => {
     const foundUser = userMap.get(user.email.toLowerCase()); // O(1) lookup
     if (foundUser && foundUser.password == user.password) {
-      navigation.navigate('HomeTabs')
+      navigation.navigate('ClientInfo')
       setError(false); // Login successful
     } else {
       setError(true); // Email not found or password incorrect
