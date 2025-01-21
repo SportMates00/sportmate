@@ -1,4 +1,3 @@
-import { useNavigation } from "expo-router";
 import React, { useState } from "react";
 import {
   View,
@@ -7,14 +6,14 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-
+import { useNavigation } from '@react-navigation/native';
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const times = ["Morning", "Afternoon", "Evening"];
 const AvailabilityTable = ({step,setStep}) => {
   const [availability, setAvailability] = useState(
     Array(times.length).fill(Array(days.length).fill(false))
   );
-  
+  const navigation = useNavigation();
   // Toggle availability for a specific cell
   const toggleCell = (row, col) => {
     const newAvailability = availability.map((rowData, rowIndex) =>
@@ -26,11 +25,15 @@ const AvailabilityTable = ({step,setStep}) => {
     );
     setAvailability(newAvailability);
   };
-  const navigation = useNavigation();
+
   // Select all cells
   const selectAll = () => {
     setAvailability(Array(times.length).fill(Array(days.length).fill(true)));
   };
+
+  function handleGetStarted() {
+    navigation.navigate('HomeTabs');
+  }
 
   return (
     <View contentContainerStyle={styles.container}>
@@ -63,9 +66,9 @@ const AvailabilityTable = ({step,setStep}) => {
       <TouchableOpacity style={styles.button} onPress={selectAll}>
         <Text style={styles.buttonText}>Select All</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeTabs')}>
-        <Text style={styles.buttonText}>Get Started</Text>
-      </TouchableOpacity>
+       <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
+                    <Text style={styles.buttonText}>Get Started</Text>
+                  </TouchableOpacity>
     </View>
   );
 };

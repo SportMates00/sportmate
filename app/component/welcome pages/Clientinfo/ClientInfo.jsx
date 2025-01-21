@@ -8,7 +8,7 @@ const ClientInfo = () => {
   const [step, setStep] = useState(1);
   const nextStep = () => setStep(step + 1);
   const prevStep = () => setStep(step - 1);
-  
+
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.backButton} onPress={prevStep}>
@@ -18,6 +18,7 @@ const ClientInfo = () => {
       {step === 2 && <QLevel step={step} setStep={setStep}  />}
 
       {step === 3 && <QSchedule step={step} setStep={setStep}/>}
+     
     </View>
   );
 };

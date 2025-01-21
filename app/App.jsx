@@ -20,9 +20,10 @@ export default function App() {
         <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ClientInfo" component={ClientInfo} options={{headerShown: false}} />
         {/* Main App Tabs */}
         <Stack.Screen name="HomeTabs" component={TabNavigator} options={{ headerShown: false }} />
-        <Stack.Screen name="ClientInfo" component={ClientInfo} options={{headerShown: false}} />
+       
       </Stack.Navigator>
     </NavigationContainer>
   );
