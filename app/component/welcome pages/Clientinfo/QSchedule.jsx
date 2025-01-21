@@ -1,137 +1,130 @@
-import React, { useState } from 'react';
-import { View, Text, Button, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { useNavigation } from "expo-router";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 
+const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const times = ["Morning", "Afternoon", "Evening"];
+const AvailabilityTable = ({step,setStep}) => {
+  const [availability, setAvailability] = useState(
+    Array(times.length).fill(Array(days.length).fill(false))
+  );
+  
+  // Toggle availability for a specific cell
+  const toggleCell = (row, col) => {
+    const newAvailability = availability.map((rowData, rowIndex) =>
+      rowIndex === row
+        ? rowData.map((cell, cellIndex) =>
+            cellIndex === col ? !cell : cell
+          )
+        : rowData
+    );
+    setAvailability(newAvailability);
+  };
+  const navigation = useNavigation();
+  // Select all cells
+  const selectAll = () => {
+    setAvailability(Array(times.length).fill(Array(days.length).fill(true)));
+  };
 
-   const QSchedule = ({step, setStep}) => {
-    const [availability, setAvailability] = useState({
-       Monday: { Morning: false, Evening: false, Night: false },
-       Tuesday: { Morning: false, Evening: false, Night: false },
-       Wednesday: { Morning: false, Evening: false, Night: false },
-       Thursday: { Morning: false, Evening: false, Night: false },
-       Friday: { Morning: false, Evening: false, Night: false },
-       Saturday: { Morning: false, Evening: false, Night: false },
-       Sunday: { Morning: false, Evening: false, Night: false },
-       // ...rest of the week
-     }); 
-   
-     const nextStep = () => setStep(step + 1);
-     const prevStep = () => setStep(step - 1);
-   
-     const handleAvailabilityChange = (day, time) => {
-       setAvailability({
-         ...availability,
-         [day]: { ...availability[day], [time]: !availability[day][time] }
-       });
-     };
-   
-     const setAvailableAnytime = () => {
-       const updatedAvailability = {};
-       Object.keys(availability).forEach(day => {
-         updatedAvailability[day] = { Morning: true, Evening: true, Night: true };
-       });
-       setAvailability(updatedAvailability);
-     };
-   
-     const handleFinish = () => {
-       navigation.navigate('HomeTabs');
-     };
-   
   return (
-    <View style={styles.container}>
-      <TouchableOpacity style={styles.backButton} onPress={prevStep}>
-        <Text style={styles.backButtonText}>Back</Text>
-      </TouchableOpacity>
-      {step === 3 && (
-        <ScrollView contentContainerStyle={styles.centerContent}>
-          <Text style={styles.questionText}>What are your available times?</Text>
-          {Object.keys(availability).map(day => (
-            <View key={day} style={styles.dayRow}>
-              <Text style={styles.dayText}>{day}</Text>
-              {['Morning', 'Evening', 'Night'].map(time => (
-                <CheckBox
-                  key={time}
-                  value={availability[day][time]}
-                  onValueChange={() => handleAvailabilityChange(day, time)}
-                />
-              ))}
-            </View>
+    <View contentContainerStyle={styles.container}>
+      <Text style={styles.heading}>Availability</Text>
+      <View style={styles.table}>
+        <View style={styles.row}>
+          <View style={styles.cell} />
+          {days.map((day, index) => (
+            <Text key={index} style={styles.headerCell}>
+              {day}
+            </Text>
           ))}
-          <TouchableOpacity onPress={setAvailableAnytime} style={styles.anytimeButton}>
-            <Text style={styles.anytimeText}>Available at anytime</Text>
-          </TouchableOpacity>
-          <Button title="Finish" onPress={handleFinish} />
-        </ScrollView>
-      )}
+        </View>
+        {times.map((time, rowIndex) => (
+          <View key={rowIndex} style={styles.row}>
+            <Text style={styles.headerCell}>{time}</Text>
+            {days.map((_, colIndex) => (
+              <TouchableOpacity
+                key={colIndex}
+                style={[
+                  styles.cell,
+                  availability[rowIndex][colIndex] && styles.selectedCell,
+                ]}
+                onPress={() => toggleCell(rowIndex, colIndex)}
+              />
+            ))}
+          </View>
+        ))}
+      </View>
+      <TouchableOpacity style={styles.button} onPress={selectAll}>
+        <Text style={styles.buttonText}>Select All</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeTabs')}>
+        <Text style={styles.buttonText}>Get Started</Text>
+      </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-    container: {
-      padding: 20,
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#f8f8f8',
-    },
-    centerContent: {
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    questionText: {
-      fontSize: 20,
-      fontWeight: 'bold',
-      marginBottom: 20,
-      textAlign: 'center',
-      color: '#333',
-    },
-    optionsContainer: {
-      marginBottom: 30,
-    },
-    optionButton: {
-      backgroundColor: '#007BFF',
-      padding: 10,
-      borderRadius: 5,
-      marginBottom: 10,
-      width: 200,
-      alignItems: 'center',
-    },
-    optionText: {
-      fontSize: 16,
-      color: '#fff',
-    },
-    dayRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginBottom: 10,
-      width: '100%',
-    },
-    dayText: {
-      fontSize: 16,
-      color: '#333',
-    },
-    anytimeButton: {
-      backgroundColor: '#28a745',
-      padding: 10,
-      borderRadius: 5,
-      marginTop: 10,
-      alignItems: 'center',
-    },
-    anytimeText: {
-      fontSize: 16,
-      color: '#fff',
-    },
-    backButton: {
-      position: 'absolute',
-      top: 10,
-      left: 10,
-    },
-    backButtonText: {
-      fontSize: 16,
-      color: 'blue',
-    },
-  });
-  
+  container: {
+    flexGrow: 1,
+    padding: 16,
+    width:'100%',
+    backgroundColor: "#fff",
+  },
+  heading: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 16,
+  },
+  table: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 8,
+    overflow: "hidden",
+  },
+  row: {
+    flexDirection: "row",
+  },
+  cell: {
+    width: 40,
+    height: 40,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+  selectedCell: {
+    backgroundColor: "#00bcd4",
+  },
+  headerCell: {
+    width: 40,
+    height: 40,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    fontWeight: "bold",
+    lineHeight: 40,
+    borderWidth: 1,
+    borderColor: "#ccc",
+  },
+  button: {
+    marginTop: 16,
+    padding: 12,
+    backgroundColor: "#00bcd4",
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+});
 
-export default QSchedule;
+export default AvailabilityTable;

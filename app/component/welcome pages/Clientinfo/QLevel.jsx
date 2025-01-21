@@ -30,8 +30,8 @@ import { View, Text, Button, TouchableOpacity, StyleSheet, ScrollView } from 're
 
         const styles = StyleSheet.create({
             container: {
-              padding: 20,
               flex: 1,
+              width:'100%',
               justifyContent: 'center',
               alignItems: 'center',
               backgroundColor: '#f8f8f8',
