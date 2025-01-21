@@ -3,16 +3,18 @@ import ActivityScreen from './Activity'; // Explore tab
 import GamesScreen from './Games'; // Games tab
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import InboxScreen from './Inbox';
-import ProfileButton from '../component/profile/Profile';
+import ProfileIcon from '../component/profile/ProfileIcon';
+import { useNavigation } from '@react-navigation/native';
 
 function TabNavigator() {
     const Tab = createBottomTabNavigator();
+    const navigation = useNavigation();
   return (
     <> 
     <Tab.Navigator screenOptions={{
     headerShown: true,
     headerRight: () => (
-      <ProfileButton onPress={() => console.log('Profile tapped!')} />
+      <ProfileIcon onPress={() => navigation.navigate('Profile')} />
     ),
   }}>
       <Tab.Screen name="Games" component={GamesScreen} options={{headerShown: true}} />

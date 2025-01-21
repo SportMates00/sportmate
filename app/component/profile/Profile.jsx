@@ -1,33 +1,23 @@
-import React from 'react';
-import { TouchableOpacity, Image, StyleSheet } from 'react-native';
-import favicon from '@/assets/images/favicon.png'
-export default function ProfileButton({ onPress }) {
-  return (
-    <TouchableOpacity
-      style={styles.profileButton}
-      onPress={onPress}
-    >
-      <Image
-        source={favicon} // Replace with user's profile image URL
-        style={styles.profileImage}
-      />
-    </TouchableOpacity>
-  );
-}
+import { View, Text, StyleSheet } from 'react-native'
+import React from 'react'
 
-const styles = StyleSheet.create({
-  profileButton: {
-    marginRight: 15,
-    borderRadius: 25,
-    width: 40,
-    height: 40,
-    overflow: 'hidden',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  profileImage: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-  },
-});
+const Profile = () => {
+   return (
+     <View style={styles.container}>
+       <Text style={styles.text}>Welcome to Your Profile Bitch</Text>
+     </View>
+   );
+ };
+ 
+ const styles = StyleSheet.create({
+   container: {
+     flex: 1,
+     justifyContent: 'center',
+     alignItems: 'center',
+   },
+   text: {
+     fontSize: 24,
+     fontWeight: 'bold',
+   },
+ });
+export default Profile
