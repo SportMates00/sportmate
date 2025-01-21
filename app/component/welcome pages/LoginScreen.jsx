@@ -6,7 +6,6 @@ import { useNavigation } from '@react-navigation/native'; // For navigation
 import LangChanger from '../LangChanger';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { users_list } from '../../js files/users';
-import { useRouter } from 'expo-router';
 
 const LoginScreen = () => {
   const { t } = useTranslation();
@@ -17,7 +16,6 @@ const LoginScreen = () => {
   });
   const [error, setError] = useState(false);
   const [userMap, setUserMap] = useState(new Map());
-  const router = useRouter();
 
   useEffect(() => {
     // Preprocess user_list into a Map for fast lookups
