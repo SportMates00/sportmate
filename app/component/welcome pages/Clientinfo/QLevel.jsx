@@ -3,26 +3,32 @@ import { View, Text, Button, TouchableOpacity, StyleSheet, ScrollView } from 're
 
  
 
-  const QLevel = ({step, setStep}) => {
-    const [level, setLevel] = useState(''); 
-  
+  const QLevel = ({step, setStep, userInfo, setUserInfo}) => {
+
     const nextStep = () => setStep(step + 1);
     const prevStep = () => setStep(step - 1);
+    const levels = ['Beginner','Intermediate','Professional']
+
   return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.backButton} onPress={prevStep}>
-                  <Text style={styles.backButtonText}>Back</Text>
-                </TouchableOpacity>
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
         {step === 2 && (
-          <View style={styles.centerContent}>
-            <Text style={styles.questionText}>What is your level?</Text>
+        <View style={styles.centerContent}>
+          <Text style={styles.questionText}>What is your level?</Text>
             <View style={styles.optionsContainer}>
-              <TouchableOpacity style={styles.optionButton} onPress={() => { setLevel('beginner'); nextStep(); }}>
-                <Text style={styles.optionText}>Beginner</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.optionButton} onPress={() => { setLevel('intermediate'); nextStep(); }}>
-                <Text style={styles.optionText}>Intermediate</Text>
-              </TouchableOpacity>
+              {levels.map(val => {
+                return (
+                  <TouchableOpacity key={val} style={styles.optionButton} onPress={() => {
+                    setUserInfo({...userInfo,profileInfo:{...userInfo.profileInfo,level:val}}) 
+                    nextStep(); 
+                    }}>
+                    <Text style={styles.optionText}>{val}</Text>
+                  </TouchableOpacity>
+              
+                )
+              })}
             </View>
           </View>)}
           </View>

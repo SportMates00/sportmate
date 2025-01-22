@@ -1,12 +1,12 @@
 // app/SignUpScreen.js
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native'; // For navigation
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LangChanger from '../LangChanger';
 import { users_list } from '@/app/js files/users';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { UserContext } from '@/app/UserProvider';
 
 const SignUpScreen = () => {
   const { t } = useTranslation();
@@ -14,17 +14,10 @@ const SignUpScreen = () => {
   const [emailExist, setEmailExist] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [fieldError, setFieldError] = useState(false);
-  const [user, setUser] = useState(
-    {
-      firstName:'',
-      lastName:'',
-      email:'',
-      password:'',
-      confirmPassword:'',
-      profileInfo:{ game:'', sport:'', availibility:{}}
-    }
-  );
+  const { userInfo, setUserInfo } = useContext(UserContext);
   const [userMap, setUserMap] = useState(new Map());
+
+
     useEffect(() => {
       // Preprocess user_list into a Map for fast lookups
       const map = new Map();
@@ -32,32 +25,25 @@ const SignUpScreen = () => {
       setUserMap(map);
     }, [users_list.length]);
 
-  async function handleSignUp(){
-    const foundUser = userMap.get(user.email.toLowerCase());
+   function handleSignUp(){
+    const foundUser = userMap.get(userInfo.email.toLowerCase());
     if(foundUser){
       setEmailExist(true);
       setFieldError(false)
       setPasswordError(false)
     
-    }else if(user.password !== user.confirmPassword){
+    }else if(userInfo.password !== userInfo.confirmPassword){
       setPasswordError(true)
       setEmailExist(false);
       setFieldError(false)
-    }else if(user.firstName !== '' & user.lastName !=='' & user.email !== '' & user.email !== '' & user.password !== '' & user.confirmPassword !== ''){
-      try{
-        await AsyncStorage.setItem('loggedInUser', JSON.stringify(user));
+    }else if(userInfo.firstName !== '' & userInfo.lastName !=='' & userInfo.email !== '' & userInfo.email !== '' & userInfo.password !== '' & userInfo.confirmPassword !== ''){
         setEmailExist(false)
         setPasswordError(false)
-        users_list.push(user)
-        navigation.navigate('HomeTabs')
-      }catch(e){
-        console.error('Failed to load user info:', e);
-      }
-      }else {
+        navigation.navigate('ClientInfo')
+      } else {
       setFieldError(true)
       setEmailExist(false)
       setPasswordError(false)
-
     }
   }
 
@@ -79,28 +65,28 @@ const SignUpScreen = () => {
       <TextInput
         style={styles.input}
         placeholder={t('firstName')}
-        onChangeText={(value) => setUser({...user, firstName:value})}
+        onChangeText={(value) => setUserInfo({...userInfo, firstName:value})}
       />
       <TextInput
         style={styles.input}
         placeholder={t('lastName')}
-        onChangeText={(value) => setUser({...user, lastName:value})}
+        onChangeText={(value) => setUserInfo({...userInfo, lastName:value})}
       />
       <TextInput
         style={styles.input}
         placeholder={t('email')}
-        onChangeText={(value) => setUser({...user, email:value})}
+        onChangeText={(value) => setUserInfo({...userInfo, email:value})}
       />
       <TextInput
         style={styles.input}
         placeholder={t('password')}
-        onChangeText={(value) => setUser({...user, password:value})}
+        onChangeText={(value) => setUserInfo({...userInfo, password:value})}
         secureTextEntry
       />
       <TextInput
         style={styles.input}
         placeholder={t('confirmPassword')}
-        onChangeText={(value) => setUser({...user,confirmPassword:value})}
+        onChangeText={(value) => setUserInfo({...userInfo,confirmPassword:value})}
         secureTextEntry
       />
       {emailExist && <Text>Email is already in use</Text>}

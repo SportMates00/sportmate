@@ -30,8 +30,8 @@ const LoginScreen = () => {
     const foundUser = userMap.get(user.email.toLowerCase()); // O(1) lookup
     if (foundUser && foundUser.password == user.password) {
       try{
-        await AsyncStorage.setItem('loggedInUser', JSON.stringify(foundUser));
-        navigation.navigate('ClientInfo')
+        await AsyncStorage.setItem('loggedUser', JSON.stringify(foundUser));
+        navigation.navigate('HomeTabs')
         setError(false); // Login successful  
       }catch (e) {
         console.error('Failed to save user data:', e);

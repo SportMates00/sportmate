@@ -8,6 +8,10 @@ import i18n from './i18n';
 import TabNavigator from './(tabs)/Tabnavigator';
 import ClientInfo from './component/welcome pages/Clientinfo/ClientInfo';
 import Profile from './component/profile/Profile';
+import { UserProvider } from './UserProvider';
+import Players from './(tabs)/Players';
+import EditProfile from './component/profile/EditProfile';
+import FriendsList from './component/profile/FriendsList';
 // Create navigators
 const Stack = createNativeStackNavigator();
 

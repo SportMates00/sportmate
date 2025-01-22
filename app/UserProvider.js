@@ -9,14 +9,20 @@ export const UserProvider = ({ children }) => {
     email: '',
     password: '',
     profileInfo: {
-      game: '',
       sport: '',
+      level: '',
       availibility: {
-        days: { Mon: false, Tue: false, Wed: false, Thu: false, Fri: false, Sat: false, Sun: false },
-        times: { Morning: false, Afternoon: false, Evening: false },
+        Mon: { Morning: false, Afternoon: false, Evening: false },
+        Tue: { Morning: false, Afternoon: false, Evening: false },
+        Wed: { Morning: false, Afternoon: false, Evening: false },
+        Thu: { Morning: false, Afternoon: false, Evening: false },
+        Fri: { Morning: false, Afternoon: false, Evening: false },
+        Sat: { Morning: false, Afternoon: false, Evening: false },
+        Sun: { Morning: false, Afternoon: false, Evening: false },
       },
     },
   });
+
 
   return (
     <UserContext.Provider value={{ userInfo, setUserInfo }}>

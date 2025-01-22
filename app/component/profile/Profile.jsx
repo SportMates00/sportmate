@@ -1,47 +1,34 @@
-import React, { useEffect, useState } from 'react';
 import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import ProfilePicture from '../../../assets/images/profile-picture.png';
+import React, { useEffect, useState } from 'react';
+import favicon from '@/assets/images/favicon.png';
+import { users_list } from '@/app/js files/users';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AvailabilityTable from './Availibility';
 // import { launchImageLibrary } from 'react-native-image-picker'; // For image selection
 
 const Profile = ({ navigation }) => {
 
   const [loggedUser, setLoggedUser] = useState(
-    {firstName:'', lastName: '', email:'', password:'', profileInfo:{ game:'', sport:'', availibility:{}}}
+    {firstName:'', lastName: '', email:'', password:'', profileInfo:{ game:'', sport:'', availibility:{
+      days:["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      times:["Morning", "Afternoon", "Evening"]
+    }}}
   );
   const handleBackPress = () => {
     navigation.navigate('HomeTabs'); // Navigates back to the previous screen
   };
 
   const handleProfilePress = () => {
-    navigation.navigate(Players);
-  };
-
-  const handleEditProfile = () => {
-    navigation.navigate(EditProfile);
-  };
-
-  const handleFriendsPress = () => {
-    navigation.navigate(FriendsList); // Navigates to the Friends List screen
+    // Function to close the profile tab or perform other actions
+    navigation.navigate('HomeTabs');
   };
 
   useEffect(() => {
-    // Load user info from AsyncStorage
     const loadUserInfo = async () => {
       try {
-        const savedUser = await AsyncStorage.getItem('loggedInUser');
+        const savedUser = await AsyncStorage.getItem('loggedUser');
         if (savedUser) {
-          const user = JSON.parse(savedUser);
-          setLoggedUser(user);
-
-          // Calculate completion percentage once user info is loaded
-          let percentage = 0;
-          if (user.firstName) percentage += 25;
-          if (user.lastName) percentage += 25;
-          if (user.profileInfo.game) percentage += 25;
-          if (user.profileInfo.sport) percentage += 25;
-          setCompletionPercentage(percentage);
+          setLoggedUser(JSON.parse(savedUser));
         }
       } catch (e) {
         console.error('Failed to load user info:', e);
@@ -49,7 +36,8 @@ const Profile = ({ navigation }) => {
     };
 
     loadUserInfo();
-  }, []); // Empty dependency array means this effect runs only once, when the component mounts
+console.log(loggedUser)
+  },[])
 
   return (
     <View style={styles.container}>
@@ -59,50 +47,31 @@ const Profile = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.title}>Profile</Text>
         <TouchableOpacity onPress={handleProfilePress} style={styles.profileButton}>
-          <AntDesign name="adduser" size={24} color="black" />
+          <Image
+            source={favicon} // Replace with your profile logo path
+            style={styles.profileImage}
+          />
         </TouchableOpacity>
       </View>
-
-      {/* Profile picture under the header */}
+      
       <View style={styles.profilePictureSection}>
         <View style={styles.profilePictureContainer}>
           <Image
-            source={ProfilePicture}
+            source={favicon} // Replace with your default profile picture path
             style={styles.profilePicture}
           />
-          <TouchableOpacity onPress={handleEditProfile} style={styles.editIconContainer}>
-            <MaterialIcons name="edit" size={16} color="black" />
+          <TouchableOpacity style={styles.editIconContainer}>
+            <Image
+              source={favicon} // Replace with your edit icon path
+              style={styles.editIcon}
+            />
           </TouchableOpacity>
         </View>
-
-        {/* Friends button and count */}
-        <TouchableOpacity onPress={handleFriendsPress} style={styles.friendsContainer}>
-          <FontAwesome5 style={styles.friendsText} name="user-friends" size={24} color="black" />
-          <Text style={styles.friendsCount}>{friendsCount}</Text>
-        </TouchableOpacity>
-
-        {/* Rating: One star and rating number */}
-        <View style={styles.ratingContainer}>
-          <FontAwesome5 name="star" size={18} color={rating >= 1 ? "#FFD700" : "#ccc"} />
-          <Text style={styles.ratingText}>{rating.toFixed(1)}</Text> {/* Only show the rating value */}
-        </View>
       </View>
-
-      {/* User's name */}
-      <Text style={styles.userName}>{loggedUser.firstName} {loggedUser.lastName}</Text>
-
-      {/* Profile completion progress bar */}
-      <View style={styles.progressBar}>
-        <ProgressBar
-          progress={completionPercentage / 100}
-          width={null}
-          height={10}
-          color="#007aff"
-          unfilledColor="#e0e0e0"
-        />
-      </View>
-
+      <Text>{loggedUser.firstName} {loggedUser.lastName}</Text>
+      <Text>{loggedUser.profileInfo.level}</Text>
       {/* Add the rest of the profile content here */}
+      <Text>{loggedUser.profileInfo.sport}</Text>
       <AvailabilityTable loggedUser={loggedUser} />
     </View>
   );
@@ -114,10 +83,11 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 40,
     padding: 10,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: '#f8f8f8', // Adjust as needed
   },
   backButton: {
     padding: 8,
@@ -129,27 +99,29 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    flex: 1,
     textAlign: 'center',
   },
   profileButton: {
     padding: 8,
   },
+  profileImage: {
+    width: 24,
+    height: 24,
+    resizeMode: 'contain',
+  },
   profilePictureSection: {
-    flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 20,
-    paddingLeft: 10,
+    marginVertical: 20,
   },
   profilePictureContainer: {
     position: 'relative',
-    width: 60,
-    height: 60,
+    width: 100,
+    height: 100,
   },
   profilePicture: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 100,
+    height: 100,
+    borderRadius: 50,
     borderWidth: 2,
     borderColor: '#ccc',
   },
@@ -158,45 +130,12 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 12,
     padding: 2,
   },
-  friendsContainer: {
-    marginLeft: 15,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  friendsText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007aff',
-  },
-  friendsCount: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#007aff',
-    marginLeft: 5,
-  },
-  ratingContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: 15,
-  },
-  ratingText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginLeft: 5,
-    color: '#007aff',
-  },
-  userName: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  progressBar: {
-    marginTop: 20,
-    paddingHorizontal: 30,
+  editIcon: {
+    width: 24,
+    height: 24,
   },
 });
 

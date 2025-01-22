@@ -5,40 +5,78 @@ import {
   StyleSheet,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useNavigation } from "@react-navigation/native";
+import { users_list } from "@/app/js files/users";
+
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const times = ["Morning", "Afternoon", "Evening"];
-const AvailabilityTable = ({step,setStep}) => {
+
+const AvailabilityTable = ({ userInfo, setUserInfo }) => {
   const [availability, setAvailability] = useState(
-    Array(times.length).fill(Array(days.length).fill(false))
+    days.reduce((acc, day) => {
+      acc[day] = times.reduce((timeAcc, time) => {
+        timeAcc[time] = false;
+        return timeAcc;
+      }, {});
+      return acc;
+    }, {})
   );
+
   const navigation = useNavigation();
-  // Toggle availability for a specific cell
-  const toggleCell = (row, col) => {
-    const newAvailability = availability.map((rowData, rowIndex) =>
-      rowIndex === row
-        ? rowData.map((cell, cellIndex) =>
-            cellIndex === col ? !cell : cell
-          )
-        : rowData
+
+  // Toggle availability for a specific day and time
+  const toggleCell = (day, time) => {
+    const updatedAvailability = {
+      ...availability,
+      [day]: {
+        ...availability[day],
+        [time]: !availability[day][time],
+      },
+    };
+
+    setAvailability(updatedAvailability);
+
+    // Update userInfo with the new availability
+    setUserInfo((prev) => ({
+      ...prev,
+      profileInfo: {
+        ...prev.profileInfo,
+        availibility: updatedAvailability,
+      },
+    }));
+  };
+
+  // Check if at least one slot is selected
+  const isAtLeastOneSelected = () => {
+    return Object.values(availability).some((day) =>
+      Object.values(day).some((time) => time)
     );
-    setAvailability(newAvailability);
   };
 
-  // Select all cells
-  const selectAll = () => {
-    setAvailability(Array(times.length).fill(Array(days.length).fill(true)));
+  // Handle Get Started button click
+  const handleGetStarted = async () => {
+    if (!isAtLeastOneSelected()) {
+      Alert.alert("Error", "Please select at least one availability slot.");
+      return;
+    }
+    try {
+      // Add userInfo to AsyncStorage
+      await AsyncStorage.setItem("loggedUser", JSON.stringify(userInfo));
+      users_list.push(userInfo);
+      navigation.navigate("HomeTabs");
+    } catch (error) {
+      console.error("Error saving user data:", error);
+    }
   };
-
-  function handleGetStarted() {
-    navigation.navigate('HomeTabs');
-  }
 
   return (
-    <View contentContainerStyle={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.heading}>Availability</Text>
       <View style={styles.table}>
+        {/* Table Header */}
         <View style={styles.row}>
           <View style={styles.cell} />
           {days.map((day, index) => (
@@ -47,29 +85,27 @@ const AvailabilityTable = ({step,setStep}) => {
             </Text>
           ))}
         </View>
+        {/* Table Body */}
         {times.map((time, rowIndex) => (
           <View key={rowIndex} style={styles.row}>
             <Text style={styles.headerCell}>{time}</Text>
-            {days.map((_, colIndex) => (
+            {days.map((day, colIndex) => (
               <TouchableOpacity
-                key={colIndex}
+                key={`${rowIndex}-${colIndex}`} // Unique key
                 style={[
                   styles.cell,
-                  availability[rowIndex][colIndex] && styles.selectedCell,
+                  availability[day][time] && styles.selectedCell,
                 ]}
-                onPress={() => toggleCell(rowIndex, colIndex)}
+                onPress={() => toggleCell(day, time)}
               />
             ))}
           </View>
         ))}
       </View>
-      <TouchableOpacity style={styles.button} onPress={selectAll}>
-        <Text style={styles.buttonText}>Select All</Text>
+      <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
+        <Text style={styles.buttonText}>Get Started</Text>
       </TouchableOpacity>
-       <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
-                    <Text style={styles.buttonText}>Get Started</Text>
-                  </TouchableOpacity>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -77,7 +113,6 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 16,
-    width:'100%',
     backgroundColor: "#fff",
   },
   heading: {
