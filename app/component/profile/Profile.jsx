@@ -1,33 +1,31 @@
-import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import favicon from '@/assets/images/favicon.png';
-import { users_list } from '@/app/js files/users';
+import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import ProfilePicture from '../../../assets/images/profile-picture.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-// import { launchImageLibrary } from 'react-native-image-picker'; // For image selection
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Players from '@/app/(tabs)/Players';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import EditProfile from './EditProfile';
+import ProgressBar from 'react-native-progress/Bar'; // New import
 
 const Profile = ({ navigation }) => {
-
   const [loggedUser, setLoggedUser] = useState(
-    {firstName:'', lastName: '', email:'', password:'', profileInfo:{ game:'', sport:'', availibility:{}}}
+    { firstName: '', lastName: '', email: '', password: '', profileInfo: { game: '', sport: '', availibility: {} } }
   );
+  const [completionPercentage, setCompletionPercentage] = useState(0);
+
   const handleBackPress = () => {
     navigation.navigate('HomeTabs'); // Navigates back to the previous screen
   };
 
   const handleProfilePress = () => {
-    // Function to close the profile tab or perform other actions
-    navigation.navigate('HomeTabs');
+    navigation.navigate(Players);
   };
 
-  const handleEditProfilePicture = () => {
-    // launchImageLibrary({ mediaType: 'photo' }, (response) => {
-    //   if (response.assets) {
-    //     const selectedImage = response.assets[0].uri;
-    //     // Handle the selected image, e.g., upload or display
-    //   }
-    // });
+  const handleEditProfile = () => {
+    navigation.navigate(EditProfile);
   };
+
   useEffect(() => {
     const loadUserInfo = async () => {
       try {
@@ -40,9 +38,18 @@ const Profile = ({ navigation }) => {
       }
     };
 
+    const calculateCompletion = () => {
+      let percentage = 0;
+      if (loggedUser.firstName) percentage += 25;
+      if (loggedUser.lastName) percentage += 25;
+      if (loggedUser.profileInfo.game) percentage += 25;
+      if (loggedUser.profileInfo.sport) percentage += 25;
+      setCompletionPercentage(percentage);
+    };
+
     loadUserInfo();
-console.log(loggedUser)
-  },[loggedUser.email])
+    calculateCompletion();
+  }, [loggedUser]);
 
   return (
     <View style={styles.container}>
@@ -52,28 +59,37 @@ console.log(loggedUser)
         </TouchableOpacity>
         <Text style={styles.title}>Profile</Text>
         <TouchableOpacity onPress={handleProfilePress} style={styles.profileButton}>
-          <Image
-            source={favicon} // Replace with your profile logo path
-            style={styles.profileImage}
-          />
+          <AntDesign name="adduser" size={24} color="black" />
         </TouchableOpacity>
       </View>
-      
+
+      {/* Profile picture under the header */}
       <View style={styles.profilePictureSection}>
         <View style={styles.profilePictureContainer}>
           <Image
-            source={favicon} // Replace with your default profile picture path
+            source={ProfilePicture}
             style={styles.profilePicture}
           />
-          <TouchableOpacity onPress={handleEditProfilePicture} style={styles.editIconContainer}>
-            <Image
-              source={favicon} // Replace with your edit icon path
-              style={styles.editIcon}
-            />
+          <TouchableOpacity onPress={handleEditProfile} style={styles.editIconContainer}>
+            <MaterialIcons name="edit" size={16} color="black" />
           </TouchableOpacity>
         </View>
       </View>
-      <Text>{loggedUser.firstName} {loggedUser.lastName}</Text>
+
+      {/* User's name */}
+      <Text style={styles.userName}>{loggedUser.firstName} {loggedUser.lastName}</Text>
+
+      {/* Profile completion progress bar */}
+      <View style={styles.progressBar}>
+        <ProgressBar
+          progress={completionPercentage / 100}
+          width={null}
+          height={10}
+          color="#007aff"
+          unfilledColor="#e0e0e0"
+        />
+      </View>
+
       {/* Add the rest of the profile content here */}
     </View>
   );
@@ -85,11 +101,10 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 40,
     padding: 10,
-    backgroundColor: '#f8f8f8', // Adjust as needed
+    backgroundColor: '#f8f8f8',
   },
   backButton: {
     padding: 8,
@@ -101,29 +116,26 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: 'bold',
+    flex: 1,
     textAlign: 'center',
   },
   profileButton: {
     padding: 8,
   },
-  profileImage: {
-    width: 24,
-    height: 24,
-    resizeMode: 'contain',
-  },
   profilePictureSection: {
-    alignItems: 'center',
-    marginVertical: 20,
+    alignItems: 'flex-start',
+    marginTop: 20,
+    paddingLeft: 10,
   },
   profilePictureContainer: {
     position: 'relative',
-    width: 100,
-    height: 100,
+    width: 60,
+    height: 60,
   },
   profilePicture: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
     borderWidth: 2,
     borderColor: '#ccc',
   },
@@ -132,12 +144,18 @@ const styles = StyleSheet.create({
     bottom: 0,
     right: 0,
     backgroundColor: '#fff',
-    borderRadius: 12,
+    borderRadius: 10,
     padding: 2,
   },
-  editIcon: {
-    width: 24,
-    height: 24,
+  userName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  progressBar: {
+    marginTop: 20,
+    paddingHorizontal: 30,
   },
 });
 

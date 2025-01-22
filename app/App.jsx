@@ -8,6 +8,8 @@ import i18n from './i18n';
 import TabNavigator from './(tabs)/Tabnavigator';
 import ClientInfo from './component/welcome pages/Clientinfo/ClientInfo';
 import Profile from './component/profile/Profile';
+import Players from './(tabs)/Players';
+import EditProfile from './component/profile/EditProfile';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
@@ -24,8 +26,9 @@ export default function App() {
         <Stack.Screen name="ClientInfo" component={ClientInfo} options={{headerShown: false}} />
         {/* Main App Tabs */}
         <Stack.Screen name="HomeTabs" component={TabNavigator} options={{ headerShown: false }} />
-       
+       <Stack.Screen name="Players" component={Players} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+        <Stack.Screen name="EditProfile" component={EditProfile} />
       </Stack.Navigator>
     </NavigationContainer>
   );
