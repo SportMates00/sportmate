@@ -10,6 +10,7 @@ import ClientInfo from './component/welcome pages/Clientinfo/ClientInfo';
 import Profile from './component/profile/Profile';
 import Players from './(tabs)/Players';
 import EditProfile from './component/profile/EditProfile';
+import FriendsList from './component/profile/FriendsList';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +30,7 @@ export default function App() {
        <Stack.Screen name="Players" component={Players} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
+        <Stack.Screen name='FriendsList' component={FriendsList} />
       </Stack.Navigator>
     </NavigationContainer>
   );

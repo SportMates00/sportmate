@@ -6,13 +6,21 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import Players from '@/app/(tabs)/Players';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import EditProfile from './EditProfile';
-import ProgressBar from 'react-native-progress/Bar'; // New import
+import ProgressBar from 'react-native-progress/Bar';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import FriendsList from './FriendsList';
 
 const Profile = ({ navigation }) => {
-  const [loggedUser, setLoggedUser] = useState(
-    { firstName: '', lastName: '', email: '', password: '', profileInfo: { game: '', sport: '', availibility: {} } }
-  );
+  const [loggedUser, setLoggedUser] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    profileInfo: { game: '', sport: '', availibility: {} }
+  });
   const [completionPercentage, setCompletionPercentage] = useState(0);
+  const [friendsCount, setFriendsCount] = useState(1); // Example friends count, update it later as per the actual data.
+  const [rating, setRating] = useState(4.2); // Example rating, update it based on your actual data
 
   const handleBackPress = () => {
     navigation.navigate('HomeTabs'); // Navigates back to the previous screen
@@ -26,30 +34,34 @@ const Profile = ({ navigation }) => {
     navigation.navigate(EditProfile);
   };
 
+  const handleFriendsPress = () => {
+    navigation.navigate(FriendsList); // Navigates to the Friends List screen
+  };
+
   useEffect(() => {
+    // Load user info from AsyncStorage
     const loadUserInfo = async () => {
       try {
         const savedUser = await AsyncStorage.getItem('loggedInUser');
         if (savedUser) {
-          setLoggedUser(JSON.parse(savedUser));
+          const user = JSON.parse(savedUser);
+          setLoggedUser(user);
+
+          // Calculate completion percentage once user info is loaded
+          let percentage = 0;
+          if (user.firstName) percentage += 25;
+          if (user.lastName) percentage += 25;
+          if (user.profileInfo.game) percentage += 25;
+          if (user.profileInfo.sport) percentage += 25;
+          setCompletionPercentage(percentage);
         }
       } catch (e) {
         console.error('Failed to load user info:', e);
       }
     };
 
-    const calculateCompletion = () => {
-      let percentage = 0;
-      if (loggedUser.firstName) percentage += 25;
-      if (loggedUser.lastName) percentage += 25;
-      if (loggedUser.profileInfo.game) percentage += 25;
-      if (loggedUser.profileInfo.sport) percentage += 25;
-      setCompletionPercentage(percentage);
-    };
-
     loadUserInfo();
-    calculateCompletion();
-  }, [loggedUser]);
+  }, []); // Empty dependency array means this effect runs only once, when the component mounts
 
   return (
     <View style={styles.container}>
@@ -73,6 +85,18 @@ const Profile = ({ navigation }) => {
           <TouchableOpacity onPress={handleEditProfile} style={styles.editIconContainer}>
             <MaterialIcons name="edit" size={16} color="black" />
           </TouchableOpacity>
+        </View>
+
+        {/* Friends button and count */}
+        <TouchableOpacity onPress={handleFriendsPress} style={styles.friendsContainer}>
+          <FontAwesome5 style={styles.friendsText} name="user-friends" size={24} color="black" />
+          <Text style={styles.friendsCount}>{friendsCount}</Text>
+        </TouchableOpacity>
+
+        {/* Rating: One star and rating number */}
+        <View style={styles.ratingContainer}>
+          <FontAwesome5 name="star" size={18} color={rating >= 1 ? "#FFD700" : "#ccc"} />
+          <Text style={styles.ratingText}>{rating.toFixed(1)}</Text> {/* Only show the rating value */}
         </View>
       </View>
 
@@ -123,7 +147,8 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   profilePictureSection: {
-    alignItems: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
     marginTop: 20,
     paddingLeft: 10,
   },
@@ -146,6 +171,33 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 10,
     padding: 2,
+  },
+  friendsContainer: {
+    marginLeft: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  friendsText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#007aff',
+  },
+  friendsCount: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#007aff',
+    marginLeft: 5,
+  },
+  ratingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 15,
+  },
+  ratingText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginLeft: 5,
+    color: '#007aff',
   },
   userName: {
     fontSize: 16,
