@@ -48,8 +48,8 @@ const SignUpScreen = () => {
         await AsyncStorage.setItem('loggedInUser', JSON.stringify(user));
         setEmailExist(false)
         setPasswordError(false)
-        navigation.navigate('HomeTabs')
         users_list.push(user)
+        navigation.navigate('HomeTabs')
       }catch(e){
         console.error('Failed to load user info:', e);
       }

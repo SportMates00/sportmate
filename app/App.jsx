@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './component/welcome pages/WelcomePage'; // Welcome screen
@@ -8,13 +8,18 @@ import i18n from './i18n';
 import TabNavigator from './(tabs)/Tabnavigator';
 import ClientInfo from './component/welcome pages/Clientinfo/ClientInfo';
 import Profile from './component/profile/Profile';
+import { UserProvider } from './UserProvider';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
 
 // Main App Navigation
 export default function App() {
+
+
+
   return (
+    <UserProvider>
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Welcome">
          {/* Auth Screens */}
@@ -28,5 +33,6 @@ export default function App() {
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
+    </UserProvider>
   );
 }

@@ -3,13 +3,16 @@ import React, { useEffect, useState } from 'react';
 import favicon from '@/assets/images/favicon.png';
 import { users_list } from '@/app/js files/users';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import AvailabilityTable from './Availibility';
 // import { launchImageLibrary } from 'react-native-image-picker'; // For image selection
 
 const Profile = ({ navigation }) => {
 
   const [loggedUser, setLoggedUser] = useState(
-    {firstName:'', lastName: '', email:'', password:'', profileInfo:{ game:'', sport:'', availibility:{}}}
+    {firstName:'', lastName: '', email:'', password:'', profileInfo:{ game:'', sport:'', availibility:{
+      days:["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      times:["Morning", "Afternoon", "Evening"]
+    }}}
   );
   const handleBackPress = () => {
     navigation.navigate('HomeTabs'); // Navigates back to the previous screen
@@ -75,6 +78,7 @@ console.log(loggedUser)
       </View>
       <Text>{loggedUser.firstName} {loggedUser.lastName}</Text>
       {/* Add the rest of the profile content here */}
+      <AvailabilityTable loggedUser={loggedUser} />
     </View>
   );
 };
