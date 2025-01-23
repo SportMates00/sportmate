@@ -13,6 +13,8 @@ import Players from './(tabs)/Players';
 import EditProfile from './component/profile/EditProfile';
 import FriendsList from './component/profile/FriendsList';
 import MenuTab from './component/profile/MenuTab';
+import ShareProfile from './component/profile/ShareProfile';
+import ShareLink from './component/profile/ShareLink';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
@@ -25,7 +27,7 @@ export default function App() {
   return (
     <UserProvider>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="HomeTabs">
+      <Stack.Navigator initialRouteName="ShareProfile">
          {/* Auth Screens */}
         <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
@@ -38,6 +40,8 @@ export default function App() {
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name='FriendsList' component={FriendsList} />
         <Stack.Screen name='MenuTab' component={MenuTab} />
+        <Stack.Screen name='ShareProfile' component={ShareProfile} options={{headerShown: false}} />
+        <Stack.Screen name='ShareLink' component={ShareLink} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
     </UserProvider>
