@@ -1,10 +1,13 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Button } from 'react-native'
 import React from 'react'
+import { useNavigation } from '@react-navigation/native';
 
 const Games = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Welcome to Games</Text>
+      <Text style={styles.text}>Welcome hvgto Games</Text>
+      <Button onPress={() => navigation.navigate('Welcome')} title='Log Out'/>
     </View>
   );
 };

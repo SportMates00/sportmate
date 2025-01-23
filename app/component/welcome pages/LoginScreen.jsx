@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useNavigation } from '@react-navigation/native'; // For navigation
+import { CommonActions, useNavigation } from '@react-navigation/native'; // For navigation
 import LangChanger from '../LangChanger';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { users_list } from '../../js files/users';
@@ -26,12 +26,23 @@ const LoginScreen = () => {
     setUserMap(map);
   }, []);
 
+ //removes the previous pages after successfully logged in.
+  function handleLoginSuccess() {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'HomeTabs' }],
+      })
+    );
+  }
+
   const handleLogin = async () => {
     const foundUser = userMap.get(user.email.toLowerCase()); // O(1) lookup
     if (foundUser && foundUser.password == user.password) {
       try{
         await AsyncStorage.setItem('loggedUser', JSON.stringify(foundUser));
         navigation.navigate('HomeTabs')
+        handleLoginSuccess();
         setError(false); // Login successful  
       }catch (e) {
         console.error('Failed to save user data:', e);

@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { users_list } from "@/app/js files/users";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -24,6 +24,15 @@ const AvailabilityTable = ({ userInfo, setUserInfo }) => {
       return acc;
     }, {})
   );
+
+  function handleClientInfoCompletion() {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'HomeTabs' }],
+      })
+    );
+  }
 
   const navigation = useNavigation();
 
@@ -67,6 +76,7 @@ const AvailabilityTable = ({ userInfo, setUserInfo }) => {
       await AsyncStorage.setItem("loggedUser", JSON.stringify(userInfo));
       users_list.push(userInfo);
       navigation.navigate("HomeTabs");
+      handleClientInfoCompletion();
     } catch (error) {
       console.error("Error saving user data:", error);
     }
