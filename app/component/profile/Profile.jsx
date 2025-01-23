@@ -1,9 +1,9 @@
 import { View, Image, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import favicon from '@/assets/images/favicon.png';
-import { users_list } from '@/app/js files/users';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AvailabilityTable from './Availibility';
+import MenuTab from './MenuTab';
 // import { launchImageLibrary } from 'react-native-image-picker'; // For image selection
 
 const Profile = ({ navigation }) => {
@@ -46,12 +46,7 @@ console.log(loggedUser)
           <Text style={styles.backButtonText}>Back</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Profile</Text>
-        <TouchableOpacity onPress={handleProfilePress} style={styles.profileButton}>
-          <Image
-            source={favicon} // Replace with your profile logo path
-            style={styles.profileImage}
-          />
-        </TouchableOpacity>
+        <MenuTab />
       </View>
       
       <View style={styles.profilePictureSection}>
