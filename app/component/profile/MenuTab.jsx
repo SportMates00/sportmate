@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
+import Settings from './Settings';
 
 const MenuTab = () => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -34,7 +35,7 @@ const MenuTab = () => {
 
             <TouchableOpacity 
               style={styles.modalButton} 
-              onPress={() => navigation.navigate('')} // Replace 'Page2' with your actual route name
+              onPress={() => navigation.navigate('Settings')} // Replace 'Page2' with your actual route name
             >
               <Text style={styles.modalButtonText}>Settings</Text>
             </TouchableOpacity>
