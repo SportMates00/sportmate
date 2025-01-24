@@ -32,9 +32,7 @@ const ShareProfile = ({ navigation }) => {
         </View>
 
         {/* Share link button */}
-        <TouchableOpacity onPress={<ShareLink />} style={styles.shareButton}>
-          <Text style={styles.shareButtonText}>Share Link</Text>
-        </TouchableOpacity>
+        <ShareLink />
       </View>
     </View>
   );

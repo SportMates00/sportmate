@@ -8,6 +8,7 @@ const ShareLink = () => {
       const handleCloseModal = () => {
         setModalVisible(false);
       };
+      const openModal = () => setModalVisible(true);
     
       const handleCopyLink = () => {
       };
@@ -18,6 +19,9 @@ const ShareLink = () => {
 
   return (
     <View>
+      <TouchableOpacity onPress={openModal} style={styles.shareButton}>
+        <Text style={styles.shareButtonText}>Share Link</Text>
+      </TouchableOpacity>
     {modalVisible && (
         <Modal
           animationType="slide"

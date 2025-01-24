@@ -27,7 +27,7 @@ export default function App() {
   return (
     <UserProvider>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="ShareProfile">
+      <Stack.Navigator initialRouteName="Welcome">
          {/* Auth Screens */}
         <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
@@ -37,11 +37,7 @@ export default function App() {
         <Stack.Screen name="HomeTabs" component={TabNavigator} options={{ headerShown: false }} />
        <Stack.Screen name="Players" component={Players} />
         <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
-        <Stack.Screen name="EditProfile" component={EditProfile} />
-        <Stack.Screen name='FriendsList' component={FriendsList} />
-        <Stack.Screen name='MenuTab' component={MenuTab} />
         <Stack.Screen name='ShareProfile' component={ShareProfile} options={{headerShown: false}} />
-        <Stack.Screen name='ShareLink' component={ShareLink} options={{headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
     </UserProvider>
