@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import WelcomeScreen from './component/welcome pages/WelcomePage'; // Welcome screen
@@ -10,11 +10,7 @@ import ClientInfo from './component/welcome pages/Clientinfo/ClientInfo';
 import Profile from './component/profile/Profile';
 import { UserProvider } from './UserProvider';
 import Players from './(tabs)/Players';
-import EditProfile from './component/profile/EditProfile';
-import FriendsList from './component/profile/FriendsList';
-import MenuTab from './component/profile/MenuTab';
 import ShareProfile from './component/profile/ShareProfile';
-import ShareLink from './component/profile/ShareLink';
 import Settings from './component/profile/Settings';
 // Create navigators
 const Stack = createNativeStackNavigator();

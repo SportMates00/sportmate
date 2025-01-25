@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import Settings from './Settings';
+import { useNavigation } from '@react-navigation/native';
 
 const MenuTab = () => {
   const [isModalVisible, setModalVisible] = useState(false);
-
+const navigation = useNavigation();
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
 
