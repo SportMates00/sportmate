@@ -28,7 +28,7 @@ export default function App() {
   return (
     <UserProvider>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Settings">
+      <Stack.Navigator initialRouteName="Profile">
          {/* Auth Screens */}
         <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />

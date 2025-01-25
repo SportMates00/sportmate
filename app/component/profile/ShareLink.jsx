@@ -100,6 +100,13 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#fff',
       },
+      shareButton: {
+        backgroundColor: '#007bff',
+        paddingVertical: 12,
+        borderRadius: 6,
+        alignItems: 'center',
+        width: '80%',
+      },
 })
 
 export default ShareLink
