@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
-import Settings from './Settings';
 import { useNavigation } from '@react-navigation/native';
 
 const MenuTab = () => {
@@ -30,7 +29,7 @@ const navigation = useNavigation();
         <View style={styles.modalContent}>
             <TouchableOpacity 
               style={styles.modalButton} 
-              onPress={() => navigation.navigate('')} > // Replace 'Page1' with your actual route name 
+              onPress={() => navigation.navigate('EditProfile')} >
               <Text style={styles.modalButtonText}>Edit Profile</Text>
             </TouchableOpacity>
 

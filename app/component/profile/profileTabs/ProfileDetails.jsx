@@ -42,8 +42,8 @@ export default function ProfileDetails({loggedUser}) {
 
       {/* Content Area Placeholder */}
       <View style={styles.contentArea}>
-        {activeTab === 'About' ? <About /> 
-        : activeTab === 'Sports' ? <Sports /> 
+        {activeTab === 'About' ? <About loggedUser={loggedUser}/> 
+        : activeTab === 'Sports' ? <Sports loggedUser={loggedUser} /> 
         : activeTab === 'Reviews' ? <Reviews /> : <Activity /> }
       </View>
     </View>
@@ -52,9 +52,10 @@ export default function ProfileDetails({loggedUser}) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     backgroundColor: 'white',
     padding: 16,
+    height:'100%'
   },
   tabRow: {
     flexDirection: 'row',
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#007BFF', // Light blue for active
   },
   contentArea: {
-    flex: 1,
+    flex:1,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -4,7 +4,7 @@ import AvailabilityTable from '../Availibility'
 
 const Reviews = () => {
   return (
-    <View>
+    <View style={{height:'100%', backgroundColor:'white'}}>
       <Text>Revidawd ad ews</Text>
     </View>
   )

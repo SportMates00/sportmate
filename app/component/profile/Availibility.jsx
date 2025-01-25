@@ -44,8 +44,8 @@ const AvailabilityTable = () => {
   const times = Object.keys(availability[days[0]]);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.heading}>Your Availability</Text>
+    <View style={styles.container}>
+      <Text style={styles.heading}>Availability</Text>
       <View style={styles.table}>
         {/* Table Header */}
         <View style={styles.row}>
@@ -72,15 +72,13 @@ const AvailabilityTable = () => {
           </View>
         ))}
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
   },
   loadingText: {
     fontSize: 16,
@@ -88,9 +86,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   heading: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontSize: 18,
     marginBottom: 16,
+    fontWeight:'bold'
   },
   table: {
     borderWidth: 1,
