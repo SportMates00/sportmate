@@ -1,56 +1,29 @@
-import { View, Image, Text, StyleSheet, ScrollView } from 'react-native';
-import React, { useContext, useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import React from 'react';
 import ProfileHeader from './ProfileHeader';
 import ProfileDetails from './profileTabs/ProfileDetails';
 import ProfileTopInfo from './ProfileTopInfo';
-import { UserContext } from '@/app/UserProvider';
-// import { launchImageLibrary } from 'react-native-image-picker'; // For image selection
 
-const Profile = ({loggedUser ,completionPercentage}) => {
+const Profile = ({ loggedUser, completionPercentage }) => {
   return (
-    <ScrollView contentContainerStyle={{flexGrow:1}} >
-      <View style={styles.container}>
-      <ProfileHeader />
-      <ProfileTopInfo loggedUser={loggedUser} completionPercentage={completionPercentage}/>
-      <ProfileDetails loggedUser={loggedUser}/>
+    <View style={styles.container}>
+      <ProfileHeader />  {/* ProfileHeader will be sticky at the top */}
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <ProfileTopInfo loggedUser={loggedUser} completionPercentage={completionPercentage} />
+        <ProfileDetails loggedUser={loggedUser} />
+      </ScrollView>
     </View>
-    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
-    backgroundColor:'white',
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
-  },
-  profileButton: {
-    padding: 8,
-  },
-  profileImage: {
-    width: 24,
-    height: 24,
-    resizeMode: 'contain',
-  },
-  editIconContainer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
+    flex: 1,
     backgroundColor: 'white',
-    borderRadius: 12,
-    padding: 2,
+    paddingTop: 50,  // Adjust for the sticky header height
   },
-  editIcon: {
-    width: 24,
-    height: 24,
-  },
-  profileRight: {
-    color:'black'
+  scrollView: {
+    paddingTop: 60,  // Ensure content doesn't go behind the header
   },
 });
 

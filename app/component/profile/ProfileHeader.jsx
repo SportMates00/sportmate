@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView} from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
 import randomIcon from '../../../assets/images/favicon.png'
 import MenuTab from './MenuTab';
@@ -9,6 +9,7 @@ const ProfileHeader = () => {
     const handleBackPress = () => {
         navigation.navigate('HomeTabs'); // Navigates back to the previous screen
       };
+
   return (
         <View style={styles.header}>
             <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
@@ -27,32 +28,35 @@ const ProfileHeader = () => {
 
 const styles = StyleSheet.create({
     header: {
-      position:'sticky',
+      position:'absolute',   // This ensures the header sticks to the top
       zIndex: 1000,
-      top:0,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        backgroundColor: 'white', // Adjust as needed
-      },
-      backButton: {
+      top: 30,
+      left: 0,
+      right: 0,
+      padding: 10,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: 'white', // Adjust as needed
+    },
+    backButton: {
         padding: 8,
-      },
-      backButtonText: {
+    },
+    backButtonText: {
         fontSize: 16,
         color: '#007aff',
-      },
-      title: {
+    },
+    title: {
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
-      },
-      profileHeaderRight: {
+    },
+    profileHeaderRight: {
         display:'flex',
         flexDirection:'row',
         justifyContent:'center',
         alignItems:'center'
-      }
+    }
 })
 
-export default ProfileHeader
+export default ProfileHeader;
