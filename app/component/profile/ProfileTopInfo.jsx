@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 import React from 'react'
 import favicon from '@/assets/images/favicon.png';
 import ProgressBar from 'react-native-progress/Bar';
-const ProfileTopInfo = ({loggedUser,completionPercentage}) => {
+const ProfileTopInfo = ({loggedUser}) => {
   return (
     <View>
         <View style={styles.profilePictureSection}>
@@ -20,7 +20,7 @@ const ProfileTopInfo = ({loggedUser,completionPercentage}) => {
     </View>    
     <View style={styles.progressBar}>
         <ProgressBar
-          progress={completionPercentage / 100}
+          progress={80 / 100}
           width={null}
           height={10}
           color="red"

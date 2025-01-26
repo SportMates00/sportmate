@@ -1,35 +1,39 @@
-import React, { useState } from 'react';
-import { View, Text, Button, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
-import QLevel from './QLevel';
+import { setUserInfo } from '@/app/store/userSlice';
+import React from 'react';
+import { View, Text,TouchableOpacity, StyleSheet } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
 
-const QSport = ({step , setStep, userInfo, setUserInfo}) => {
-  const [favoriteSport, setFavoriteSport] = useState(''); 
+const QSport = ({ step, setStep }) => {
+  const dispatch = useDispatch(); // Get the dispatch function from Redux
+  const sports = ['Football', 'Basketball', 'Tennis', 'Ping Pong', 'Hiking'];
+  const userInfo = useSelector((state) => state.user);
   const nextStep = () => setStep(step + 1);
-  const prevStep = () => setStep(step - 1);
-  const sports = ['Football','Basketball','Tennis','Ping Pong','Hiking']
-    return (
-      <View style={styles.container}>
-        {step === 1 && (
-          <View style={styles.centerContent}>
-            <Text style={styles.questionText}>What is your favorite sport?</Text>
-            <View style={styles.optionsContainer}>
-              {sports.map(val => {
-                return (
-                  <TouchableOpacity key={val} style={styles.optionButton} onPress={() => {   
-                    setUserInfo({...userInfo,profileInfo:{...userInfo.profileInfo,sport:val}})
-                    nextStep();
-                    }}
-                    >
-                    <Text style={styles.optionText}>{val}</Text>
-                  </TouchableOpacity>
-                )
-              })}
-            </View>
-          </View>)}
+console.log('Sposssssssssssssssssssrt',userInfo)
+  return (
+    <View style={styles.container}>
+      {step === 1 && (
+        <View style={styles.centerContent}>
+          <Text style={styles.questionText}>What is your favorite sport?</Text>
+          <View style={styles.optionsContainer}>
+            {sports.map((val) => (
+              <TouchableOpacity
+                key={val}
+                style={styles.optionButton}
+                onPress={() => {
+                  dispatch(setUserInfo({ profileInfo: {...userInfo.profileInfo, sport: val } })); // Dispatch action to update Redux state
+                  nextStep();
+                }}
+              >
+                <Text style={styles.optionText}>{val}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         </View>
-        
-        ) }
+      )}
+    </View>
+  );
+};
 
         const styles = StyleSheet.create({
           container: {

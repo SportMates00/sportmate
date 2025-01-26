@@ -7,14 +7,18 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { CommonActions, useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
 import { users_list } from "@/app/js files/users";
+import { setUserInfo } from "@/app/store/userSlice";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const times = ["Morning", "Afternoon", "Evening"];
 
-const AvailabilityTable = ({ userInfo, setUserInfo }) => {
+const AvailabilityTable = () => {
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.user);
+  const navigation = useNavigation();
   const [availability, setAvailability] = useState(
     days.reduce((acc, day) => {
       acc[day] = times.reduce((timeAcc, time) => {
@@ -24,17 +28,16 @@ const AvailabilityTable = ({ userInfo, setUserInfo }) => {
       return acc;
     }, {})
   );
-
+console.log('SCHEDULEEEEEEE', userInfo)
+  // Handle completion of client info setup
   function handleClientInfoCompletion() {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{ name: 'HomeTabs' }],
+        routes: [{ name: "HomeTabs" }],
       })
     );
   }
-
-  const navigation = useNavigation();
 
   // Toggle availability for a specific day and time
   const toggleCell = (day, time) => {
@@ -48,14 +51,16 @@ const AvailabilityTable = ({ userInfo, setUserInfo }) => {
 
     setAvailability(updatedAvailability);
 
-    // Update userInfo with the new availability
-    setUserInfo((prev) => ({
-      ...prev,
-      profileInfo: {
-        ...prev.profileInfo,
-        availibility: updatedAvailability,
-      },
-    }));
+    // Update Redux state with the new availability
+    dispatch(
+      setUserInfo({
+        ...userInfo,
+        profileInfo: {
+          ...userInfo.profileInfo,
+          availability: updatedAvailability,
+        },
+      })
+    );
   };
 
   // Check if at least one slot is selected
@@ -66,15 +71,15 @@ const AvailabilityTable = ({ userInfo, setUserInfo }) => {
   };
 
   // Handle Get Started button click
-  const handleGetStarted = async () => {
+  const handleGetStarted = () => {
     if (!isAtLeastOneSelected()) {
       Alert.alert("Error", "Please select at least one availability slot.");
       return;
     }
     try {
       // Add userInfo to AsyncStorage
-      await AsyncStorage.setItem("loggedUser", JSON.stringify(userInfo));
       users_list.push(userInfo);
+      dispatch(setUserInfo(userInfo))
       navigation.navigate("HomeTabs");
       handleClientInfoCompletion();
     } catch (error) {
@@ -101,7 +106,7 @@ const AvailabilityTable = ({ userInfo, setUserInfo }) => {
             <Text style={styles.headerCell}>{time}</Text>
             {days.map((day, colIndex) => (
               <TouchableOpacity
-                key={`${rowIndex}-${colIndex}`} // Unique key
+                key={`${rowIndex}-${colIndex}`}
                 style={[
                   styles.cell,
                   availability[day][time] && styles.selectedCell,

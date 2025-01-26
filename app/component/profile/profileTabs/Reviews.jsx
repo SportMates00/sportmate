@@ -28,22 +28,20 @@ const ReviewsTab = () => {
       <View style={styles.reviewsBlock}>
         <Text style={styles.reviewsTitle}>Reviews</Text>
 
-        {reviews.length === 0 ? (
+        {reviews.length === '' ? (
           <Text style={styles.noReviewsText}>You don't have any reviews yet.</Text>
         ) : (
-          <FlatList
-            data={reviews}
-            keyExtractor={(item) => item.id}
-            renderItem={({ item }) => (
-              <View style={styles.reviewCard}>
-                <View style={styles.reviewHeader}>
-                  <FontAwesome name="star" size={18} color="#FFD700" />
-                  <Text style={styles.reviewStars}>{item.stars} / 5</Text>
-                </View>
-                <Text style={styles.reviewText}>{item.text}</Text>
+          reviews.map(val => {
+            return (
+              <View key={val.id} style={styles.reviewCard}>
+              <View style={styles.reviewHeader}>
+                <FontAwesome name="star" size={18} color="#FFD700" />
+                <Text style={styles.reviewStars}>{val.stars} / 5</Text>
               </View>
-            )}
-          />
+              <Text style={styles.reviewText}>{val.text}</Text>
+            </View>
+            )
+          } )
         )}
       </View>
     </View>

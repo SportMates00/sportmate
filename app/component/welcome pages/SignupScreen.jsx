@@ -6,16 +6,53 @@ import { useNavigation } from '@react-navigation/native'; // For navigation
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LangChanger from '../LangChanger';
 import { users_list } from '@/app/js files/users';
-import { UserContext } from '@/app/UserProvider';
+import { useSelector, useDispatch } from 'react-redux';
+import { setUserInfo } from '@/app/store/userSlice';
 
 const SignUpScreen = () => {
   const { t } = useTranslation();
-  const navigation = useNavigation(); // For navigating between screens
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.user); // Get user info from Redux
+  console.log('signssssssssssssssssup', userInfo)
   const [emailExist, setEmailExist] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [fieldError, setFieldError] = useState(false);
-  const { userInfo, setUserInfo } = useContext(UserContext);
   const [userMap, setUserMap] = useState(new Map());
+
+  useEffect(() => {
+    // Preprocess user_list into a Map for fast lookups
+    const map = new Map();
+    users_list.forEach((u) => map.set(u.email.toLowerCase(), u));
+    setUserMap(map);
+  }, [users_list.length]);
+
+  function handleSignUp() {
+    const foundUser = userMap.get(userInfo.email.toLowerCase());
+    if (foundUser) {
+      setEmailExist(true);
+      setFieldError(false);
+      setPasswordError(false);
+    } else if (userInfo.password !== userInfo.confirmPassword) {
+      setPasswordError(true);
+      setEmailExist(false);
+      setFieldError(false);
+    } else if (
+      userInfo.firstName !== '' &&
+      userInfo.lastName !== '' &&
+      userInfo.email !== '' &&
+      userInfo.password !== '' &&
+      userInfo.confirmPassword !== ''
+    ) {
+      setEmailExist(false);
+      setPasswordError(false);
+      navigation.navigate('ClientInfo');
+    } else {
+      setFieldError(true);
+      setEmailExist(false);
+      setPasswordError(false);
+    }
+  }
   const iconContainer = {
     position: 'absolute',
     top: 40,
@@ -28,41 +65,11 @@ const SignUpScreen = () => {
     shadowOpacity: 0.1,
     shadowRadius: 4,
   }
-
-    useEffect(() => {
-      // Preprocess user_list into a Map for fast lookups
-      const map = new Map();
-      users_list.forEach((u) => map.set(u.email.toLowerCase(), u));
-      setUserMap(map);
-    }, [users_list.length]);
-
-   function handleSignUp(){
-    const foundUser = userMap.get(userInfo.email.toLowerCase());
-    if(foundUser){
-      setEmailExist(true);
-      setFieldError(false)
-      setPasswordError(false)
-    
-    }else if(userInfo.password !== userInfo.confirmPassword){
-      setPasswordError(true)
-      setEmailExist(false);
-      setFieldError(false)
-    }else if(userInfo.firstName !== '' & userInfo.lastName !=='' & userInfo.email !== '' & userInfo.email !== '' & userInfo.password !== '' & userInfo.confirmPassword !== ''){
-        setEmailExist(false)
-        setPasswordError(false)
-        navigation.navigate('ClientInfo')
-      } else {
-      setFieldError(true)
-      setEmailExist(false)
-      setPasswordError(false)
-    }
-  }
-
   return (
     <View style={styles.container}>
       {/* Back Button */}
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-      <Ionicons name="arrow-back-outline" size={24} color="black" />
+        <Ionicons name="arrow-back-outline" size={24} color="black" />
       </TouchableOpacity>
 
       {/* Logo */}
@@ -76,28 +83,28 @@ const SignUpScreen = () => {
       <TextInput
         style={styles.input}
         placeholder={t('firstName')}
-        onChangeText={(value) => setUserInfo({...userInfo, firstName:value})}
+        onChangeText={(value) => dispatch(setUserInfo({ firstName: value }))}
       />
       <TextInput
         style={styles.input}
         placeholder={t('lastName')}
-        onChangeText={(value) => setUserInfo({...userInfo, lastName:value})}
+        onChangeText={(value) => dispatch(setUserInfo({ lastName: value }))}
       />
       <TextInput
         style={styles.input}
         placeholder={t('email')}
-        onChangeText={(value) => setUserInfo({...userInfo, email:value})}
+        onChangeText={(value) => dispatch(setUserInfo({ email: value }))}
       />
       <TextInput
         style={styles.input}
         placeholder={t('password')}
-        onChangeText={(value) => setUserInfo({...userInfo, password:value})}
+        onChangeText={(value) => dispatch(setUserInfo({ password: value }))}
         secureTextEntry
       />
       <TextInput
         style={styles.input}
         placeholder={t('confirmPassword')}
-        onChangeText={(value) => setUserInfo({...userInfo,confirmPassword:value})}
+        onChangeText={(value) => dispatch(setUserInfo({ confirmPassword: value }))}
         secureTextEntry
       />
       {emailExist && <Text>Email is already in use</Text>}
@@ -109,10 +116,10 @@ const SignUpScreen = () => {
 
       {/* Sign-In Link */}
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.signInText}>{t("Already Have Account? Sign in")}</Text>
+        <Text style={styles.signInText}>{t('Already Have Account? Sign in')}</Text>
       </TouchableOpacity>
-      
-      <LangChanger text={''} iconContainer={iconContainer}/>
+
+      <LangChanger text={''} iconContainer={iconContainer} />
     </View>
   );
 };

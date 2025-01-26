@@ -2,7 +2,9 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import AddSport from './AddSport';
 
 const Sports = ({loggedUser}) => {
-
+  console.log('====================================');
+  console.log(loggedUser);
+  console.log('====================================');
   return (
     <View style={styles.container}>
       {/* List of Sports */}
