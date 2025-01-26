@@ -42,7 +42,7 @@ const navigation = useNavigation();
 
             <TouchableOpacity 
               style={styles.modalButton} 
-              onPress={() => navigation.navigate('')} // Replace 'Page3' with your actual route name
+              onPress={() => navigation.navigate('ProfileViewers')} // Replace 'Page3' with your actual route name
             >
               <Text style={styles.modalButtonText}>Profile Viewers</Text>
             </TouchableOpacity>

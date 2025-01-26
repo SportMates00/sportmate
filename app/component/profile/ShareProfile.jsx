@@ -1,101 +1,137 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient'; // For gradient backgrounds
 import ShareLink from './ShareLink';
-import Profile from './Profile';
 
 const ShareProfile = ({ navigation }) => {
 
   const handleBackPress = () => {
-    navigation.navigate(Profile);
+    navigation.goBack(); // Navigate back to the previous screen
   };
 
- 
   return (
-    <View style={styles.container}>
-      {/* Header with back button */}
+    <LinearGradient
+      colors={['#4facfe', '#00f2fe']} // Gradient background
+      style={styles.container}
+    >
+      {/* Header with Back Button */}
       <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-        <Text style={styles.backText}>Back</Text>
+        <Text style={styles.backText}>← Back</Text>
       </TouchableOpacity>
 
-      {/* Centered Content */}
+      {/* Content */}
       <View style={styles.contentContainer}>
-        {/* Invite Text */}
-        <Text style={styles.inviteText}>Invite your friends to get a promo code!</Text>
+        {/* Invite Section */}
+        <Text style={styles.inviteText}>
+          Invite your friends and get rewards!
+        </Text>
 
-        {/* Steps section centered */}
+        {/* Steps Section */}
         <View style={styles.stepsBox}>
           <Text style={styles.stepsTitle}>How It Works</Text>
-          <Text style={styles.step}>1. Share your unique invite link with friends.</Text>
-          <Text style={styles.step}>2. Your friend signs up and completes their first purchase.</Text>
-          <Text style={styles.step}>3. You both get a promo code for your next purchase!</Text>
+          <View style={styles.step}>
+            <Text style={styles.stepNumber}>1</Text>
+            <Text style={styles.stepText}>
+              Share your unique invite link with friends.
+            </Text>
+          </View>
+          <View style={styles.step}>
+            <Text style={styles.stepNumber}>2</Text>
+            <Text style={styles.stepText}>
+              Your friend signs up and makes their first purchase.
+            </Text>
+          </View>
+          <View style={styles.step}>
+            <Text style={styles.stepNumber}>3</Text>
+            <Text style={styles.stepText}>
+              Both of you receive a promo code!
+            </Text>
+          </View>
         </View>
 
-        {/* Share link button */}
+        {/* Share Link Button */}
         <ShareLink />
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     padding: 20,
   },
   backButton: {
     position: 'absolute',
     top: 40,
     left: 20,
-    paddingVertical: 10,
   },
   backText: {
     fontSize: 16,
-    color: '#007bff',
+    color: '#fff',
+    fontWeight: 'bold',
   },
   contentContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 50,
   },
   inviteText: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    color: '#fff',
+    textAlign: 'center',
+    marginBottom: 30,
+    textShadowColor: 'rgba(0, 0, 0, 0.2)',
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
+  },
+  stepsBox: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 16,
+    width: '90%',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    marginBottom: 30,
+  },
+  stepsTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    marginTop: 10,
-    color: '#333',
+    color: '#007bff',
     textAlign: 'center',
     marginBottom: 20,
   },
-  stepsBox: {
-    backgroundColor: '#f9f9f9',
-    padding: 15,
-    borderRadius: 8,
-    marginBottom: 20,
-    width: '80%',
-    alignItems: 'center',
-    justifyContent: 'center',
+  step: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: 15,
   },
-  stepsTitle: {
+  stepNumber: {
+    backgroundColor: '#4facfe',
+    color: '#fff',
     fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 10,
+    borderRadius: 20,
+    padding: 8,
+    marginRight: 10,
+    textAlign: 'center',
   },
-  step: {
+  stepText: {
     fontSize: 14,
-    marginBottom: 5,
-    color: '#555',
+    color: '#333',
+    flex: 1,
   },
-  shareButton: {
-    backgroundColor: '#007bff',
-    paddingVertical: 12,
-    borderRadius: 6,
-    alignItems: 'center',
-    width: '80%',
+  shareModalButton: {
+    backgroundColor: '#2575fc',
   },
   shareButtonText: {
     fontSize: 16,
     color: '#fff',
+    fontWeight: 'bold',
   },
 });
 

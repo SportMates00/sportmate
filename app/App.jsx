@@ -11,9 +11,15 @@ import Profile from './component/profile/Profile';
 import { UserProvider } from './UserProvider';
 import Players from './(tabs)/Players';
 import ShareProfile from './component/profile/ShareProfile';
-import Settings from './component/profile/Settings';
+import Settings from './component/profile/Settings/Settings';
 import EditProfile from './component/profile/editprofile/EditProfile';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Reviews from './component/profile/profileTabs/Reviews';
+import ProfileViewers from './component/profile/ProfileViewers';
+import SelectLanguage from './component/profile/Settings/SelectLanguage';
+import LangChanger from './component/LangChanger';
+import VerifyAccount from './component/profile/Settings/VerifyAccount';
+import ChangePassword from './component/profile/Settings/ChangePassword';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
@@ -98,6 +104,12 @@ export default function App() {
         <Stack.Screen name='ShareProfile' component={ShareProfile} options={{headerShown: false}} />
         <Stack.Screen name='EditProfile' component={EditProfile} options={{headerShown: false}} />
         <Stack.Screen name='Settings' component={Settings} />
+        <Stack.Screen name='Reviews' component={Reviews} />
+        <Stack.Screen name='ProfileViewers' component={ProfileViewers} />
+        <Stack.Screen name='SelectLanguage' component={SelectLanguage} />
+        <Stack.Screen name='LangChanger' component={LangChanger} />
+        <Stack.Screen name='VerifyAccount' component={VerifyAccount} />
+        <Stack.Screen name='ChangePassword' component={ChangePassword} />
       </Stack.Navigator>
     </NavigationContainer>
     </UserProvider>

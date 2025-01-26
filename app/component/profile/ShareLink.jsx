@@ -1,6 +1,8 @@
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
+import { LinearGradient } from 'expo-linear-gradient'; // For gradient backgrounds
+
 
 const ShareLink = () => {
     const [modalVisible, setModalVisible] = useState(false);
@@ -19,9 +21,15 @@ const ShareLink = () => {
 
   return (
     <View>
-      <TouchableOpacity onPress={openModal} style={styles.shareButton}>
-        <Text style={styles.shareButtonText}>Share Link</Text>
-      </TouchableOpacity>
+    <TouchableOpacity onPress={openModal} style={styles.shareButton}>
+  <LinearGradient
+    colors={['#6a11cb', '#2575fc']}
+    style={[styles.gradientButton, { alignItems: 'center', justifyContent: 'center' }]} // Ensure content is centered
+  >
+    <Text style={styles.shareButtonText}>Share Link</Text>
+  </LinearGradient>
+</TouchableOpacity>
+
     {modalVisible && (
         <Modal
           animationType="slide"
@@ -61,6 +69,15 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 20,
       },
+      gradientButton: {
+        width: '80%',
+        paddingVertical: 15,
+        paddingHorizontal: 20,
+        borderRadius: 6,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      
     modalOverlay: {
         flex: 1,
         justifyContent: 'flex-end',
@@ -89,24 +106,26 @@ const styles = StyleSheet.create({
         textAlign: 'center',
       },
       modalButton: {
-        backgroundColor: '#007bff',
+        backgroundColor: '#6a11cb',
         paddingVertical: 12,
-        paddingHorizontal: 40,
         borderRadius: 6,
-        marginTop: 10,
         alignItems: 'center',
+        marginBottom: 15,
+        width: '100%',
       },
       modalButtonText: {
         fontSize: 16,
         color: '#fff',
       },
-      shareButton: {
-        backgroundColor: '#007bff',
-        paddingVertical: 12,
-        borderRadius: 6,
-        alignItems: 'center',
-        width: '80%',
+      shareModalButton: {
+        backgroundColor: '#2575fc',
       },
+      shareButtonText: {
+        fontSize: 18,
+        color: '#fff',
+        fontWeight: '600',
+      },
+
 })
 
 export default ShareLink
