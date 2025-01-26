@@ -16,6 +16,18 @@ const WelcomeScreen = () => {
     navigation.navigate('SignUp');
   };
 
+  const iconContainer = {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  }
 
 
   return (
@@ -32,7 +44,7 @@ const WelcomeScreen = () => {
         <Text style={styles.buttonText}>{t('signup')}</Text>  {/* Translated text */}
       </TouchableOpacity>
       {/* World Icon Button */}     
-        <LangChanger />     
+        <LangChanger text={''} iconContainer={iconContainer} />     
       </ImageBackground>
     </View>
   );

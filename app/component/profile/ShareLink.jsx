@@ -70,7 +70,6 @@ const styles = StyleSheet.create({
         padding: 20,
       },
       gradientButton: {
-        width: '80%',
         paddingVertical: 15,
         paddingHorizontal: 20,
         borderRadius: 6,

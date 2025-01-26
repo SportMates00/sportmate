@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, Modal, StyleSheet } from 'react
 import Fontisto from '@expo/vector-icons/Fontisto';
 import { useTranslation } from 'react-i18next';
 
-const LangChanger = () => {
+const LangChanger = ({style,iconContainer,text}) => {
   const { t, i18n } = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -15,7 +15,7 @@ const LangChanger = () => {
   return (
     <>
       <TouchableOpacity
-        style={styles.iconContainer}
+        style={[iconContainer ]}
         onPress={() => setModalVisible(true)}
         accessible={true}
         accessibilityLabel="Change Language"
@@ -23,6 +23,7 @@ const LangChanger = () => {
         <Text>
           <Fontisto name="world" size={24} color="black" />
         </Text>
+        {text === '' ? '' : <Text>{text}</Text>}
       </TouchableOpacity>
       <Modal
         visible={modalVisible}
@@ -58,18 +59,7 @@ const LangChanger = () => {
 export default LangChanger;
 
 const styles = StyleSheet.create({
-  iconContainer: {
-    position: 'absolute',
-    top: 40,
-    right: 20,
-    backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 50,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-  },
+  
   modalOverlay: {
     flex: 1,
     justifyContent: 'center',

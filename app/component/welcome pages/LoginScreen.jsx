@@ -10,6 +10,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const LoginScreen = () => {
+
+  const iconContainer = {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  }
   const { t } = useTranslation();
   const navigation = useNavigation(); // To navigate between screens
   const [user, setUser] = useState({
@@ -88,7 +101,7 @@ const LoginScreen = () => {
         <Text style={styles.signUpText}>{t("don't have an account? Sign up")}</Text>
       </TouchableOpacity>
 
-      <LangChanger />
+      <LangChanger text={''} iconContainer={iconContainer}/>
     </View>
   );
 };

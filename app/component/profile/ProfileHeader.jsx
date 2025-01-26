@@ -27,7 +27,9 @@ const ProfileHeader = () => {
 
 const styles = StyleSheet.create({
     header: {
-        marginTop:'40',
+      position:'sticky',
+      zIndex: 1000,
+      top:0,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',

@@ -6,6 +6,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import SelectLanguage from './SelectLanguage';
+import LangChanger from '../../LangChanger';
 
 const Settings = ({ navigation }) => {
 
@@ -41,6 +42,20 @@ const Settings = ({ navigation }) => {
       { text: 'Delete', onPress: () => console.log('Account Deleted') },
     ]);
   };
+  const iconContainer = {
+    display:'flex',
+    flexDirection:'row',
+    gap:10,
+    alignItems:'center',
+    width:'100%',
+    backgroundColor: '#fff',
+    marginRight: 10,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -60,16 +75,17 @@ const Settings = ({ navigation }) => {
       </TouchableOpacity>
 
       {/* Preferences */}
+
+      {/* Use the LanguageModal component */}
       <Text style={styles.sectionHeader}>Preferences</Text>
         <TouchableOpacity onPress={openModal} style={styles.option}>
           <View style={styles.optionRow}>
-            <MaterialIcons name="language" size={24} color="black" style={styles.optionIcon} />
-            <Text style={styles.optionText}>Select Language</Text>
+          <LangChanger iconContainer={iconContainer} text={'Select language'} isModalVisible={isModalVisible} closeModal={closeModal} />
           </View>
         </TouchableOpacity>
 
-        {/* Use the LanguageModal component */}
-        <SelectLanguage isModalVisible={isModalVisible} closeModal={closeModal} />
+        
+        
       <View style={styles.option}>
         <View style={styles.optionRow}>
           <MaterialIcons name="dark-mode" size={24} color="black" style={styles.optionIcon} />

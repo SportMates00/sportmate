@@ -16,7 +16,18 @@ const SignUpScreen = () => {
   const [fieldError, setFieldError] = useState(false);
   const { userInfo, setUserInfo } = useContext(UserContext);
   const [userMap, setUserMap] = useState(new Map());
-
+  const iconContainer = {
+    position: 'absolute',
+    top: 40,
+    right: 20,
+    backgroundColor: '#fff',
+    padding: 10,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+  }
 
     useEffect(() => {
       // Preprocess user_list into a Map for fast lookups
@@ -101,7 +112,7 @@ const SignUpScreen = () => {
         <Text style={styles.signInText}>{t("Already Have Account? Sign in")}</Text>
       </TouchableOpacity>
       
-      <LangChanger />
+      <LangChanger text={''} iconContainer={iconContainer}/>
     </View>
   );
 };
