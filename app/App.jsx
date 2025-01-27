@@ -15,11 +15,14 @@ import Settings from './component/profile/Settings/Settings';
 import EditProfile from './component/profile/editprofile/EditProfile';
 import Reviews from './component/profile/profileTabs/Reviews';
 import ProfileViewers from './component/profile/ProfileViewers';
-import SelectLanguage from './component/profile/Settings/SelectLanguage';
 import LangChanger from './component/LangChanger';
 import VerifyAccount from './component/profile/Settings/VerifyAccount';
 import ChangePassword from './component/profile/Settings/ChangePassword';
 import {store} from './store/store';
+import ContactUs from './component/profile/Settings/ContactUs';
+import PrivacyPolicy from './component/profile/Settings/PrivacyPolicy';
+import TermConditions from './component/profile/Settings/TermsConditions';
+import DeleteAccount from './component/profile/Settings/DeleteAccount';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
@@ -30,7 +33,7 @@ export default function App() {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Welcome">
+      <Stack.Navigator initialRouteName="Settings">
          {/* Auth Screens */}
         <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
@@ -45,10 +48,13 @@ export default function App() {
         <Stack.Screen name='Settings' component={Settings} />
         <Stack.Screen name='Reviews' component={Reviews} />
         <Stack.Screen name='ProfileViewers' component={ProfileViewers} />
-        <Stack.Screen name='SelectLanguage' component={SelectLanguage} />
         <Stack.Screen name='LangChanger' component={LangChanger} />
         <Stack.Screen name='VerifyAccount' component={VerifyAccount} />
         <Stack.Screen name='ChangePassword' component={ChangePassword} />
+        <Stack.Screen name='ContactUs' component={ContactUs} />
+        <Stack.Screen name='PrivacyPolicy' component={PrivacyPolicy} />
+        <Stack.Screen name='TermsConditions' component={TermConditions} />
+        <Stack.Screen name='DeleteAccount' component={DeleteAccount} />
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>

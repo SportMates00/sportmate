@@ -5,7 +5,6 @@ import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-import SelectLanguage from './SelectLanguage';
 import LangChanger from '../../LangChanger';
 
 const Settings = ({ navigation }) => {
@@ -26,9 +25,17 @@ const Settings = ({ navigation }) => {
   };
 
   const handleContactUs = () => {
-    Alert.alert('Contact Us', 'Contact information or support flow goes here.');
+    navigation.navigate('ContactUs');
   };
 
+  const handlePrivacyPolicy =() => {
+    navigation.navigate('PrivacyPolicy');
+  };
+
+  const handleTermsConditions =() => {
+    navigation.navigate('TermsConditions');
+  };
+  
   const handleLogout = () => {
     Alert.alert('Log Out', 'Are you sure you want to log out?', [
       { text: 'Cancel', style: 'cancel' },
@@ -37,10 +44,7 @@ const Settings = ({ navigation }) => {
   };
 
   const handleDeleteAccount = () => {
-    Alert.alert('Delete Account', 'Are you sure you want to delete your account?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Delete', onPress: () => console.log('Account Deleted') },
-    ]);
+    navigation.navigate('DeleteAccount');
   };
   const iconContainer = {
     display:'flex',
@@ -84,8 +88,6 @@ const Settings = ({ navigation }) => {
           </View>
         </TouchableOpacity>
 
-        
-        
       <View style={styles.option}>
         <View style={styles.optionRow}>
           <MaterialIcons name="dark-mode" size={24} color="black" style={styles.optionIcon} />
@@ -125,13 +127,13 @@ const Settings = ({ navigation }) => {
 
       {/* Legal */}
       <Text style={styles.sectionHeader}>Legal</Text>
-      <TouchableOpacity style={styles.option}>
+      <TouchableOpacity onPress={handlePrivacyPolicy} style={styles.option}>
         <View style={styles.optionRow}>
           <MaterialIcons name="privacy-tip" size={24} color="black" style={styles.optionIcon} />
           <Text style={styles.optionText}>Privacy Policy</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.option}>
+      <TouchableOpacity onPress={handleTermsConditions} style={styles.option}>
         <View style={styles.optionRow}>
           <MaterialIcons name="rule" size={24} color="black" style={styles.optionIcon} />
           <Text style={styles.optionText}>Terms & Conditions</Text>
