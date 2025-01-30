@@ -28,7 +28,6 @@ const AvailabilityTable = () => {
       return acc;
     }, {})
   );
-console.log('SCHEDULEEEEEEE', userInfo)
   // Handle completion of client info setup
   function handleClientInfoCompletion() {
     navigation.dispatch(

@@ -48,7 +48,7 @@ const About = ({loggedUser}) => {
         <Text style={{fontWeight:'bold',fontSize:16}}>About me</Text>
         <Text>{loggedUser.profileInfo.aboutMe !== '' ? loggedUser.profileInfo.aboutMe : 'Nothing is written...'}</Text>
       </View>
-      <AvailabilityTable />
+      <AvailabilityTable loggedUser={loggedUser}/>
     </View>
   )
 }

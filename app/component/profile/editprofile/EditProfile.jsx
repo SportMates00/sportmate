@@ -1,19 +1,33 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LocationSelector from './LocationSelector';
 import AgeGenderSelector from './AgeGenderSelector';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import { editUserInfo } from '@/app/store/userSlice';
+import AboutMeInput from './AboutMeInput';
+import EditAvailabilityTable from './EditAvailability';
+import _ from 'lodash';  // Import lodash
 
 const EditProfile = () => {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const loggedUser = useSelector((state) => state.user);
+  const [editUser, setEditUser] = useState(loggedUser);
 
-  // State to track selected gender
-  const [selectedGender, setSelectedGender] = useState(null);
+  // Check if there are any changes to enable/disable the save button
+  const hasChanges = !_.isEqual(loggedUser, editUser);
 
-  // Function to handle gender selection
-  const handleGenderSelect = (gender) => {
-    setSelectedGender(gender);
-  };
+  // Save user information
+  function saveUserInfo() {
+    if (hasChanges) {
+      console.time('S')
+      dispatch(editUserInfo(editUser));
+      navigation.navigate('Profile');
+      console.timeEnd('S')
+    }
+  }
+
 
   return (
     <ScrollView style={{ padding: 20, marginTop: 24, backgroundColor: 'white', flex: 1 }}>
@@ -23,8 +37,8 @@ const EditProfile = () => {
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <Text style={styles.title}>Edit Profile</Text>
-        <TouchableOpacity>
-          <Text style={styles.buttonText}>Save</Text>
+        <TouchableOpacity onPress={saveUserInfo} disabled={!hasChanges}>
+          <Text style={[styles.buttonText, !hasChanges && styles.disabledButton]}>Save</Text>
         </TouchableOpacity>
       </View>
 
@@ -38,43 +52,50 @@ const EditProfile = () => {
         </View>
       </View>
 
-      {/* Personal Info */}
+      {/* Personal Info LOCATION */}
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionHeading}>PERSONAL INFO</Text>
         <Text style={styles.label}>First Name</Text>
-        <TextInput style={styles.input} placeholder="Enter first name" />
+        <TextInput style={styles.input} placeholder='Write your name...' value={editUser.firstName}
+        onChangeText={(value) => setEditUser({ ...editUser, firstName: value })} />
         <Text style={styles.label}>Last Name</Text>
-        <TextInput style={styles.input} placeholder="Enter last name" />
+        <TextInput style={styles.input} placeholder='Write your last name...' value={editUser.lastName}
+        onChangeText={(value) => setEditUser({ ...editUser, lastName: value })} />
         <Text style={styles.label}>Location</Text>
-        <LocationSelector />
+        <LocationSelector setEditUser={setEditUser} editUser={editUser} />
       </View>
 
       {/* Age and Gender */}
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionHeading}>AGE AND GENDER</Text>
-        <AgeGenderSelector />
+      <Text style={styles.sectionHeading}>AGE AND GENDER</Text>
+      <AgeGenderSelector editUser={editUser} setEditUser={setEditUser} />
+      <View style={styles.genderContainer}>
+        {['Male', 'Female', 'Other'].map((gender) => (
+          <TouchableOpacity
+            key={gender}
+            style={[
+              styles.genderButton,
+              editUser.profileInfo.gender === gender && styles.selectedButton, // Dynamically highlight selected button
+            ]}
+            onPress={() => setEditUser((prev) => ({
+              ...prev,
+              profileInfo: { ...prev.profileInfo, gender },
+            }))}
+          >
+            <Text style={styles.genderText}>{gender}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
 
-        {/* Gender Selection Buttons */}
-        <View style={styles.genderContainer}>
-          <TouchableOpacity
-            style={[styles.genderButton, selectedGender === 'Male' && styles.selectedButton]}
-            onPress={() => handleGenderSelect('Male')}
-          >
-            <Text style={styles.genderText}>Male</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.genderButton, selectedGender === 'Female' && styles.selectedButton]}
-            onPress={() => handleGenderSelect('Female')}
-          >
-            <Text style={styles.genderText}>Female</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.genderButton, selectedGender === 'Other' && styles.selectedButton]}
-            onPress={() => handleGenderSelect('Other')}
-          >
-            <Text style={styles.genderText}>Other</Text>
-          </TouchableOpacity>
-        </View>
+      {/* ABOUT ME */}
+      <View>
+        <Text style={styles.sectionHeading}>ABOUT ME</Text>
+        <AboutMeInput editUser={editUser} setEditUser={setEditUser} />
+      </View>
+
+      {/* AVAILABILITY */}
+      <View style={{ paddingBottom: 100, width: '100%' }}>
+        <Text style={styles.sectionHeading}>AVAILABILITY</Text>
+        <EditAvailabilityTable editUser={editUser} setEditUser={setEditUser} />
       </View>
     </ScrollView>
   );
@@ -92,6 +113,9 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     color: '#007AFF', // iOS-style blue
+  },
+  disabledButton: {
+    color: 'gray', // Disabled color
   },
   title: {
     fontSize: 16,
@@ -141,6 +165,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     textTransform: 'uppercase',
     marginBottom: 16,
+    marginTop: 16,
   },
   label: {
     fontSize: 14,
@@ -169,7 +194,7 @@ const styles = StyleSheet.create({
   selectedButton: {
     backgroundColor: 'lightgray',
     borderColor: 'lightblue',
-    borderWidth:2,
+    borderWidth: 2,
   },
   genderText: {
     fontSize: 14,

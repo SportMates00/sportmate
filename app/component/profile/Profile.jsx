@@ -7,7 +7,6 @@ import { useSelector } from 'react-redux';
 const Profile = () => {
 
   const loggedUser = useSelector((state) => state.user);
-  console.log(loggedUser)
   return (
     <View style={styles.container}>
       <ProfileHeader />  {/* ProfileHeader will be sticky at the top */}

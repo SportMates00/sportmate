@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 
-const AgeGenderSelector = () => {
-  const [selectedAge, setSelectedAge] = useState(null);
+const AgeGenderSelector = ({editUser, setEditUser}) => {
+  const [selectedAge, setSelectedAge] = useState(editUser.profileInfo.age)
   const ages = Array.from({ length: 86 }, (_, i) => i + 14);
 
   return (
@@ -16,14 +16,20 @@ const AgeGenderSelector = () => {
           key={age}
           style={[
             ageStyles.ageItem,
-            selectedAge === age && ageStyles.selectedAgeItem,
+            selectedAge == age && ageStyles.selectedAgeItem,
           ]}
-          onPress={() => setSelectedAge(age)}
+          onPress={() => {
+            setSelectedAge(age)
+            setEditUser((prev) => ({
+              ...prev,
+              profileInfo: { ...prev.profileInfo, age: age },
+            }));
+          }}
         >
           <Text
             style={[
               ageStyles.ageText,
-              selectedAge === age && ageStyles.selectedAgeText,
+              selectedAge == age && ageStyles.selectedAgeText,
             ]}
           >
             {age}

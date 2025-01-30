@@ -3,46 +3,39 @@ import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet } from 'react
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Importing the icon
 
 const regions = [
-  'Yerevan',
-  'Aragatsotn',
-  'Ararat',
-  'Armavir',
-  'Gegharkunik',
-  'Kotayk',
-  'Lori',
-  'Shirak',
-  'Syunik',
-  'Tavush',
-  'Vayots Dzor',
+  'Yerevan', 'Aragatsotn', 'Ararat', 'Armavir', 'Gegharkunik',
+  'Kotayk', 'Lori', 'Shirak', 'Syunik', 'Tavush', 'Vayots Dzor',
 ];
 
-const LocationSelector = () => {
-  const [selectedRegion, setSelectedRegion] = useState(null);
+const LocationSelector = ({ editUser, setEditUser }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleSelectRegion = (region) => {
-    setSelectedRegion(region);
-    setModalVisible(false); // Close the modal when a region is selected
+    setEditUser((prev) => ({
+      ...prev,
+      profileInfo: { ...prev.profileInfo, location: region },
+    }));
+    setModalVisible(false); // Close modal when a region is selected
   };
 
   return (
     <View style={locationStyles.container}>
-      {/* The "select" part, acting as a clickable dropdown */}
-        <TouchableOpacity
-            style={locationStyles.input}
-            onPress={() => setModalVisible(true)} // Open modal on press
-            >
-            <Text style={locationStyles.inputText}>
-                {selectedRegion ? selectedRegion : 'Select a Region'}
-            </Text>
-            <Icon name="arrow-drop-down" size={24} color="gray" style={locationStyles.icon} /> {/* Add down arrow icon */}
-        </TouchableOpacity>
+      {/* Clickable dropdown */}
+      <TouchableOpacity
+        style={locationStyles.input}
+        onPress={() => setModalVisible(true)}
+      >
+        <Text style={locationStyles.inputText}>
+          {editUser.profileInfo?.location || 'Select a Region'}
+        </Text>
+        <Icon name="arrow-drop-down" size={24} color="gray" style={locationStyles.icon} />
+      </TouchableOpacity>
 
       {/* Modal displaying the list of regions */}
       <Modal
         transparent={true}
         visible={modalVisible}
-        onRequestClose={() => setModalVisible(false)} // Close modal when back pressed
+        onRequestClose={() => setModalVisible(false)}
       >
         <View style={locationStyles.modalContainer}>
           <View style={locationStyles.modalContent}>
@@ -52,7 +45,7 @@ const LocationSelector = () => {
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={locationStyles.item}
-                  onPress={() => handleSelectRegion(item)} // Select a region
+                  onPress={() => handleSelectRegion(item)}
                 >
                   <Text>{item}</Text>
                 </TouchableOpacity>
@@ -79,12 +72,12 @@ const locationStyles = StyleSheet.create({
     paddingVertical: 8,
     marginBottom: 8,
     backgroundColor: 'white',
-    flexDirection:'row',
-    justifyContent:'space-between'
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   inputText: {
     fontSize: 16,
-    letterSpacing:1,
+    letterSpacing: 1,
   },
   modalContainer: {
     flex: 1,

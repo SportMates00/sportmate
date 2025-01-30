@@ -1,5 +1,4 @@
 const users = [
-    {firstName:'lol', lastName: 'Kevorkian', email:'om', password:'kak'},
     {firstName:'Lolig', lastName: 'Lion', email:'1', password:'1', profileInfo: {
       sport: 'Football',
       level: 'Beginner',

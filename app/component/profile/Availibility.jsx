@@ -1,47 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const AvailabilityTable = () => {
-  const [loggedUser, setLoggedUser] = useState(null);
-  const [availability, setAvailability] = useState(null);
+const AvailabilityTable = ({loggedUser}) => {
 
-  // Fetch loggedUser and set availability
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const userData = await AsyncStorage.getItem("loggedUser");
-        if (userData) {
-          const parsedUser = JSON.parse(userData);
-          setLoggedUser(parsedUser);
-
-          // Extract and set availability from the loggedUser data
-          const userAvailability = parsedUser.profileInfo.availibility;
-          setAvailability(userAvailability);
-        }
-      } catch (error) {
-        console.error("Error fetching logged user data:", error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
-  if (!loggedUser || !availability) {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.loadingText}>Loading availability...</Text>
-      </View>
-    );
-  }
-
-  const days = Object.keys(availability);
-  const times = Object.keys(availability[days[0]]);
+  const days = Object.keys(loggedUser.profileInfo.availibility);
+  const times = Object.keys(loggedUser.profileInfo.availibility[days[0]]);
 
   return (
     <View style={styles.container}>
@@ -65,7 +32,7 @@ const AvailabilityTable = () => {
                 key={`${rowIndex}-${colIndex}`} // Unique key
                 style={[
                   styles.cell,
-                  availability[day][time] && styles.selectedCell,
+                  loggedUser.profileInfo.availibility[day][time] && styles.selectedCell,
                 ]}
               />
             ))}

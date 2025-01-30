@@ -16,9 +16,23 @@ const userSlice = createSlice({
         ...action.payload, // This will overwrite the top-level fields, not nested fields
       };
     },
-      resetUserInfo: () => initialState,
+    editUserInfo: (state, action) => {
+      return {
+        ...state,
+        ...action.payload, // Update only the top-level fields like firstName, lastName, etc.
+        profileInfo: {
+          ...state.profileInfo, // Keep the previous profileInfo data
+          ...action.payload.profileInfo, // Only update the changed fields within profileInfo
+          availibility: {
+            ...state.profileInfo.availibility, // Keep the old availability data
+            ...action.payload.profileInfo?.availibility, // Only update provided availability fields
+          },
+        },
+      };
+    },
+    resetUserInfo: () => initialState,
 }});
 
-export const { setUserInfo,resetUserInfo } = userSlice.actions;
+export const { setUserInfo,resetUserInfo, editUserInfo } = userSlice.actions;
 
 export default userSlice.reducer;

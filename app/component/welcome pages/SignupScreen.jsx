@@ -14,7 +14,6 @@ const SignUpScreen = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user); // Get user info from Redux
-  console.log('signssssssssssssssssup', userInfo)
   const [emailExist, setEmailExist] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
   const [fieldError, setFieldError] = useState(false);
