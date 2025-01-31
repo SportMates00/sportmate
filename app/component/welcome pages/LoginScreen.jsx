@@ -71,7 +71,6 @@ const dispatch = useDispatch();
       } else {
         handleLoginSuccess();
         dispatch(setUserInfo(foundUser));
-        Alert.alert(t('Success'), t('Welcome!'));
       }
     } catch (e) {
       console.error('Login error:', e);

@@ -30,9 +30,18 @@ const userSlice = createSlice({
         },
       };
     },
+    profileCompletePer: (state,action) => {
+      return {
+        ...state,
+        profileInfo:{
+          ...state.profileInfo,
+          profileCompletePer: action.payload
+        }
+      }
+    },
     resetUserInfo: () => initialState,
 }});
 
-export const { setUserInfo,resetUserInfo, editUserInfo } = userSlice.actions;
+export const { setUserInfo,resetUserInfo, editUserInfo, profileCompletePer } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -8,6 +8,8 @@ export const userTemplate = {firstName:'', lastName: '', email:'', password:'', 
     sportsList:[{sport:'',level:''}],
     reviews:'',
     activity:'',
+    profileImageUrl:'',
+    profileCompletePer:4,
     review:[{id:'',stars:'',text:''}],
     availibility: {
         Mon: { Morning: false, Afternoon: true, Evening: false },
