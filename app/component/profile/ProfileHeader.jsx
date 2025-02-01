@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import React from 'react'
-import randomIcon from '../../../assets/images/favicon.png'
 import MenuTab from './MenuTab';
 import { useNavigation } from '@react-navigation/native';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 const ProfileHeader = () => {
     const navigation = useNavigation();
@@ -18,7 +18,7 @@ const ProfileHeader = () => {
             <Text style={styles.title}>Profile</Text>
             <View style={styles.profileHeaderRight}>
                 <TouchableOpacity onPress={() => navigation.navigate('ShareProfile')}>
-                    <Image source={randomIcon} />
+                <AntDesign name="adduser" size={24} color="black" />
                 </TouchableOpacity>
                 <MenuTab />
             </View>
