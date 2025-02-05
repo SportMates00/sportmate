@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import  { useEffect, useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import ProfileCompletion from './ProfileCompletion';
+import { Ionicons } from '@expo/vector-icons';  // For Expo
+
 
 
 const ProgressBarbar = ({loggedUser, progressPercentage}) => {
@@ -78,15 +80,26 @@ const ProgressBarbar = ({loggedUser, progressPercentage}) => {
                                        />
                     </TouchableOpacity>
                 
-      <Modal
-            visible={modalVisible}
-            transparent={true}
-            animationType="fade"
-            onRequestClose={() => setModalVisible(false)}
-          >
-          <ProfileCompletion />
+                    <Modal
+  visible={modalVisible}
+  transparent={true}
+  animationType="slide"
+  onRequestClose={() => setModalVisible(false)}
+>
+  <View style={styles.modalOverlay}>
+    <View style={styles.modalContainer}>
+      {/* Close Button */}
+      <TouchableOpacity
+        onPress={() => setModalVisible(false)}
+        style={styles.closeButton}
+      >
+        <Ionicons name="close" size={24} color="#333" />
+      </TouchableOpacity>
 
-      </Modal>
+      <ProfileCompletion />
+    </View>
+  </View>
+</Modal>
     </View>
   )
 }
@@ -118,6 +131,25 @@ const styles = StyleSheet.create({
   progressBar: {
     height: 10,
     borderRadius: 5,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.4)", // Dark overlay for better visibility
+    justifyContent: "flex-end",
+  },
+  modalContainer: {
+    height: "100%",
+    backgroundColor: "#fff",
+    padding: 20,
+    elevation: 10, // Shadow for Android
+    shadowColor: "#000", // Shadow for iOS
+    shadowOffset: { width: 0, height: -3 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+  },
+  closeButton: {
+    alignSelf: "flex-end",
+    padding: 10,
   },
 });
 export default ProgressBarbar;
