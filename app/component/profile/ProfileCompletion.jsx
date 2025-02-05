@@ -17,7 +17,6 @@ const ProfileCompletion = ({ completionSteps = {} }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Complete Your Profile</Text>
-      <ProgressBar />  
       {steps.map((step) => (
         <View key={step.key} style={styles.stepRow}>
           <View style={styles.stepLeft}>
