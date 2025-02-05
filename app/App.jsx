@@ -24,6 +24,7 @@ import PrivacyPolicy from './component/profile/Settings/PrivacyPolicy';
 import TermConditions from './component/profile/Settings/TermsConditions';
 import DeleteAccount from './component/profile/Settings/DeleteAccount';
 import Activity from './(tabs)/Activity';
+import ProfileCompletion from './component/profile/ProfileCompletion';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +35,7 @@ export default function App() {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Profile">
+      <Stack.Navigator initialRouteName="Welcome">
          {/* Auth Screens */}
         <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
@@ -57,6 +58,7 @@ export default function App() {
         <Stack.Screen name='TermsConditions' component={TermConditions} />
         <Stack.Screen name='DeleteAccount' component={DeleteAccount} />
         <Stack.Screen name='Activity' component={Activity} />
+        <Stack.Screen name='ProfileCompletion' component={ProfileCompletion} />
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>

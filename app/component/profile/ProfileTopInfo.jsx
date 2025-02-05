@@ -1,59 +1,13 @@
 import { View, Text, StyleSheet, Image } from "react-native";
-import React, { useEffect, useState } from "react";
-import ProgressBar from "react-native-progress/Bar";
 import favicon from "@/assets/images/favicon.png";
-import { profileCompletePer } from "@/app/store/userSlice";
-import { useDispatch } from "react-redux";
+import ProgressBarbar from "./ProgressBar";
 
 const TOTAL_STEPS = 8; // Total steps for 100% profile completion
 
-const ProfileTopInfo = ({ loggedUser }) => {
-  const dispatch = useDispatch();
-  const progressPercentage = loggedUser.profileInfo.profileCompletePer / TOTAL_STEPS;
-  const isCompleted = progressPercentage === 1;
-
-  // Track which fields have already been counted
-  const [countedFields, setCountedFields] = useState({
-    age: loggedUser.profileInfo.age !== '',
-    location: loggedUser.profileInfo.location !== '',
-    gender: loggedUser.profileInfo.gender !== '',
-    profileImageUrl: loggedUser.profileInfo.profileImageUrl !== '',
-  });
-
-  useEffect(() => {
-    let updatedFields = { ...countedFields };
-    let countIncrement = 0;
-
-    // Check if each field is filled for the first time
-    if (!countedFields.age && loggedUser.profileInfo.age !== '') {
-      updatedFields.age = true;
-      countIncrement += 1;
-    }
-    if (!countedFields.location && loggedUser.profileInfo.location !== '') {
-      updatedFields.location = true;
-      countIncrement += 1;
-    }
-    if (!countedFields.gender && loggedUser.profileInfo.gender !== '') {
-      updatedFields.gender = true;
-      countIncrement += 1;
-    }
-    if (!countedFields.profileImageUrl && loggedUser.profileInfo.profileImageUrl !== '') {
-      updatedFields.profileImageUrl = true;
-      countIncrement += 1;
-    }
-
-    // Dispatch update only if there's an increment
-    if (countIncrement > 0) {
-      dispatch(profileCompletePer(loggedUser.profileInfo.profileCompletePer + countIncrement));
-      setCountedFields(updatedFields); // Update the local state to prevent re-counting
-    }
-  }, [
-    loggedUser.profileInfo.age,
-    loggedUser.profileInfo.location,
-    loggedUser.profileInfo.gender,
-    loggedUser.profileInfo.profileImageUrl
-  ]);
-
+const ProfileTopInfo = ({ loggedUser = {} }) => {
+  const profileInfo = loggedUser.profileInfo || {}; // Ensure profileInfo exists
+  const progressPercentage = (profileInfo.profileCompletePer || 0) / TOTAL_STEPS;
+  
   return (
     <View>
       {/* Profile Info Section */}
@@ -64,43 +18,40 @@ const ProfileTopInfo = ({ loggedUser }) => {
         />
         <View style={styles.profileDetails}>
           <Text style={styles.userName}>
-            {loggedUser.firstName} {loggedUser.lastName}
+            {loggedUser.firstName || "Unknown"} {loggedUser.lastName || "User"}
           </Text>
 
           <View style={styles.sportInfo}>
             <Text style={styles.sportLabel}>Favorite Sport:</Text>
-            <Text style={styles.sportText}>{loggedUser.profileInfo.sport}</Text>
+            <Text style={styles.sportText}>{profileInfo.sport || "N/A"}</Text>
           </View>
           <View style={styles.sportInfo}>
             <Text style={styles.sportLabel}>Level:</Text>
-            <Text style={styles.levelText}>{loggedUser.profileInfo.level}</Text>
+            <Text style={styles.levelText}>{profileInfo.level || "N/A"}</Text>
           </View>
         </View>
       </View>
-
-      {/* Profile Completion Card (Progress Bar) */}
       {!isCompleted && (
-        <View style={styles.progressCard}>
-          <View style={styles.progressHeader}>
-            <Text style={styles.progressTitle}>Complete Your Profile</Text>
-            <Text style={styles.progressPercentage}>
-              {Math.round(progressPercentage * 100)}%
-            </Text>
-          </View>
-
-          {/* Progress Bar */}
-          <ProgressBar
-            progress={progressPercentage}
-            width={null}
-            height={10}
-            borderRadius={5}
-            color="#fff"
-            unfilledColor="rgba(255, 255, 255, 0.3)"
-            borderWidth={0}
-            style={styles.progressBar}
-          />
-        </View>
-      )}
+                    <TouchableOpacity onPress={handleProgressBar}
+                    style={styles.progressCard}>
+                      <View style={styles.progressHeader}>
+                        <Text style={styles.progressTitle}>Complete Your Profile</Text>
+                        <Text style={styles.progressPercentage}>
+                          {Math.round(progressPercentage * 100)}%
+                        </Text>
+                      </View>
+                       <ProgressBar
+                                         progress={progressPercentage}
+                                         width={null}
+                                         height={10}
+                                         borderRadius={5}
+                                         color="#fff"
+                                         unfilledColor="rgba(255, 255, 255, 0.3)"
+                                         borderWidth={0}
+                                         style={styles.progressBar}
+                                       />
+                    </TouchableOpacity>
+                )};
     </View>
   );
 };
@@ -153,9 +104,8 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#777",
   },
-
-  /* Progress Card Styles */
-  progressCard: {
+   /* Progress Card Styles */
+   progressCard: {
     backgroundColor: "#00AEEF",
     borderRadius: 12,
     padding: 16,
