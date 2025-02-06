@@ -3,8 +3,8 @@ import favicon from "@/assets/images/favicon.png";
 import ProgressBarbar from "./ProgressBar";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons"; // Icon for closing the modal
-import friendsIcon from "../../../../assets/images/friends.png"
 import reviewStar from "../../../../assets/images/reviewStar.png"
+import FriendsList from "./FriendsList";
 
 const TOTAL_STEPS = 8; // Total steps for 100% profile completion
 
@@ -13,7 +13,7 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
   const profileInfo = loggedUser.profileInfo || {}; // Ensure profileInfo exists
   const progressPercentage = (profileInfo.profileCompletePer || 0) / TOTAL_STEPS;
   const isCompleted = progressPercentage === 1;
-
+  const [friendListModalVisible, setFriendListModalVisible] = useState(false);
   return (
     <View>
       {/* Profile Info Section */}
@@ -36,15 +36,15 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
             </View>
           </TouchableOpacity>
         </View>
-
+          {/* Profile First Name and Last name */}
         <View style={styles.profileDetails}>
           <Text style={styles.userName}>
             {loggedUser.firstName || "Unknown"} {loggedUser.lastName || "User"}
           </Text>
-
+          {/* Friends list icon and review icon with rating*/}
           <View style={{display:'flex', flexDirection:'row', gap:10}}>
             <View style={styles.sportInfo}>
-              <Text style={styles.sportLabel}><Image source={friendsIcon}/></Text>
+              <FriendsList loggedUser={loggedUser} setFriendListModalVisible={setFriendListModalVisible} friendListModalVisible={friendListModalVisible}/>
               <Text style={styles.sportText}>{profileInfo.friendsList.length == 0 ? '-' : profileInfo.friendsList.length}</Text>
             </View>
             <View style={styles.sportInfo}>
