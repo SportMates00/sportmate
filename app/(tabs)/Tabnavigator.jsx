@@ -1,6 +1,6 @@
 import PlayersScreen from './Players'; // Home tab
 import ActivityScreen from './Activity'; // Explore tab
-import GamesScreen from './Games'; // Games tab
+import GamesScreen from './Games/Games';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import InboxScreen from './Inbox';
 import ProfileIcon from '../component/profile/ProfileIcon';
