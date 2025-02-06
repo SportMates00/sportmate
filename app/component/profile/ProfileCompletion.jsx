@@ -1,35 +1,46 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
 
-const ProfileCompletion = ({ completionSteps = {} }) => {
+const ProfileCompletion = ({loggedUser,setModalVisible}) => {
   const navigation = useNavigation();
 
-  const steps = [
-    { key: 'photo', label: 'Add photo & name', screen: 'EditProfile' },
-    { key: 'ageGender', label: 'Add age & gender', screen: 'EditProfile' },
-    { key: 'location', label: 'Set your location', screen: 'EditProfile' },
-  ];
+  const completionSteps = [
+    {id:1,step:loggedUser.firstName, text:'Input your first name'},
+    {id:2,step:loggedUser.lastName, text:'Input your last name'},
+    {id:3,step:loggedUser.profileInfo.sport, text:'Choose your preferred sport'},
+    {id:4,step:loggedUser.profileInfo.availibility, text:'Fill your available time slot(s)'},
+    {id:5,step:loggedUser.profileInfo.age, text:'Choose your age'},
+    {id:6,step:loggedUser.profileInfo.location, text:'Set the location closest to you'},
+    {id:7,step:loggedUser.profileInfo.gender, text:'Choose your gender'},
+    {id:8,step:loggedUser.profileInfo.profileImageUrl, text:'Upload your profile picture'},
+  ] 
 
   return (
     <View style={styles.container}>
-      {steps.map((step) => (
-        <TouchableOpacity 
-          key={step.key} 
-          style={styles.stepRow} 
-          onPress={() => !completionSteps[step.key] && navigation.navigate(step.screen)}
-        >
-          <Ionicons
-            name={completionSteps[step.key] ? 'checkmark-circle' : 'ellipse-outline'}
-            size={24}
-            color={completionSteps[step.key] ? '#1E90FF' : '#999'}
-          />
-          <Text style={styles.stepText}>{step.label}</Text>
-          {!completionSteps[step.key] && (
-            <Ionicons name="chevron-forward" size={20} color="#999" />
-          )}
-        </TouchableOpacity>
-      ))}
+        {
+          completionSteps.map((val) => {
+            return (
+              <TouchableOpacity key={val.id} style={styles.stepRow} onPress={ () => {
+                if(val.step === ''){
+                  navigation.navigate('EditProfile')
+                  setModalVisible(false)
+                }
+              }
+              }>
+                <Ionicons name={val.step ? 'checkmark-circle' : 'ellipse-outline'}
+                  size={24}
+                  color={val.step ? '#1E90FF' : '#999'}
+                />
+                <Text style={styles.stepText}>{val.text}</Text>
+                {!val.step && (
+                  <Ionicons name="chevron-forward" size={20} color="#999" />
+                )}
+              </TouchableOpacity>
+            )
+          })
+        }
     </View>
   );
 };

@@ -1,112 +1,124 @@
-import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { 
+  View, Text, TouchableOpacity, StyleSheet, Modal 
+} from 'react-native';
 import ProgressBar from "react-native-progress/Bar";
-import { profileCompletePer } from "@/app/store/userSlice";
 import { useDispatch } from "react-redux";
-import  { useEffect, useState } from "react";
-import { useNavigation } from '@react-navigation/native';
+import { profileCompletePer } from "@/app/store/userSlice";
 import ProfileCompletion from './ProfileCompletion';
-import { Ionicons } from '@expo/vector-icons';  // For Expo
+import { Ionicons } from '@expo/vector-icons';
 
-
-
-const ProgressBarbar = ({loggedUser, progressPercentage}) => {
-      const dispatch = useDispatch();
-      const navigation = useNavigation();
-      const [modalVisible, setModalVisible] = useState(false);
-      // Track which fields have already been counted
-      const [countedFields, setCountedFields] = useState({
-        age: loggedUser.profileInfo.age !== '',
-        location: loggedUser.profileInfo.location !== '',
-        gender: loggedUser.profileInfo.gender !== '',
-        profileImageUrl: loggedUser.profileInfo.profileImageUrl !== '',
-      });
-    console.log('outside effect', loggedUser)
-      useEffect(() => {
-        let updatedFields = { ...countedFields };
-        let countIncrement = 0;
-    
-        // Check if each field is filled for the first time
-        if (!countedFields.age && loggedUser.profileInfo.age !== '') {
-          updatedFields.age = true;
-          countIncrement += 1;
-        }
-        if (!countedFields.location && loggedUser.profileInfo.location !== '') {
-          updatedFields.location = true;
-          countIncrement += 1;
-        }
-        if (!countedFields.gender && loggedUser.profileInfo.gender !== '') {
-          updatedFields.gender = true;
-          countIncrement += 1;
-        }
-        if (!countedFields.profileImageUrl && loggedUser.profileInfo.profileImageUrl !== '') {
-          updatedFields.profileImageUrl = true;
-          countIncrement += 1;
-        }
-    
-        // Dispatch update only if there's an increment
-        if (countIncrement > 0) {
-          dispatch(profileCompletePer(loggedUser.profileInfo.profileCompletePer + countIncrement));
-          setCountedFields(updatedFields); // Update the local state to prevent re-counting
-        }
-        console.log('inside effect', loggedUser)
-      }, [
-        loggedUser.profileInfo.age,
-        loggedUser.profileInfo.location,
-        loggedUser.profileInfo.gender,
-        loggedUser.profileInfo.profileImageUrl
-      ]);
+const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
+  const dispatch = useDispatch();
+  const [modalVisible, setModalVisible] = useState(false);
   
+  // Track which fields have already been counted
+  const [countedFields, setCountedFields] = useState({
+    age: loggedUser.profileInfo.age !== '',
+    location: loggedUser.profileInfo.location !== '',
+    gender: loggedUser.profileInfo.gender !== '',
+    profileImageUrl: loggedUser.profileInfo.profileImageUrl !== '',
+  });
+
+  useEffect(() => {
+    let updatedFields = { ...countedFields };
+    let countIncrement = 0;
+
+    // Check if each field is filled for the first time
+    if (!countedFields.age && loggedUser.profileInfo.age !== '') {
+      updatedFields.age = true;
+      countIncrement += 1;
+    }
+    if (!countedFields.location && loggedUser.profileInfo.location !== '') {
+      updatedFields.location = true;
+      countIncrement += 1;
+    }
+    if (!countedFields.gender && loggedUser.profileInfo.gender !== '') {
+      updatedFields.gender = true;
+      countIncrement += 1;
+    }
+    if (!countedFields.profileImageUrl && loggedUser.profileInfo.profileImageUrl !== '') {
+      updatedFields.profileImageUrl = true;
+      countIncrement += 1;
+    }
+
+    // Dispatch update only if there's an increment
+    if (countIncrement > 0) {
+      dispatch(profileCompletePer(loggedUser.profileInfo.profileCompletePer + countIncrement));
+      setCountedFields(updatedFields);
+    }
+  }, [
+    loggedUser.profileInfo.age,
+    loggedUser.profileInfo.location,
+    loggedUser.profileInfo.gender,
+    loggedUser.profileInfo.profileImageUrl
+  ]);
+
   return (
     <View>
-     
-     <TouchableOpacity onPress={() => setModalVisible(true)}
-                    style={styles.progressCard}>
-                      <View style={styles.progressHeader}>
-                        <Text style={styles.progressTitle}>Complete Your Profile</Text>
-                        <Text style={styles.progressPercentage}>
-                          {Math.round(progressPercentage * 100)}%
-                        </Text>
-                      </View>
-                       <ProgressBar
-                                         progress={progressPercentage}
-                                         width={null}
-                                         height={10}
-                                         borderRadius={5}
-                                         color="#fff"
-                                         unfilledColor="rgba(255, 255, 255, 0.3)"
-                                         borderWidth={0}
-                                         style={styles.progressBar}
-                                       />
-                    </TouchableOpacity>
-                
-                    <Modal
-  visible={modalVisible}
-  transparent={true}
-  animationType="slide"
-  onRequestClose={() => setModalVisible(false)}
->
-  <View style={styles.modalOverlay}>
-    <View style={styles.modalContainer}>
-      {/* Close Button */}
-      <TouchableOpacity
-        onPress={() => setModalVisible(false)}
-        style={styles.closeButton}
-      >
-        <Ionicons name="close" size={24} color="#333" />
+      {/* Progress Bar Card */}
+      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.progressCard}>
+        <View style={styles.progressHeader}>
+          <Text style={styles.progressTitle}>Complete Your Profile</Text>
+          <Text style={styles.progressPercentage}>{Math.round(progressPercentage * 100)}%</Text>
+        </View>
+        <ProgressBar
+          progress={progressPercentage}
+          width={null}
+          height={10}
+          borderRadius={5}
+          color="#fff"
+          unfilledColor="rgba(255, 255, 255, 0.3)"
+          borderWidth={0}
+          style={styles.progressBar}
+        />
       </TouchableOpacity>
 
-      <ProfileCompletion />
+      {/* Modal for Profile Completion */}
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalContainer}>
+          <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+              <Ionicons name="close" size={24} color="#333" />
+            </TouchableOpacity>
+          <Text style={{color:'black', fontSize:22, paddingInline:20}}>Profile Completion</Text>
+          <Text style={{paddingInline:20, marginBottom:20, marginTop:10}}>Complete your profile to be able to join and create events</Text>
+            {/* Close Button */}
+          
+            
+            {/* Progress Bar Inside Modal */}
+            <TouchableOpacity style={styles.progressCard}>
+              <View style={styles.progressHeader}>
+                <Text style={styles.progressTitle}>Complete Your Profile</Text>
+                <Text style={styles.progressPercentage}>{Math.round(progressPercentage * 100)}%</Text>
+              </View>
+              <ProgressBar
+                progress={progressPercentage}
+                width={null}
+                height={10}
+                borderRadius={5}
+                color="#fff"
+                unfilledColor="rgba(255, 255, 255, 0.3)"
+                borderWidth={0}
+                style={styles.progressBar}
+              />
+            </TouchableOpacity>
+            
+            <ProfileCompletion loggedUser={loggedUser} setModalVisible={setModalVisible} />
+          </View>
+        </View>
+      </Modal>
     </View>
-  </View>
-</Modal>
-    </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-     /* Progress Card Styles */
-   progressCard: {
+  progressCard: {
     backgroundColor: "#00AEEF",
     borderRadius: 12,
     padding: 16,
@@ -134,15 +146,15 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.4)", // Dark overlay for better visibility
+    backgroundColor: "rgba(0, 0, 0, 0.4)",
     justifyContent: "flex-end",
   },
   modalContainer: {
     height: "100%",
     backgroundColor: "#fff",
     padding: 20,
-    elevation: 10, // Shadow for Android
-    shadowColor: "#000", // Shadow for iOS
+    elevation: 10,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: -3 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
@@ -152,4 +164,5 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 });
+
 export default ProgressBarbar;

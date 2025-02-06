@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
@@ -8,7 +8,6 @@ const MenuTab = () => {
 const navigation = useNavigation();
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
-
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -29,20 +28,29 @@ const navigation = useNavigation();
         <View style={styles.modalContent}>
             <TouchableOpacity 
               style={styles.modalButton} 
-              onPress={() => navigation.navigate('EditProfile')} >
+              onPress={() => { 
+              closeModal();
+              navigation.navigate('EditProfile')}
+               } >
               <Text style={styles.modalButtonText}>Edit Profile</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
               style={styles.modalButton} 
-              onPress={() => navigation.navigate('Settings')} // Replace 'Page2' with your actual route name
+              onPress={() => { 
+                closeModal();
+                navigation.navigate('Settings')}
+                 } // Replace 'Page2' with your actual route name
             >
               <Text style={styles.modalButtonText}>Settings</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
-              style={styles.modalButton} 
-              onPress={() => navigation.navigate('ProfileViewers')} // Replace 'Page3' with your actual route name
+              style={styles.modalButton}
+              onPress={() => { 
+                closeModal();
+                navigation.navigate('ProfileViewers')}
+                 } 
             >
               <Text style={styles.modalButtonText}>Profile Viewers</Text>
             </TouchableOpacity>

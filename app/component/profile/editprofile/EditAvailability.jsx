@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const times = ["Morning", "Afternoon", "Evening"];
+const times = ["Mor", "Aft", "Eve"];
 
 const EditAvailabilityTable = ({ editUser, setEditUser }) => {
   // Handle toggling of availability

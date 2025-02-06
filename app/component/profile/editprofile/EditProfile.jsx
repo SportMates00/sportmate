@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import LocationSelector from './LocationSelector';
 import AgeGenderSelector from './AgeGenderSelector';
 import { useNavigation } from '@react-navigation/native';
@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { editUserInfo } from '@/app/store/userSlice';
 import AboutMeInput from './AboutMeInput';
 import EditAvailabilityTable from './EditAvailability';
+import * as ImagePicker from 'expo-image-picker';
+
+
 import _ from 'lodash';  // Import lodash
 
 const EditProfile = () => {
@@ -14,23 +17,81 @@ const EditProfile = () => {
   const dispatch = useDispatch();
   const loggedUser = useSelector((state) => state.user);
   const [editUser, setEditUser] = useState(loggedUser);
+  const [firstNameError, setFirstNameError] = useState('');
+  const [lastNameError, setLastNameError] = useState('');
+  const [availabilityError, setAvailabilityError] = useState('');
 
   // Check if there are any changes to enable/disable the save button
   const hasChanges = !_.isEqual(loggedUser, editUser);
 
+  // Function to check if at least one time slot is selected
+  const isAvailabilityValid = (availability) => {
+    return Object.values(availability).some((day) =>
+      Object.values(day).some((time) => time === true)
+    );
+  };
+
   // Save user information
-  function saveUserInfo() {
-    if (hasChanges) {
-      console.time('S')
-      dispatch(editUserInfo(editUser));
-      navigation.navigate('Profile');
-      console.timeEnd('S')
+  const scrollViewRef = useRef(null);
+  const pickImage = async () => {
+  
+    // Launch image picker
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes:['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      // Check file type
+      const uri = result.assets[0].uri;
+      if (uri.endsWith('.png') || uri.endsWith('.jpeg') || uri.endsWith('.jpg')) {
+        setEditUser({ ...editUser, profileInfo: { ...editUser.profileInfo, profileImageUrl: uri } });
+        console.log(loggedUser)
+      } else {
+        alert('Please select a PNG or JPEG image.');
+      }
     }
+  };
+  
+function saveUserInfo() {
+  let isValid = true;
+
+  // Validate first name
+  if (editUser.firstName.trim() === '') {
+    setFirstNameError('First name cannot be empty');
+    isValid = false;
+  } else {
+    setFirstNameError('');
   }
 
+  // Validate last name
+  if (editUser.lastName.trim() === '') {
+    setLastNameError('Last name cannot be empty');
+    isValid = false;
+  } else {
+    setLastNameError('');
+  }
 
+  // Validate availability
+  if (!isAvailabilityValid(editUser.profileInfo.availibility)) {
+    setAvailabilityError('At least one time slot must be selected');
+    isValid = false;
+    
+    // Scroll to the availability section
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  } else {
+    setAvailabilityError('');
+  }
+
+  // Save if all validations pass and there are changes
+  if (isValid && hasChanges) {
+    dispatch(editUserInfo(editUser));
+    navigation.navigate('Profile');
+  }
+}
   return (
-    <ScrollView style={{ padding: 20, marginTop: 24, backgroundColor: 'white', flex: 1 }}>
+    <ScrollView ref={scrollViewRef} style={{ padding: 20, marginTop: 24, backgroundColor: 'white', flex: 1 }}>
       {/* Header */}
       <View style={styles.headerContainer}>
         <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
@@ -45,22 +106,41 @@ const EditProfile = () => {
       {/* Profile Picture */}
       <View style={styles.profilePictureContainer}>
         <View style={styles.profilePictureWrapper}>
-          <Image source={{ uri: 'https://via.placeholder.com/150' }} style={styles.profilePicture} />
-          <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit Profile Picture')}>
+        {editUser.profileInfo.profileImageUrl === '' ? (
+        <View style={styles.profilePlaceholder}>
+          <Text style={styles.profileInitial}>
+            {editUser.firstName !== '' ? editUser.firstName.charAt(0).toUpperCase() : '?'}
+          </Text>
+        </View>
+      ) : (
+        <Image source={{ uri: editUser.profileInfo.profileImageUrl }} style={styles.profilePicture} />
+      )}
+          <TouchableOpacity style={styles.editButton} onPress={(pickImage)}>
             <Text style={styles.editButtonText}>✎</Text>
           </TouchableOpacity>
         </View>
       </View>
 
+
       {/* Personal Info LOCATION */}
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionHeading}>PERSONAL INFO</Text>
         <Text style={styles.label}>First Name</Text>
-        <TextInput style={styles.input} placeholder='Write your name...' value={editUser.firstName}
-        onChangeText={(value) => setEditUser({ ...editUser, firstName: value })} />
+        <TextInput 
+          style={styles.input} 
+          placeholder='Write your name...' 
+          value={editUser.firstName}
+          onChangeText={(value) => setEditUser({ ...editUser, firstName: value })} 
+        />
+        {firstNameError ? <Text style={styles.errorText}>{firstNameError}</Text> : null}
         <Text style={styles.label}>Last Name</Text>
-        <TextInput style={styles.input} placeholder='Write your last name...' value={editUser.lastName}
-        onChangeText={(value) => setEditUser({ ...editUser, lastName: value })} />
+        <TextInput 
+          style={styles.input} 
+          placeholder='Write your last name...' 
+          value={editUser.lastName}
+          onChangeText={(value) => setEditUser({ ...editUser, lastName: value })} 
+        />
+        {lastNameError ? <Text style={styles.errorText}>{lastNameError}</Text> : null}
         <Text style={styles.label}>Location</Text>
         <LocationSelector setEditUser={setEditUser} editUser={editUser} />
       </View>
@@ -96,6 +176,7 @@ const EditProfile = () => {
       <View style={{ paddingBottom: 100, width: '100%' }}>
         <Text style={styles.sectionHeading}>AVAILABILITY</Text>
         <EditAvailabilityTable editUser={editUser} setEditUser={setEditUser} />
+        {availabilityError ? <Text style={styles.errorText}>{availabilityError}</Text> : null}
       </View>
     </ScrollView>
   );
@@ -109,6 +190,11 @@ const styles = StyleSheet.create({
     position: 'sticky', // Sticky behavior
     top: 0,
     zIndex: 1000,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 5,
   },
   buttonText: {
     fontSize: 16,
@@ -200,6 +286,19 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     textAlign: 'center',
+  },
+  profilePlaceholder: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#666', // Darker background for better visibility
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  profileInitial: {
+    fontSize: 40,
+    color: 'white',
+    fontWeight: 'bold',
   },
 });
 
