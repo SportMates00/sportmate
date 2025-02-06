@@ -62,7 +62,9 @@ const Sports = ({ onClose, onSelectSport = () => {} }) => {
     <View style={styles.container}>
       {/* Header with Clear Button */}
       <View style={styles.headerContainer}>
-        <Text style={styles.header}>Select Your Favorite Sports</Text>
+        <Text style={styles.header}>Filter Your Sports
+            
+        </Text>
         <TouchableOpacity onPress={() => setSelectedSports([])}>
           <Text style={styles.clearText}>Clear</Text>
         </TouchableOpacity>

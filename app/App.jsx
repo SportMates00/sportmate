@@ -25,6 +25,7 @@ import TermConditions from './component/profile/Settings/TermsConditions';
 import DeleteAccount from './component/profile/Settings/DeleteAccount';
 import Activity from './(tabs)/Activity';
 import ProfileCompletion from './component/profile/ProfileCompletion';
+import EventDetails from './component/profile/profileTabs/EventDetails';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +60,16 @@ export default function App() {
         <Stack.Screen name='DeleteAccount' component={DeleteAccount} />
         <Stack.Screen name='Activity' component={Activity} />
         <Stack.Screen name='ProfileCompletion' component={ProfileCompletion} />
+        <Stack.Screen name="EventDetails">
+  {props => (
+    <EventDetails
+      {...props}
+      event={completedEvents}  // your event data here
+      onBack={() => props.navigation.goBack()}
+    />
+  )}
+</Stack.Screen>
+        
       </Stack.Navigator>
     </NavigationContainer>
     </Provider>
