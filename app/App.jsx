@@ -11,19 +11,19 @@ import Profile from './component/profile/Profile';
 import { Provider } from 'react-redux';
 import Players from './(tabs)/Players';
 import ShareProfile from './component/profile/ShareProfile';
-import Settings from './component/profile/Settings/Settings';
 import Reviews from './component/profile/profileTabs/Reviews';
 import ProfileViewers from './component/profile/menutab/ProfileViewers';
 import LangChanger from './component/LangChanger';
-import VerifyAccount from './component/profile/Settings/VerifyAccount';
-import ChangePassword from './component/profile/Settings/ChangePassword';
 import {store} from './store/store';
-import ContactUs from './component/profile/Settings/ContactUs';
-import PrivacyPolicy from './component/profile/Settings/PrivacyPolicy';
-import TermConditions from './component/profile/Settings/TermsConditions';
-import DeleteAccount from './component/profile/Settings/DeleteAccount';
 import Activity from './(tabs)/Activity';
 import EditProfile from './component/profile/menutab/editprofile/EditProfile';
+import Settings from './component/profile/menutab/Settings/Settings';
+import VerifyAccount from './component/profile/menutab/Settings/VerifyAccount';
+import ChangePassword from './component/profile/menutab/Settings/ChangePassword';
+import ContactUs from './component/profile/menutab/Settings/ContactUs';
+import PrivacyPolicy from './component/profile/menutab/Settings/PrivacyPolicy';
+import TermConditions from './component/profile/menutab/Settings/TermsConditions';
+import DeleteAccount from './component/profile/menutab/Settings/DeleteAccount';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
@@ -34,7 +34,7 @@ export default function App() {
   return (
     <Provider store={store}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Welcome">
+      <Stack.Navigator initialRouteName="Profile">
          {/* Auth Screens */}
         <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />

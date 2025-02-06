@@ -36,7 +36,11 @@ const Activity = ({ completedEvents }) => {
         { name: "Michael", profilePhoto: favicon },
         { name: "Sara", profilePhoto: favicon },
         { name: "Luke", profilePhoto: favicon }
-      ]
+      ],
+      level: 'intermediate',
+      time: '8pm',
+      backgroundImage: '',      
+
     }
   ];
 

@@ -5,7 +5,7 @@ import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-import LangChanger from '../../LangChanger';
+import LangChanger from '@/app/component/LangChanger';
 
 const Settings = ({ navigation }) => {
 
