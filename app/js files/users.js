@@ -8,7 +8,7 @@ const users = [
       aboutMe:'Hello my name is Mher, I am you',
       sportsList:[{sport:'Football',level:'Intermediate'},{sport:'Basketball',level:'Beginner'},{sport:'Tennis',level:'Professional'}],
       reviews:'',
-      activity:'',
+      activity:[{}],
       profileImageUrl:'',
       profileCompletePer:4,
       friendsList:[],

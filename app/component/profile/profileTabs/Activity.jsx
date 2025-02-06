@@ -1,12 +1,11 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { View, Text, FlatList, StyleSheet, Image } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import favicon from "@/assets/images/profilepicture.png";
-import { useNavigation } from '@react-navigation/native';
 import EventDetails from "./EventDetails";
 
 const Activity = ({ completedEvents }) => {
-  const navigation = useNavigation();
+
   completedEvents = [
     {
       sport: "Football",
@@ -88,9 +87,7 @@ const Activity = ({ completedEvents }) => {
                 <Text style={styles.location}>📍 {item.location}</Text>
                 <Text style={styles.cityRegion}> {item.city} {item.region}</Text>
               </View>
-              <TouchableOpacity onPress={() => navigation.navigate('EventDetails', { event: completedEvents })} style={styles.button}>
-                <Text style={styles.buttonText}>View Details</Text>
-              </TouchableOpacity>
+              <EventDetails event={item}/>
             </View>
           )}
         />

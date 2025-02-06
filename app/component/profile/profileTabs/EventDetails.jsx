@@ -1,59 +1,65 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-const EventDetails = ({ event, onBack }) => {
+const EventDetails = ({ event }) => {
+    const [modalVisible, setModalVisible] = useState(false);
   // If event data isn't available, display an error message.
-  if (!event) {
-    return (
-      <View style={styles.centeredView}>
-        <Text style={styles.errorText}>No event details available</Text>
-      </View>
-    );
-  }
-
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={onBack}>
-        <Ionicons name="arrow-back" size={24} color="#fff" />
-      </TouchableOpacity>
 
-      <Text style={styles.header}>Event Details</Text>
+    <View>
 
-      <View style={styles.detailRow}>
-        <Ionicons name="football-outline" size={20} color="#00AEEF" />
-        <Text style={styles.detailText}>{event.sport}</Text>
-      </View>
+    <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.button}>
+                <Text style={styles.buttonText}>View Details</Text>
+              </TouchableOpacity>
+    <Modal
+    visible={modalVisible}
+    transparent={true}
+    animationType="fade"
+    onRequestClose={() => setModalVisible(false)}>
+      <ScrollView contentContainerStyle={styles.container}>
+        {/* Back Button */}
+        <TouchableOpacity style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color="#fff" />
+        </TouchableOpacity>
 
-      <View style={styles.detailRow}>
-        <Ionicons name="barbell-outline" size={20} color="#00AEEF" />
-        <Text style={styles.detailText}>Level: {event.level}</Text>
-      </View>
+        <Text style={styles.header}>Event Details</Text>
 
-      <View style={styles.detailRow}>
-        <Ionicons name="calendar-outline" size={20} color="#00AEEF" />
-        <Text style={styles.detailText}>{event.dateTime}</Text>
-      </View>
+        <View style={styles.detailRow}>
+          <Ionicons name="football-outline" size={20} color="#00AEEF" />
+          <Text style={styles.detailText}>{event.sport}</Text>
+        </View>
 
-      <View style={styles.detailRow}>
-        <Ionicons name="location-outline" size={20} color="#00AEEF" />
-        <Text style={styles.detailText}>
-          {event.location.city}, {event.location.stadium}
-        </Text>
-      </View>
+        <View style={styles.detailRow}>
+          <Ionicons name="barbell-outline" size={20} color="#00AEEF" />
+          <Text style={styles.detailText}>Level:</Text>
+        </View>
 
-      <Text style={styles.participantsHeader}>Participants</Text>
-      {event.participants && event.participants.length > 0 ? (
-        event.participants.map((player, index) => (
-          <Text key={index} style={styles.participant}>
-            {player}
+        <View style={styles.detailRow}>
+          <Ionicons name="calendar-outline" size={20} color="#00AEEF" />
+          <Text style={styles.detailText}>{event.date}</Text>
+        </View>
+
+        <View style={styles.detailRow}>
+          <Ionicons name="location-outline" size={20} color="#00AEEF" />
+          <Text style={styles.detailText}>
+            {event.city}, {event.location}
           </Text>
-        ))
-      ) : (
-        <Text style={styles.noParticipants}>No participants available</Text>
-      )}
-    </ScrollView>
+        </View>
+
+        <Text style={styles.participantsHeader}>Participants</Text>
+        {event.participants && event.participants.length > 0 ? (
+          event.participants.map((player, index) => (
+            <Text key={index} style={styles.participant}>
+              {player}
+            </Text>
+          ))
+        ) : (
+          <Text style={styles.noParticipants}>No participants available</Text>
+        )}
+      </ScrollView>
+    </Modal>
+    </View>
   );
 };
 
@@ -121,6 +127,18 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 50,
     zIndex: 10,
+  },
+  button: {
+    backgroundColor: "#FF6F61",
+    paddingVertical: 12,
+    borderRadius: 8,
+    marginTop: 12,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
   },
 });
 
