@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const FriendsList = ({setFriendListModalVisible,friendListModalVisible,loggedUser}) => {
   let length = loggedUser.profileInfo.friendsList.length;
+  let friendsList = loggedUser.profileInfo.friendsList;
   return (
     <View>
       <TouchableOpacity onPress={() => setFriendListModalVisible(true)} style={styles.sportLabel}><Image source={friendsIcon}/></TouchableOpacity>
@@ -29,7 +30,21 @@ const FriendsList = ({setFriendListModalVisible,friendListModalVisible,loggedUse
                 placeholderTextColor="#888"
               />
             </View>
+            <View>
+              {friendsList.map(friends => {
+                return (
+                  <View style={{flexDirection:'row', justifyContent:'space-evenly',marginTop:50}} key={friends.name}>
+                      <Image style={{width:24,height:24}} source={friends.profilePicture}/>
+                      <Text>{friends.firstName + ' ' + friends.lastName}</Text>
+                      <TouchableOpacity>
+                        <Text>Remove friend</Text>
+                      </TouchableOpacity>
+                  </View>
+                )
+              })}
           </View>
+          </View>
+          
         </View>
       </Modal>
     </View>

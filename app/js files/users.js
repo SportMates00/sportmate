@@ -52,7 +52,7 @@ const users = [
       activity:[{}],
       profileImageUrl:'',
       profileCompletePer:4,
-      friendsList:[],
+      friendsList:[{firstName:'Mher', lastName:'Kevorkian',profilePicture:favicon},{firstName:'Njteh', lastName:'Melkonian',profilePicture:favicon}],
       completedEvents:completedEvents,
       availibility: {
           Mon: { Mor: false, Aft: true, Eve: false },
