@@ -30,6 +30,17 @@ const userSlice = createSlice({
         },
       };
     },
+    deleteSport: (state, action) => {
+      return {
+        ...state,
+        profileInfo: {
+          ...state.profileInfo,
+          sportsList: state.profileInfo.sportsList.filter(
+            sport => sport.sport !== action.payload
+          ),
+        },
+      };
+    },
     profileCompletePer: (state,action) => {
       return {
         ...state,
@@ -42,6 +53,6 @@ const userSlice = createSlice({
     resetUserInfo: () => initialState,
 }});
 
-export const { setUserInfo,resetUserInfo, editUserInfo, profileCompletePer } = userSlice.actions;
+export const { setUserInfo,resetUserInfo, editUserInfo, profileCompletePer, deleteSport } = userSlice.actions;
 
 export default userSlice.reducer;

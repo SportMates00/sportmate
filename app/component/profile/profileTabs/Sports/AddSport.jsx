@@ -2,22 +2,49 @@
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import React, { useState } from 'react';
+import { editUserInfo} from '@/app/store/userSlice';
+import { useDispatch } from 'react-redux';
 
-const AddSport = ({ sports, setSports }) => {
+const AddSport = ({ setUserInfo, userInfo }) => {
   const availableSports = ['Football', 'Basketball', 'Tennis', 'Bowling', 'Table Tennis'];
   const levels = ['Beginner', 'Intermediate', 'Advanced'];
   const [modalVisible, setModalVisible] = useState(false);
-  const [selectedSport, setSelectedSport] = useState('');
-  const [selectedLevel, setSelectedLevel] = useState('');
-
+  const [newSport, setNewSport] = useState({sport:'',level:''})
+  const [error,setError] = useState(false);
+  const [sportExists,setSportExists] = useState(false);
+  const dispatch = useDispatch();
   const addSport = () => {
-    if (selectedSport && selectedLevel) {
-      setSports([...sports, { id: Date.now(), name: selectedSport, level: selectedLevel }]);
-      setSelectedSport('');
-      setSelectedLevel('');
-      setModalVisible(false);
+    if (!newSport.sport || !newSport.level) { 
+      setError(true); // Show error if fields are empty
+      return;
     }
+  
+    // Check if sport already exists
+    const sportExists = userInfo.profileInfo.sportsList.some(
+      sport => sport.sport.toLowerCase() === newSport.sport.toLowerCase()
+    );
+  
+    if (sportExists || newSport.sport == userInfo.profileInfo.sport) {
+      setSportExists(true); // Show error that sport already exists
+      return;
+    }
+  
+    // Proceed with adding the new sport
+    const updatedProfile = {
+      ...userInfo.profileInfo,
+      sportsList: [...userInfo.profileInfo.sportsList, newSport],
+    };
+  
+    dispatch(editUserInfo({ ...userInfo, profileInfo: updatedProfile })); 
+    setUserInfo(prev => ({ ...prev, profileInfo: updatedProfile })); 
+  
+    // Reset state
+    setError(false);
+    setSportExists(false);
+    setNewSport({ sport: '', level: '' });
+    setModalVisible(false);
   };
+  
 
   return (
     <View style={styles.addSportContainer}>
@@ -36,7 +63,7 @@ const AddSport = ({ sports, setSports }) => {
               {/* Sport Selector */}
               <Text style={styles.label}>Select a Sport:</Text>
               <RNPickerSelect
-                onValueChange={(value) => setSelectedSport(value)}
+                onValueChange={(value) => setNewSport({...newSport,sport:value})}
                 items={availableSports.map((sport) => ({
                   label: sport,
                   value: sport,
@@ -48,7 +75,7 @@ const AddSport = ({ sports, setSports }) => {
               {/* Level Selector */}
               <Text style={styles.label}>Select Your Level:</Text>
               <RNPickerSelect
-                onValueChange={(value) => setSelectedLevel(value)}
+                onValueChange={(value) => setNewSport({...newSport,level:value})}
                 items={levels.map((level) => ({
                   label: level,
                   value: level,
@@ -58,10 +85,16 @@ const AddSport = ({ sports, setSports }) => {
               />
 
               {/* Modal Buttons */}
-              <TouchableOpacity onPress={addSport} style={styles.modalButton}>
+              {sportExists === true && <Text style={{color:'red'}}>Sport already exists</Text>}
+              {error === true && <Text style={{color:'red'}}>Please select all fields</Text>}
+              <TouchableOpacity onPress={() => addSport()} style={styles.modalButton}>
                 <Text style={styles.modalButtonText}>Add Sport</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={() => setModalVisible(false)} style={[styles.modalButton, styles.cancelButton]}>
+              <TouchableOpacity onPress={() => {
+                setModalVisible(false); 
+                setError(false);
+                setSportExists(false);
+              }} style={[styles.modalButton, styles.cancelButton]}>
                 <Text style={styles.modalButtonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
@@ -77,7 +110,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#007bff',
     borderRadius: 8,
     alignItems: 'center',
-    padding: 15, // Adding padding to ensure the button is touchable
+    width:200,
+    height:40,
+    justifyContent:'center'
   },
   addButtonText: {
     color: '#fff',

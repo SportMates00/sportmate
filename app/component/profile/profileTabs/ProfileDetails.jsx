@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import About from './About';
-import Sports from './Sports';
+import Sports from './Sports/Sports';
 import Activity from './Activity';
 import Reviews from './Reviews';
 

@@ -1,4 +1,7 @@
 import favicon from "../../assets/images/favicon.png"
+import mher from "../../assets/images/mher.jpg"
+import njteh from "../../assets/images/njteh.jpg"
+
 let completedEvents = [
   {
     sport: "Football",
@@ -36,7 +39,11 @@ let completedEvents = [
 
   }
 ]
-
+let reviews = [
+  { id: '1', stars: 5, text: 'Great player! Really enjoyed the game.' },
+  { id: '2', stars: 4, text: 'Good teammate but needs to improve punctuality.' },
+  { id: '3', stars: 5, text: 'Good game, much respect to him!' },
+]
 
 
 const users = [
@@ -47,12 +54,12 @@ const users = [
       age:'',
       gender:'',
       aboutMe:'Hello my name is Mher, I am you',
-      sportsList:[{sport:'Football',level:'Intermediate'},{sport:'Basketball',level:'Beginner'},{sport:'Tennis',level:'Professional'}],
-      reviews:'',
+      sportsList:[{sport:'Basketball',level:'Beginner'},{sport:'Tennis',level:'Professional'}],
+      reviews:reviews,
       activity:[{}],
       profileImageUrl:'',
       profileCompletePer:4,
-      friendsList:[{firstName:'Mher', lastName:'Kevorkian',profilePicture:favicon},{firstName:'Njteh', lastName:'Melkonian',profilePicture:favicon}],
+      friendsList:[{firstName:'Mher', lastName:'Kevorkian',profilePicture:mher},{firstName:'Njteh', lastName:'Melkonian',profilePicture:njteh}],
       completedEvents:completedEvents,
       availibility: {
           Mon: { Mor: false, Aft: true, Eve: false },
@@ -65,7 +72,6 @@ const users = [
       },
     },}
 ]
-
 
 
 export let users_list =  users

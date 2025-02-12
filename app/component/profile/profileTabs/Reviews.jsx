@@ -2,13 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
-const ReviewsTab = () => {
+const ReviewsTab = ({loggedUser}) => {
   // Dummy data for reviews
-  const reviews = [
-    { id: '1', stars: 5, text: 'Great player! Really enjoyed the game.' },
-    { id: '2', stars: 4, text: 'Good teammate but needs to improve punctuality.' },
-    { id: '3', stars: 5, text: 'Good game, much respect to him!' },
-  ];
+  const reviews = loggedUser.profileInfo.reviews;
 
   const averageRating = reviews.length
     ? (reviews.reduce((total, review) => total + review.stars, 0) / reviews.length).toFixed(2)
