@@ -3,15 +3,12 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
   TouchableOpacity,
   Modal,
   Image,
-  FlatList
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import FbBg from "../../../../assets/images/football-bg.png";
+import FbBg from "../../../../assets/images/favicon.png";
 
 const EventDetails = ({ event, onBack }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -36,15 +33,16 @@ const EventDetails = ({ event, onBack }) => {
           <View style={styles.modalContainer}>
             {/* Header Section with a Regular Image */}
             <View style={styles.headerContainer}>
-            <ImageBackground source={require("../../../../assets/images/football-bg.png")} style={styles.headerBackground} resizeMode="cover">
-      <View style={styles.statusBadge}>
-        <Text style={styles.statusText}>Played</Text>
-      </View>
-      <Text style={styles.eventTitle}>Natalie's squash match</Text>
-      <Text style={styles.eventDate}>{event.date}</Text>
-    </ImageBackground>
-   
-          </View>
+              <TouchableOpacity style={{zIndex:20,padding:20}} onPress={() => setModalVisible(false)}>
+                <Ionicons name="arrow-back" size={26} color={'white'}/>
+              </TouchableOpacity>
+              <Image source={FbBg} style={styles.headerBackground}/>
+              <View style={styles.statusBadge}>
+                <Text style={styles.statusText}>Played</Text>
+                <Text style={styles.eventTitle}>Natalie's squash match</Text>
+                <Text style={styles.eventDate}>{event.date}</Text>
+              </View>
+            </View>
           </View>
         </View>
       </Modal>
@@ -68,13 +66,12 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.8)",
   },
   modalContainer: {
     flex: 1,
     backgroundColor: "#fff",
     overflow: "hidden",
-    borderRadius: 20,
+    borderRadius: 0,
   },
   headerContainer: {
     width: "100%",
@@ -83,31 +80,32 @@ const styles = StyleSheet.create({
     position: "relative",
   },
   headerBackground: {
+    position:'absolute',
     width: "100%",
-    height: 200,
-    justifyContent: "flex-end",
-    padding: 16,
+    height: 250,
   },
-  statusBadge: {
-    backgroundColor: "green",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 6,
-    alignSelf: "flex-start",
+  statusBadge:{
+    position:'absolute',
+    bottom:20,
+    left:20
   },
   statusText: {
     color: "white",
     fontWeight: "bold",
+    backgroundColor:'green',
+    width:80,
+    textAlign:'center',
+    padding:5,
     fontSize: 14,
   },
   eventTitle: {
-    color: "white",
+    color: "red",
     fontSize: 22,
     fontWeight: "bold",
     marginTop: 8,
   },
   eventDate: {
-    color: "white",
+    color: "red",
     fontSize: 16,
   },
 });
