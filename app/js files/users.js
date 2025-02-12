@@ -1,3 +1,44 @@
+import favicon from "../../assets/images/favicon.png"
+let completedEvents = [
+  {
+    sport: "Football",
+    location: "NY ST",
+    date: "Jan 30, 2025",
+    city: "Yerevan",
+    region: "",
+    teamA: [
+      { name: "John", profilePhoto: favicon },
+      // { name: "Jane", profilePhoto: favicon }
+    ],
+    teamB: [
+      { name: "Alex", profilePhoto: favicon }
+    ]
+  },
+  {
+    sport: "Tennis",
+    location: "Miami Court",
+    date: "Feb 2, 2025",
+    city: "Miami",
+    region: "FL",
+    teamA: [
+      { name: "Chris", profilePhoto: favicon },
+      { name: "Emily", profilePhoto: favicon },
+      { name: "David", profilePhoto: favicon }
+    ],
+    teamB: [
+      { name: "Michael", profilePhoto: favicon },
+      { name: "Sara", profilePhoto: favicon },
+      { name: "Luke", profilePhoto: favicon }
+    ],
+    level: 'intermediate',
+    time: '8pm',
+    backgroundImage: '',      
+
+  }
+]
+
+
+
 const users = [
     {firstName:'Lolig', lastName: 'Lion', email:'1', password:'1', profileInfo: {
       sport: 'Football',
@@ -12,6 +53,7 @@ const users = [
       profileImageUrl:'',
       profileCompletePer:4,
       friendsList:[],
+      completedEvents:completedEvents,
       availibility: {
           Mon: { Mor: false, Aft: true, Eve: false },
           Tue: { Mor: false, Aft: false, Eve: false },

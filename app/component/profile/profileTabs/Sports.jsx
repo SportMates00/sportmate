@@ -12,13 +12,9 @@ const sportImages = {
 const Sports = ({ loggedUser }) => {
   return (
     <View style={styles.container}>
-      <FlatList
-        data={loggedUser.profileInfo.sportsList}
-        keyExtractor={(item) => item.sport}
-        numColumns={2}
-        columnWrapperStyle={styles.row}
-        renderItem={({ item }) => (
-          <View style={styles.card}>
+      {loggedUser.profileInfo.sportsList.map(item => {
+        return(
+          <View key={item.sport} style={styles.card}>
             <Image
               source={sportImages[item.sport] || sportImages.Default}
               style={styles.cardImage}
@@ -28,8 +24,8 @@ const Sports = ({ loggedUser }) => {
               <Text style={styles.levelText}>{item.level}</Text>
             </View>
           </View>
-        )}
-      />
+        )
+      })}
       <AddSport />
     </View>
   );
@@ -39,14 +35,13 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 40,
     flex: 1,
-    paddingHorizontal: 10,
-  },
-  row: {
-    justifyContent: 'space-between',
-    marginBottom: 15,
+    display:'flex',
+    flexDirection:'row',
+    flexWrap:'wrap',
+    gap:10
   },
   card: {
-    width: '48%',
+    width: '44%',
     aspectRatio: 1.2,
     borderRadius: 10,
     overflow: 'hidden',

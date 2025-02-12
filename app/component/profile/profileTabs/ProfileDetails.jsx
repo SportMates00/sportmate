@@ -44,7 +44,7 @@ export default function ProfileDetails({loggedUser}) {
       <View style={styles.contentArea}>
         {activeTab === 'About' ? <About loggedUser={loggedUser}/> 
         : activeTab === 'Sports' ? <Sports loggedUser={loggedUser} /> 
-        : activeTab === 'Reviews' ? <Reviews /> : <Activity /> }
+        : activeTab === 'Reviews' ? <Reviews loggedUser={loggedUser}/> : <Activity loggedUser={loggedUser}/> }
       </View>
     </View>
   );

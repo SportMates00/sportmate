@@ -1,59 +1,21 @@
 import React from "react";
-import { View, Text, FlatList, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import favicon from "@/assets/images/profilepicture.png";
 import EventDetails from "./EventDetails";
 
-const Activity = ({ completedEvents }) => {
+const Activity = ({loggedUser}) => {
 
-  completedEvents = [
-    {
-      sport: "Football",
-      location: "NY ST",
-      date: "Jan 30, 2025",
-      city: "Yerevan",
-      region: "",
-      teamA: [
-        { name: "John", profilePhoto: favicon },
-        // { name: "Jane", profilePhoto: favicon }
-      ],
-      teamB: [
-        { name: "Alex", profilePhoto: favicon }
-      ]
-    },
-    {
-      sport: "Tennis",
-      location: "Miami Court",
-      date: "Feb 2, 2025",
-      city: "Miami",
-      region: "FL",
-      teamA: [
-        { name: "Chris", profilePhoto: favicon },
-        { name: "Emily", profilePhoto: favicon },
-        { name: "David", profilePhoto: favicon }
-      ],
-      teamB: [
-        { name: "Michael", profilePhoto: favicon },
-        { name: "Sara", profilePhoto: favicon },
-        { name: "Luke", profilePhoto: favicon }
-      ],
-      level: 'intermediate',
-      time: '8pm',
-      backgroundImage: '',      
-
-    }
-  ];
-
+  let completedEvents = loggedUser.profileInfo.completedEvents;
   return (
     <View style={styles.container}>
       {completedEvents.length === 0 ? (
         <Text style={styles.noEvents}>No events have been completed yet.</Text>
-      ) : (
-        <FlatList
-          data={completedEvents}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <View style={styles.card}>
+      ) : 
+        completedEvents.map( item  => {
+          return (
+            (
+            <View key={item.date} style={styles.card}>
               <View style={styles.topRow}>
                 <FontAwesome5 name={item.sport === "Football" ? "futbol" : "table-tennis"} size={30} color="#FF6F61" style={styles.sportIcon} />
                 <Text style={styles.date}>{item.date}</Text>
@@ -93,9 +55,11 @@ const Activity = ({ completedEvents }) => {
               </View>
               <EventDetails event={item}/>
             </View>
-          )}
-        />
+        )
+          )
+        }
       )}
+      
     </View>
   );
 };
