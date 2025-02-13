@@ -15,13 +15,26 @@ const AllGames = () => {
     <View style={styles.container}>
       {/* Nested Filter Tabs */}
       <View style={styles.nestedTabsContainer}>
-        <TouchableOpacity style={styles.nestedTab} onPress={() => setShowSports(true)}>
+        <TouchableOpacity 
+          style={styles.nestedTab} 
+          onPress={() => setShowSports(true)}
+        >
           <Text style={styles.nestedTabText}>Sports</Text>
+          
         </TouchableOpacity>
-        <TouchableOpacity style={styles.nestedTab} onPress={() => setShowSort(true)}>
+
+        <TouchableOpacity 
+          style={styles.nestedTab} 
+          onPress={() => setShowSort(true)}
+        >
           <Text style={styles.nestedTabText}>Sort</Text>
+          
         </TouchableOpacity>
-        <TouchableOpacity style={styles.nestedTab} onPress={() => setShowFilter(true)}>
+
+        <TouchableOpacity 
+          style={styles.nestedTab} 
+          onPress={() => setShowFilter(true)}
+        >
           <Text style={styles.nestedTabText}>Filter</Text>
         </TouchableOpacity>
       </View>
@@ -77,22 +90,32 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nestedTabsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    backgroundColor: '#fff',
-    paddingVertical: 10,
-    marginBottom: 10,
-  },
-  nestedTab: {
-    paddingVertical: 8,
-    paddingHorizontal: 15,
-    backgroundColor: '#1E90FF',
-    borderRadius: 20,
-  },
-  nestedTabText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
+  flexDirection: 'row',
+  backgroundColor: '#fff',
+  marginBottom: 10,
+},
+
+nestedTab: {
+  flex: 1, // Makes each tab take equal space
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingVertical: 15,
+},
+
+nestedTabText: {
+  color: 'black',
+  textAlign: 'center',
+  fontSize: 14,
+  fontWeight: '500',
+  borderRightWidth:1,
+  borderRightColor:'lightgrey',
+  width:'100%'
+},
+
+borderRight: {
+  borderRightWidth: 1,
+  borderRightColor: 'lightgrey',
+},
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0,0,0,0.4)',

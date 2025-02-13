@@ -1,6 +1,6 @@
-// Games.jsx
+// GamesScreen.js
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AllGames from './AllGames';
 import MyGames from './MyGames';
 
@@ -9,72 +9,44 @@ const Games = () => {
 
   return (
     <View style={styles.container}>
-      {/* Tab Selector */}
-      <View style={styles.tabContainer}>
-        <TouchableOpacity
-          onPress={() => setActiveTab('AllGames')}
-          style={[styles.tab, activeTab === 'AllGames' && styles.activeTab]}
-        >
-          <Text style={[styles.tabText, activeTab === 'AllGames' && styles.activeTabText]}>
-            All Games
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => setActiveTab('MyGames')}
-          style={[styles.tab, activeTab === 'MyGames' && styles.activeTab]}
-        >
-          <Text style={[styles.tabText, activeTab === 'MyGames' && styles.activeTabText]}>
-            My Games
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.tabsContainer}>
+        {['AllGames', 'MyGames'].map((tab, index) => (
+          <TouchableOpacity
+            key={tab}
+            style={[styles.tab, activeTab === tab && styles.activeTab, index === 1 && { marginLeft: 12 }]}
+            onPress={() => setActiveTab(tab)}
+          >
+            <Text style={activeTab === tab ? styles.activeText : styles.inactiveText}>
+              {tab === 'AllGames' ? 'All Games' : 'My Games'}
+            </Text>
+          </TouchableOpacity>
+        ))}
       </View>
-
-      {/* Content */}
-      <View style={styles.contentContainer}>
-        {activeTab === 'AllGames' ? <AllGames /> : <MyGames />}
-      </View>
+      {activeTab === 'AllGames' ? <AllGames /> : <MyGames />}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#EFEFEF',
-  },
-  tabContainer: {
+  container: { flex: 1, backgroundColor: '#f0f0f0' },
+  tabsContainer: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
-    marginHorizontal: 20,
-    marginTop: 20,
-    borderRadius: 50,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 5,
+    paddingHorizontal: 15,
+    borderBottomColor: 'lightgrey',
+    borderBottomWidth: 1,
+    paddingBottom: 15,
+    backgroundColor: 'white',
+    boxShadow:'none',
+    elevation:0,
+    shadowColor: 'transparent',
   },
-  tab: {
-    flex: 1,
-    paddingVertical: 12,
-    alignItems: 'center',
-    borderRadius: 50,
-  },
+  tab: { paddingVertical: 8, paddingHorizontal: 15 },
   activeTab: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: 'lightblue',
+    borderRadius: 3,
   },
-  tabText: {
-    fontSize: 16,
-    color: '#1E90FF',
-  },
-  activeTabText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  contentContainer: {
-    flex: 1,
-    paddingTop: 10,
-    paddingHorizontal: 20,
-  },
+  activeText: { color: 'white', fontWeight: 'bold' },
+  inactiveText: { color: 'black' },
 });
 
 export default Games;

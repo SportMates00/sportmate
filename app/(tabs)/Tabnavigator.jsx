@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import InboxScreen from './Inbox';
 import ProfileIcon from '../component/profile/ProfileIcon';
 import { useNavigation } from '@react-navigation/native';
+import { Platform } from 'react-native';
 
 function TabNavigator() {
     const Tab = createBottomTabNavigator();
@@ -17,7 +18,22 @@ function TabNavigator() {
       <ProfileIcon onPress={() => navigation.navigate('Profile')} />
     ),
   }}>
-      <Tab.Screen name="Games" component={GamesScreen} options={{headerShown: true}} />
+      <Tab.Screen name="Games" component={GamesScreen} options={{
+    headerShown: true,
+    headerShadowVisible: false,
+    headerStyle: Platform.OS == 'web' ? {
+      borderBottom: 'none',
+      boxShadow: 'none',
+    } : {
+      borderBottomWidth: 0,
+      elevation: 0,
+      shadowOpacity: 0,
+    },
+    headerTitleStyle:{
+      fontSize:24,
+      fontWeight:900
+    }
+  }}   />
       <Tab.Screen name="Players" component={PlayersScreen} />
       <Tab.Screen name="Activity" component={ActivityScreen} />
       <Tab.Screen name="Inbox" component={InboxScreen} />
