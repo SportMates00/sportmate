@@ -13,7 +13,7 @@ import { users_list } from "@/app/js files/users";
 import { setUserInfo } from "@/app/store/userSlice";
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const times = ["Morning", "Afternoon", "Evening"];
+const times = ["Mor", "Aft", "Eve"];
 
 const AvailabilityTable = () => {
   const dispatch = useDispatch();
@@ -78,9 +78,9 @@ const AvailabilityTable = () => {
     try {
       // Add userInfo to AsyncStorage
       users_list.push(userInfo);
-      dispatch(setUserInfo(userInfo))
-      navigation.navigate("HomeTabs");
+      dispatch(setUserInfo(userInfo));
       handleClientInfoCompletion();
+      console.log('USER INFO NEW I', userInfo)
     } catch (error) {
       console.error("Error saving user data:", error);
     }

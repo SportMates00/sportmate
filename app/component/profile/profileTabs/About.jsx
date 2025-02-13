@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import AvailabilityTable from '../Availibility'
+import AvailabilityTable from '../AvailibilityTable'
 const About = ({loggedUser}) => {
 
   const [rating, setRating] = useState(0);

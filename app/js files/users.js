@@ -56,12 +56,11 @@ const users = [
       aboutMe:'Hello my name is Mher, I am you',
       sportsList:[{sport:'Basketball',level:'Beginner'},{sport:'Tennis',level:'Professional'}],
       reviews:reviews,
-      activity:[{}],
       profileImageUrl:'',
       profileCompletePer:4,
       friendsList:[{firstName:'Mher', lastName:'Kevorkian',profilePicture:mher},{firstName:'Njteh', lastName:'Melkonian',profilePicture:njteh}],
       completedEvents:completedEvents,
-      availibility: {
+      availability: {
           Mon: { Mor: false, Aft: true, Eve: false },
           Tue: { Mor: false, Aft: false, Eve: false },
           Wed: { Mor: false, Aft: false, Eve: false },

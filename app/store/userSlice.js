@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { userTemplate } from './userTemplate';
+import { users_list } from '../js files/users';
 
 const userSlice = createSlice({
   name: 'User',
@@ -23,9 +24,9 @@ const userSlice = createSlice({
         profileInfo: {
           ...state.profileInfo, // Keep the previous profileInfo data
           ...action.payload.profileInfo, // Only update the changed fields within profileInfo
-          availibility: {
-            ...state.profileInfo.availibility, // Keep the old availability data
-            ...action.payload.profileInfo?.availibility, // Only update provided availability fields
+          availability: {
+            ...state.profileInfo.availability, // Keep the old availability data
+            ...action.payload.profileInfo?.availability, // Only update provided availability fields
           },
         },
       };
@@ -50,9 +51,19 @@ const userSlice = createSlice({
         }
       }
     },
-    resetUserInfo: () => initialState,
+    deleteAccount: (state, action) => {
+      const email = action.payload; // Assuming user ID is passed when calling this action
+      const userIndex = users_list.findIndex(user => user.email === email);
+    
+      if (userIndex !== -1) {
+        users_list.splice(userIndex, 1); // Remove user from users_list
+      }
+    
+      return userTemplate; // Reset user state
+    },
+    resetUserInfo: () => userTemplate,
 }});
 
-export const { setUserInfo,resetUserInfo, editUserInfo, profileCompletePer, deleteSport } = userSlice.actions;
+export const { setUserInfo,resetUserInfo, editUserInfo, profileCompletePer, deleteSport, deleteAccount } = userSlice.actions;
 
 export default userSlice.reducer;

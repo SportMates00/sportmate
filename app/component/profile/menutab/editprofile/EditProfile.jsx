@@ -23,7 +23,7 @@ const EditProfile = () => {
 
   // Check if there are any changes to enable/disable the save button
   const hasChanges = !_.isEqual(loggedUser, editUser);
-
+  
   // Function to check if at least one time slot is selected
   const isAvailabilityValid = (availability) => {
     return Object.values(availability).some((day) =>
@@ -74,7 +74,7 @@ function saveUserInfo() {
   }
 
   // Validate availability
-  if (!isAvailabilityValid(editUser.profileInfo.availibility)) {
+  if (!isAvailabilityValid(editUser.profileInfo.availability)) {
     setAvailabilityError('At least one time slot must be selected');
     isValid = false;
     
@@ -87,9 +87,11 @@ function saveUserInfo() {
   // Save if all validations pass and there are changes
   if (isValid && hasChanges) {
     dispatch(editUserInfo(editUser));
+    
     navigation.navigate('Profile');
   }
 }
+console.log('aaaaaaaaaaaaaaaaaaaaaaaaaa',editUser)
   return (
     <ScrollView ref={scrollViewRef} style={{ padding: 20, marginTop: 24, backgroundColor: 'white', flex: 1 }}>
       {/* Header */}

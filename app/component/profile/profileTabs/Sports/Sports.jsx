@@ -28,7 +28,7 @@ const Sports = ({ loggedUser }) => {
               <Text style={styles.levelText}>{loggedUser.profileInfo.level}</Text>
         </View>
       </TouchableOpacity>
-      {userInfo.profileInfo.sportsList.map(sport => {
+      {userInfo.profileInfo.sportsList.length !== 0 && userInfo.profileInfo.sportsList.map(sport => {
         return(
           <TouchableOpacity onPress={() => {
             setSport(sport)

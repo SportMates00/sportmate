@@ -40,7 +40,7 @@ const EditSports = ({ setOpenEditSport, openEditSport,sport,setUserInfo, userInf
         setError(true)
     }else {
         dispatch(deleteSport(sport.sport));
-  
+        setError(false);
     // Update local state immediately
     setUserInfo(prev => ({
       ...prev,
@@ -48,6 +48,7 @@ const EditSports = ({ setOpenEditSport, openEditSport,sport,setUserInfo, userInf
         ...prev.profileInfo,
         sportsList: prev.profileInfo.sportsList.filter(item => item.sport !== sport.sport),
       },
+      
     }));
   
     // Close modal
@@ -83,7 +84,7 @@ const EditSports = ({ setOpenEditSport, openEditSport,sport,setUserInfo, userInf
               />
 
               {/* Modal Buttons */}
-              {error && <Text style={{color:"red"}}>You can not delete your main sport</Text>}
+              {error && sport.sport == userInfo.profileInfo.sport && <Text style={{color:"red"}}>You can not delete your main sport</Text>}
               <TouchableOpacity onPress={() => editSport()} style={styles.modalButton}>
                 <Text style={styles.modalButtonText}>Update Sport</Text>
               </TouchableOpacity>

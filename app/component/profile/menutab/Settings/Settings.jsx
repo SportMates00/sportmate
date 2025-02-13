@@ -6,16 +6,19 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Entypo from '@expo/vector-icons/Entypo';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import LangChanger from '@/app/component/LangChanger';
+import { useDispatch } from 'react-redux';
+import { resetUserInfo } from '@/app/store/userSlice';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 
-const Settings = ({ navigation }) => {
+const Settings = () => {
 
   const [isModalVisible, setModalVisible] = useState(false);
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
-  
+  const  navigation = useNavigation();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-
+  const dispatch = useDispatch();
   const handleVerification = () => {
     navigation.navigate('VerifyAccount');
   };
@@ -39,7 +42,17 @@ const Settings = ({ navigation }) => {
   const handleLogout = () => {
     Alert.alert('Log Out', 'Are you sure you want to log out?', [
       { text: 'Cancel', style: 'cancel' },
-      { text: 'Log Out', onPress: () => console.log('Logged Out') },
+      { text: 'Log Out', onPress: () => {
+        dispatch(resetUserInfo())
+         // Navigate to the welcome screen and clear navigation history
+        navigation.dispatch(
+          CommonActions.reset({
+            index:0,
+            routes:[{name:"Welcome"}]
+          })
+          
+        );
+      } },
     ]);
   };
 

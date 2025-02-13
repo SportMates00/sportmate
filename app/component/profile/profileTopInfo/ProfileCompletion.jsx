@@ -10,7 +10,7 @@ const ProfileCompletion = ({loggedUser,setModalVisible}) => {
     {id:1,step:loggedUser.firstName, text:'Input your first name'},
     {id:2,step:loggedUser.lastName, text:'Input your last name'},
     {id:3,step:loggedUser.profileInfo.sport, text:'Choose your preferred sport'},
-    {id:4,step:loggedUser.profileInfo.availibility, text:'Fill your available time slot(s)'},
+    {id:4,step:loggedUser.profileInfo.availability, text:'Fill your available time slot(s)'},
     {id:5,step:loggedUser.profileInfo.age, text:'Choose your age'},
     {id:6,step:loggedUser.profileInfo.location, text:'Set the location closest to you'},
     {id:7,step:loggedUser.profileInfo.gender, text:'Choose your gender'},

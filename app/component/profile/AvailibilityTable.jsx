@@ -7,9 +7,8 @@ import {
 
 const AvailabilityTable = ({loggedUser}) => {
 
-  const days = Object.keys(loggedUser.profileInfo.availibility);
-  const times = Object.keys(loggedUser.profileInfo.availibility[days[0]]);
-
+  const days = Object.keys(loggedUser.profileInfo.availability);
+  const times = Object.keys(loggedUser.profileInfo.availability[days[0]]);
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Availability</Text>
@@ -32,7 +31,7 @@ const AvailabilityTable = ({loggedUser}) => {
                 key={`${rowIndex}-${colIndex}`} // Unique key
                 style={[
                   styles.cell,
-                  loggedUser.profileInfo.availibility[day][time] && styles.selectedCell,
+                  loggedUser.profileInfo.availability[day][time] && styles.selectedCell,
                 ]}
               />
             ))}

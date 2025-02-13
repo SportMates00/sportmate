@@ -9,7 +9,6 @@ const QSport = ({ step, setStep }) => {
   const sports = ['Football', 'Basketball', 'Tennis', 'Ping Pong', 'Hiking'];
   const userInfo = useSelector((state) => state.user);
   const nextStep = () => setStep(step + 1);
-console.log('Sposssssssssssssssssssrt',userInfo)
   return (
     <View style={styles.container}>
       {step === 1 && (

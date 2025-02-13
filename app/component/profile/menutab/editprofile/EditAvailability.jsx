@@ -8,10 +8,10 @@ const EditAvailabilityTable = ({ editUser, setEditUser }) => {
   // Handle toggling of availability
   const toggleCell = (day, time) => {
     const updatedAvailability = {
-      ...editUser.profileInfo.availibility,
+      ...editUser.profileInfo.availability,
       [day]: {
-        ...editUser.profileInfo.availibility[day],
-        [time]: !editUser.profileInfo.availibility[day][time],
+        ...editUser.profileInfo.availability[day],
+        [time]: !editUser.profileInfo.availability[day][time],
       },
     };
 
@@ -20,7 +20,7 @@ const EditAvailabilityTable = ({ editUser, setEditUser }) => {
       ...editUser,
       profileInfo: {
         ...editUser.profileInfo,
-        availibility: updatedAvailability,
+        availability: updatedAvailability,
       },
     });
   };
@@ -47,7 +47,7 @@ const EditAvailabilityTable = ({ editUser, setEditUser }) => {
               key={`${rowIndex}-${colIndex}`}
               style={[
                 styles.cell,
-                editUser.profileInfo.availibility[day][time] && styles.selectedCell,
+                editUser.profileInfo.availability[day][time] && styles.selectedCell,
               ]}
               onPress={() => toggleCell(day, time)}
             />

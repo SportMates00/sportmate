@@ -1,18 +1,47 @@
+import { deleteAccount } from '@/app/store/userSlice';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 
-const DeleteAccount = ({ onDelete }) => {
+const DeleteAccount = () => {
   const [confirmText, setConfirmText] = useState('');
   const [password, setPassword] = useState('');
-
+  const loggedUser = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const handleDelete = () => {
     if (confirmText.toLowerCase() !== 'delete') {
       Alert.alert('Error', 'Please type "DELETE" to confirm.');
       return;
     }
-    // Call your API or backend service to delete the account
-    // Example: onDelete(password);
-    Alert.alert('Success', 'Your account has been deleted.');
+    if(confirmText.toLowerCase() === 'delete' && loggedUser.password === password){
+      Alert.alert(
+        "Delete Account",
+        "Are you sure you want to permanently delete your account? This action cannot be undone.",
+        [
+          { text: "Cancel", style: "cancel" },
+          {
+            text: "Delete",
+            style: "destructive",
+            onPress: () => {
+              // Dispatch Redux action with user ID
+              dispatch(deleteAccount(loggedUser.email));
+    
+              // Navigate to Welcome page
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'Welcome' }],
+                })
+              );
+            },
+          },
+        ]
+      );
+    }else {
+      Alert.alert('Error','Password is not correct')
+    }
   };
 
   return (
