@@ -19,7 +19,7 @@ const AllGames = () => {
           style={styles.nestedTab} 
           onPress={() => setShowSports(true)}
         >
-          <Text style={styles.nestedTabText}>Sports</Text>
+          <Text style={[styles.nestedTabText, {borderRightWidth:1,borderRightColor:'lightgrey'}]}>Sports</Text>
           
         </TouchableOpacity>
 
@@ -27,7 +27,7 @@ const AllGames = () => {
           style={styles.nestedTab} 
           onPress={() => setShowSort(true)}
         >
-          <Text style={styles.nestedTabText}>Sort</Text>
+          <Text style={[styles.nestedTabText, {borderRightWidth:1,borderRightColor:'lightgrey'}]}>Sort</Text>
           
         </TouchableOpacity>
 
@@ -107,8 +107,6 @@ nestedTabText: {
   textAlign: 'center',
   fontSize: 14,
   fontWeight: '500',
-  borderRightWidth:1,
-  borderRightColor:'lightgrey',
   width:'100%'
 },
 
