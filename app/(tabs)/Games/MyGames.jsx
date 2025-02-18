@@ -1,7 +1,7 @@
 // MyGames.jsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Events from './Events';
+import Events from './GameEvents';
 
 const MyGames = () => {
   return (

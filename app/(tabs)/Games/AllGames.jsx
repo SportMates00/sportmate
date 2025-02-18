@@ -1,89 +1,88 @@
 // AllGames.jsx
-import React, { useState } from 'react';
+import React, { useEffect, useState , useCallback, useMemo, memo} from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import SportsFilter from './SportsFilter';
 import Sort from './Sort';
 import Filter from './Filter';
-import Events from './Events';
+import GameEvents from './GameEvents';
+import { gamesEvents } from '@/app/js files/gamesEvents';
 
-const AllGames = () => {
+const AllGames = ({ loggedUser }) => {
   const [showSports, setShowSports] = useState(false);
   const [showSort, setShowSort] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
+  const [selectedSports, setSelectedSports] = useState([loggedUser.profileInfo.sport]);
+
+  // Memoize gameEvents so it only updates when selectedSports or gamesEvents change
+  const gameEvents = useMemo(() => {
+    if (!loggedUser?.profileInfo?.sport) return [];
+    return selectedSports.flatMap(sport => gamesEvents[sport.toLowerCase()] || []);
+  }, [loggedUser, gamesEvents, selectedSports]);
+
+  // Prevent functions from re-creating on each render
+  const openSportsModal = useCallback(() => setShowSports(true), []);
+  const closeSportsModal = useCallback(() => setShowSports(false), []);
+  const openSortModal = useCallback(() => setShowSort(true), []);
+  const closeSortModal = useCallback(() => setShowSort(false), []);
+  const openFilterModal = useCallback(() => setShowFilter(true), []);
+  const closeFilterModal = useCallback(() => setShowFilter(false), []);
 
   return (
     <View style={styles.container}>
       {/* Nested Filter Tabs */}
       <View style={styles.nestedTabsContainer}>
-        <TouchableOpacity 
-          style={styles.nestedTab} 
-          onPress={() => setShowSports(true)}
-        >
-          <Text style={[styles.nestedTabText, {borderRightWidth:1,borderRightColor:'lightgrey'}]}>Sports</Text>
-          
+        <TouchableOpacity style={styles.nestedTab} onPress={openSportsModal}>
+          <Text style={[styles.nestedTabText, { borderRightWidth: 1, borderRightColor: 'lightgrey' }]}>
+            Sports
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={styles.nestedTab} 
-          onPress={() => setShowSort(true)}
-        >
-          <Text style={[styles.nestedTabText, {borderRightWidth:1,borderRightColor:'lightgrey'}]}>Sort</Text>
-          
+        <TouchableOpacity style={styles.nestedTab} onPress={openSortModal}>
+          <Text style={[styles.nestedTabText, { borderRightWidth: 1, borderRightColor: 'lightgrey' }]}>
+            Sort
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={styles.nestedTab} 
-          onPress={() => setShowFilter(true)}
-        >
+        <TouchableOpacity style={styles.nestedTab} onPress={openFilterModal}>
           <Text style={styles.nestedTabText}>Filter</Text>
         </TouchableOpacity>
       </View>
 
       {/* Modals for the Nested Tabs */}
-      <Modal
-        visible={showSports}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setShowSports(false)}
-      >
+      <Modal visible={showSports} animationType="slide" transparent onRequestClose={closeSportsModal}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <SportsFilter onClose={() => setShowSports(false)} />
+            <SportsFilter loggedUser={loggedUser} selectedSports={selectedSports} setSelectedSports={setSelectedSports} onClose={closeSportsModal} />
           </View>
         </View>
       </Modal>
 
-      <Modal
-        visible={showSort}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setShowSort(false)}
-      >
+      <Modal visible={showSort} animationType="slide" transparent onRequestClose={closeSortModal}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Sort onClose={() => setShowSort(false)} />
+            <Sort onClose={closeSortModal} />
           </View>
         </View>
       </Modal>
 
-      <Modal
-        visible={showFilter}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setShowFilter(false)}
-      >
+      <Modal visible={showFilter} animationType="slide" transparent onRequestClose={closeFilterModal}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
-            <Filter onClose={() => setShowFilter(false)} />
+            <Filter onClose={closeFilterModal} />
           </View>
         </View>
       </Modal>
 
       {/* Events List */}
-      <Events />
+      <MemoizedGameEvents gameEvents={gameEvents} />
     </View>
   );
 };
+
+// Memoized GameEvents component to prevent unnecessary re-renders
+const MemoizedGameEvents = memo(({ gameEvents }) => {
+  return <GameEvents gameEvents={gameEvents} />;
+});
 
 const styles = StyleSheet.create({
   container: {

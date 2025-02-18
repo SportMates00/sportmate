@@ -3,9 +3,12 @@ import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AllGames from './AllGames';
 import MyGames from './MyGames';
+import { useSelector } from 'react-redux';
 
 const Games = () => {
   const [activeTab, setActiveTab] = useState('AllGames');
+
+  const loggedUser = useSelector(user => user.user);
 
   return (
     <View style={styles.container}>
@@ -22,7 +25,7 @@ const Games = () => {
           </TouchableOpacity>
         ))}
       </View>
-      {activeTab === 'AllGames' ? <AllGames /> : <MyGames />}
+      {activeTab === 'AllGames' ? <AllGames loggedUser={loggedUser} /> : <MyGames />}
     </View>
   );
 };
