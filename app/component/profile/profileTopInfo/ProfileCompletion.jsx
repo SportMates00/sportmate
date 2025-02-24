@@ -2,10 +2,12 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { useTheme } from '@/app/theme/themeContext';
 
 const ProfileCompletion = ({loggedUser,setModalVisible}) => {
   const navigation = useNavigation();
-
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   const completionSteps = [
     {id:1,step:loggedUser.firstName, text:'Input your first name'},
     {id:2,step:loggedUser.lastName, text:'Input your last name'},
@@ -31,11 +33,11 @@ const ProfileCompletion = ({loggedUser,setModalVisible}) => {
               }>
                 <Ionicons name={val.step ? 'checkmark-circle' : 'ellipse-outline'}
                   size={24}
-                  color={val.step ? '#1E90FF' : '#999'}
+                  color={val.step ? theme.colors.primary : '#888'}
                 />
                 <Text style={styles.stepText}>{val.text}</Text>
                 {!val.step && (
-                  <Ionicons name="chevron-forward" size={20} color="#999" />
+                  <Ionicons name="chevron-forward" size={20} color={theme.colors.primary} />
                 )}
               </TouchableOpacity>
             )
@@ -45,23 +47,23 @@ const ProfileCompletion = ({loggedUser,setModalVisible}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
-    padding: 20,
-    backgroundColor: '#fff',
+    padding: theme.spacing.medium,
+    backgroundColor: theme.colors.background,
   },
   stepRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 12,
+    paddingVertical: theme.spacing.medium,
     borderBottomWidth: 1,
     borderBottomColor: '#eee',
   },
   stepText: {
     flex: 1,
-    fontSize: 16,
-    color: '#333',
-    marginLeft: 10,
+    fontSize: theme.fonts.size.medium,
+    color: theme.colors.text,
+    marginLeft: theme.spacing.small,
   },
 });
 

@@ -1,25 +1,25 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient'; // For gradient backgrounds
+import React, { useLayoutEffect } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
 import ShareLink from './ShareLink';
+import { useTheme } from '@/app/theme/themeContext';
+import { useNavigation } from '@react-navigation/native';
 
-const ShareProfile = ({ navigation }) => {
+const ShareProfile = ({  }) => {
 
-  const handleBackPress = () => {
-    navigation.goBack(); // Navigate back to the previous screen
-  };
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerStyle: {
+        backgroundColor: theme.colors.background, // Change header background color
+      },
+      headerTintColor: theme.colors.text, // Change back arrow color
+    });
+  }, [navigation]);
 
   return (
-    <LinearGradient
-      colors={['#4facfe', '#00f2fe']} // Gradient background
-      style={styles.container}
-    >
-      {/* Header with Back Button */}
-      <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-        <Text style={styles.backText}>← Back</Text>
-      </TouchableOpacity>
 
-      {/* Content */}
       <View style={styles.contentContainer}>
         {/* Invite Section */}
         <Text style={styles.inviteText}>
@@ -30,19 +30,19 @@ const ShareProfile = ({ navigation }) => {
         <View style={styles.stepsBox}>
           <Text style={styles.stepsTitle}>How It Works</Text>
           <View style={styles.step}>
-            <Text style={styles.stepNumber}>1</Text>
+            <Text style={styles.stepNumber}>1.</Text>
             <Text style={styles.stepText}>
               Share your unique invite link with friends.
             </Text>
           </View>
           <View style={styles.step}>
-            <Text style={styles.stepNumber}>2</Text>
+            <Text style={styles.stepNumber}>2.</Text>
             <Text style={styles.stepText}>
               Your friend signs up and makes their first purchase.
             </Text>
           </View>
           <View style={styles.step}>
-            <Text style={styles.stepNumber}>3</Text>
+            <Text style={styles.stepNumber}>3.</Text>
             <Text style={styles.stepText}>
               Both of you receive a promo code!
             </Text>
@@ -52,87 +52,62 @@ const ShareProfile = ({ navigation }) => {
         {/* Share Link Button */}
         <ShareLink />
       </View>
-    </LinearGradient>
+      
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  backButton: {
-    position: 'absolute',
-    top: 40,
-    left: 20,
-  },
-  backText: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: 'bold',
-  },
+const getStyles = (theme) => StyleSheet.create({
   contentContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 50,
+    padding:theme.spacing.medium,
+    backgroundColor:theme.colors.background
   },
   inviteText: {
-    fontSize: 22,
+    fontSize: theme.fonts.size.xLarge,
     fontWeight: 'bold',
-    color: '#fff',
+    color: theme.colors.text,
     textAlign: 'center',
-    marginBottom: 30,
+    marginBottom: theme.spacing.large,
     textShadowColor: 'rgba(0, 0, 0, 0.2)',
     textShadowOffset: { width: 1, height: 1 },
     textShadowRadius: 2,
   },
   stepsBox: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 16,
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.medium,
+    borderRadius: theme.radius.semiCircle,
     width: '90%',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
-    marginBottom: 30,
+    marginBottom: theme.spacing.large,
   },
   stepsTitle: {
-    fontSize: 18,
+    fontSize: theme.fonts.size.large,
     fontWeight: 'bold',
-    color: '#007bff',
+    color: theme.colors.buttonText,
     textAlign: 'center',
-    marginBottom: 20,
+    marginBottom: theme.spacing.large,
   },
   step: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: 15,
+    marginBottom: theme.spacing.medium,
   },
   stepNumber: {
-    backgroundColor: '#4facfe',
-    color: '#fff',
-    fontSize: 16,
+    color: theme.colors.buttonText,
+    fontSize: theme.fonts.size.medium,
     fontWeight: 'bold',
-    borderRadius: 20,
-    padding: 8,
-    marginRight: 10,
-    textAlign: 'center',
+    marginRight: theme.spacing.small,
   },
   stepText: {
-    fontSize: 14,
-    color: '#333',
+    fontSize: theme.fonts.size.medium,
+    color: theme.colors.buttonText,
     flex: 1,
-  },
-  shareModalButton: {
-    backgroundColor: '#2575fc',
-  },
-  shareButtonText: {
-    fontSize: 16,
-    color: '#fff',
-    fontWeight: 'bold',
-  },
+  }
 });
 
 export default ShareProfile;

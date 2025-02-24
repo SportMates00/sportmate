@@ -2,9 +2,12 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient'; // For gradient backgrounds
+import { useTheme } from '@/app/theme/themeContext';
 
 
 const ShareLink = () => {
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
     const [modalVisible, setModalVisible] = useState(false);
     
       const handleCloseModal = () => {
@@ -21,14 +24,14 @@ const ShareLink = () => {
 
   return (
     <View>
-    <TouchableOpacity onPress={openModal} style={styles.shareButton}>
-  <LinearGradient
-    colors={['#6a11cb', '#2575fc']}
-    style={[styles.gradientButton, { alignItems: 'center', justifyContent: 'center' }]} // Ensure content is centered
-  >
-    <Text style={styles.shareButtonText}>Share Link</Text>
-  </LinearGradient>
-</TouchableOpacity>
+      <TouchableOpacity onPress={openModal} style={styles.shareButton}>
+        <LinearGradient
+          colors={['#4CAF50', '#66BB6A']}
+          style={[styles.gradientButton, { alignItems: 'center', justifyContent: 'center' }]} // Ensure content is centered
+        >
+          <Text style={styles.shareButtonText}>Share Link</Text>
+        </LinearGradient>
+      </TouchableOpacity>
 
     {modalVisible && (
         <Modal
@@ -41,7 +44,7 @@ const ShareLink = () => {
             <View style={styles.modalContainer}>
               {/* Close button */}
               <TouchableOpacity onPress={handleCloseModal} style={styles.closeButton}>
-                <AntDesign name="closecircle" size={24} color="black" />
+                <AntDesign name="closecircle" size={24} color={theme.colors.text} />
               </TouchableOpacity>
               {/* Modal Content */}
               <Text style={styles.modalText}>
@@ -62,17 +65,12 @@ const ShareLink = () => {
     </View>
   )
 }
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
 
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        padding: 20,
-      },
       gradientButton: {
-        paddingVertical: 15,
-        paddingHorizontal: 20,
-        borderRadius: 6,
+        paddingVertical: theme.spacing.medium,
+        paddingHorizontal: theme.spacing.medium,
+        borderRadius: theme.radius.semiCircle,
         alignItems: 'center',
         justifyContent: 'center',
       },
@@ -81,47 +79,43 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
       },
       modalContainer: {
-        backgroundColor: '#fff',
+        backgroundColor: theme.colors.background,
         width: '100%',
-        height: '70%',
-        padding: 20,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        height: '100%',
+        padding: theme.spacing.medium,
+        borderTopLeftRadius: theme.radius.semiCircle,
+        borderTopRightRadius: theme.radius.semiCircle,
         justifyContent: 'center',
         alignItems: 'center',
       },
       closeButton: {
         position: 'absolute',
-        top: 10,
-        right: 10,
+        top: 20,
+        right: 20,
       },
       modalText: {
-        fontSize: 16,
-        color: '#333',
-        marginBottom: 20,
+        fontSize: theme.fonts.size.medium,
+        color: theme.colors.text,
+        marginBottom: theme.spacing.medium,
         textAlign: 'center',
       },
       modalButton: {
-        backgroundColor: '#6a11cb',
-        paddingVertical: 12,
-        borderRadius: 6,
+        backgroundColor: theme.colors.primary,
+        paddingVertical: theme.spacing.medium,
+        borderRadius: theme.radius.semiCircle,
         alignItems: 'center',
-        marginBottom: 15,
+        marginBottom: theme.spacing.medium,
         width: '100%',
       },
       modalButtonText: {
-        fontSize: 16,
-        color: '#fff',
-      },
-      shareModalButton: {
-        backgroundColor: '#2575fc',
+        fontSize: theme.fonts.size.medium,
+        color: theme.colors.buttonText,
       },
       shareButtonText: {
-        fontSize: 18,
-        color: '#fff',
+        fontSize: theme.fonts.size.medium,
+        color: theme.colors.buttonText,
         fontWeight: '600',
       },
 

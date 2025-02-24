@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons"; // Icon for closing the modal
 import reviewStar from "../../../../assets/images/reviewStar.png"
 import FriendsList from "./FriendsList";
+import { useTheme } from "@/app/theme/themeContext";
 
 const TOTAL_STEPS = 8; // Total steps for 100% profile completion
 
@@ -14,6 +15,8 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
   const progressPercentage = (profileInfo.profileCompletePer || 0) / TOTAL_STEPS;
   const isCompleted = progressPercentage === 1;
   const [friendListModalVisible, setFriendListModalVisible] = useState(false);
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   return (
     <View>
       {/* Profile Info Section */}
@@ -64,7 +67,7 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
           <TouchableOpacity style={styles.modalBackground} activeOpacity={1} onPress={() => setModalVisible(false)}>
             <View style={styles.modalContent}>
               <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-                <Ionicons name="close" size={30} color="#fff" />
+                <Ionicons name="close" size={30} color={theme.colors.text} />
               </TouchableOpacity>
               {profileInfo.profileImageUrl !== "" ? (
                 <Image source={{ uri: profileInfo.profileImageUrl }} style={styles.enlargedImage} />
@@ -84,21 +87,21 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
 };
 
 // Styles
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   cardContainer: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "white",
+    backgroundColor: theme.colors.background,
     gap:40,
-    paddingVertical: 15,
-    paddingInline:35,
-    borderRadius: 10,
+    paddingVertical: theme.spacing.medium,
+    paddingInline:theme.spacing.large,
+    
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
-    margin: 20,
+    margin: theme.spacing.medium,
   },
   headerContainer: {
     flexDirection: "row",
@@ -116,9 +119,8 @@ const styles = StyleSheet.create({
     position: "relative",
     width: 120,
     height: 120,
-    borderRadius: 4000,
+    borderRadius: theme.radius.circle,
     overflow: "hidden",
-    backgroundColor: "#ddd",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -131,45 +133,44 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#007AFF",
+    backgroundColor: theme.colors.primary,
   },
   profileInitial: {
-    fontSize: 32,
-    color: "#fff",
+    fontSize: theme.fonts.size.xLarge,
+    color: theme.colors.buttonText,
     fontWeight: "bold",
   },
   profileDetails: {
     flex: 1,
-    marginLeft: 15,
+    marginLeft: theme.spacing.medium,
   },
   userName: {
-    fontSize: 18,
+    fontSize: theme.fonts.size.medium,
     fontWeight: "bold",
-    color: "#333",
+    color: theme.colors.text,
   },
   sportInfo: {
     flexDirection: "row",
-    marginVertical: 20,
+    marginVertical: theme.spacing.medium,
   },
   sportLabel: {
-    fontSize: 14,
-    color: "#555",
+    fontSize: theme.fonts.size.medium,
+    color:theme.colors.text,
     fontWeight: "bold",
-    marginRight: 5,
+    marginRight: theme.spacing.small,
   },
   sportText: {
     fontSize: 14,
-    color: "#555",
+    color: theme.colors.text,
   },
   levelText: {
     fontSize: 14,
-    color: "#777",
+    color: theme.colors.text,
   },
 
   // Modal styles
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.6)",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -186,26 +187,26 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -40,
     right: -40,
-    padding: 10,
+    padding: theme.spacing.small,
   },
   enlargedImage: {
     width: 300,
     height: 300,
-    borderRadius: 1000,
+    borderRadius: theme.radius.circle,
     borderWidth: 3,
     borderColor: "#fff",
   },
   enlargedPlaceholder: {
     width: 300,
     height: 300,
-    borderRadius: 1000,
-    backgroundColor: "#007AFF",
+    borderRadius: theme.radius.circle,
+    backgroundColor: theme.colors.primary,
     alignItems: "center",
     justifyContent: "center",
   },
   enlargedInitial: {
     fontSize: 64,
-    color: "#fff",
+    color: theme.colors.buttonText,
     fontWeight: "bold",
   },
 });

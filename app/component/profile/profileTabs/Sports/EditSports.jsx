@@ -4,12 +4,15 @@ import RNPickerSelect from 'react-native-picker-select';
 import React, { useState } from 'react';
 import { deleteSport, editUserInfo} from '@/app/store/userSlice';
 import { useDispatch } from 'react-redux';
+import { useTheme } from '@/app/theme/themeContext';
 
 const EditSports = ({ setOpenEditSport, openEditSport,sport,setUserInfo, userInfo }) => {
   const levels = ['Beginner', 'Intermediate','Professional', 'Advanced'];
   const [newSport, setNewSport] = useState({sport:'',level:''})
   const [error, setError] = useState(false)
   const dispatch = useDispatch();
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   const editSport = () => {
     if (!newSport.level) return; // Prevent update if no new level is selected
   
@@ -105,19 +108,7 @@ const EditSports = ({ setOpenEditSport, openEditSport,sport,setUserInfo, userInf
   );
 };
 
-const styles = StyleSheet.create({
-  addButton: {
-    backgroundColor: '#007bff',
-    borderRadius: 8,
-    alignItems: 'center',
-    width:200,
-    height:40,
-    justifyContent:'center'
-  },
-  addButtonText: {
-    color: '#fff',
-    fontSize: 16,
-  },
+const getStyles = (theme) => StyleSheet.create({
   modalOverlay: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -126,34 +117,36 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: '80%',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 20,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.radius.semiCircle,
+    padding: theme.spacing.large,
     alignItems: 'center',
   },
   modalTitle: {
-    fontSize: 20,
+    color:theme.colors.text,
+    fontSize: theme.fonts.size.large,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: theme.spacing.large,
   },
   label: {
-    fontSize: 16,
-    marginTop: 10,
+    fontSize: theme.fonts.size.medium,
+    marginTop: theme.spacing.small,
     marginBottom: 5,
+    color:theme.colors.text
   },
   modalButton: {
-    backgroundColor: '#007bff',
-    padding: 15,
-    borderRadius: 8,
-    marginTop: 20,
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.medium,
+    borderRadius: theme.radius.semiCircle,
+    marginTop: theme.spacing.medium,
     width: '100%',
     alignItems: 'center',
   },
   modalButtonX :{
-    backgroundColor: '#ccc',
-    padding: 15,
-    borderRadius: 8,
-    marginTop: 20,
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.medium,
+    borderRadius: theme.radius.semiCircle,
+    marginTop: theme.spacing.medium,
     width: '100%',
     alignItems: 'center',
   },
@@ -162,7 +155,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   cancelButton: {
-    backgroundColor: '#ff4d4d',
+    backgroundColor: theme.colors.primary,
   },
 
 });
@@ -175,7 +168,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 4,
-    color: '#333',
+    color: 'white',
     marginBottom: 20,
   },
   inputAndroid: {
@@ -183,9 +176,9 @@ const pickerSelectStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: 'white',
     borderRadius: 4,
-    color: '#333',
+    color: 'white',
     marginBottom: 20,
   },
 });

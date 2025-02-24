@@ -33,7 +33,7 @@ const AllGames = ({ loggedUser }) => {
       <View style={styles.nestedTabsContainer}>
         <TouchableOpacity style={styles.nestedTab} onPress={openSportsModal}>
           <Text style={[styles.nestedTabText, { borderRightWidth: 1, borderRightColor: 'lightgrey' }]}>
-            Sports
+            Sportsss
           </Text>
         </TouchableOpacity>
 

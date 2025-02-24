@@ -2,12 +2,15 @@ import React, { useCallback, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '@/app/theme/themeContext';
 
 const MenuTab = () => {
   const [isModalVisible, setModalVisible] = useState(false);
-const navigation = useNavigation();
+  const navigation = useNavigation();
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -56,8 +59,8 @@ const navigation = useNavigation();
             </TouchableOpacity>
         </View>
         <View style={styles.cancelContent}>
-            <TouchableOpacity style={styles.closeButton} onPress={closeModal}>
-              <Text>Cancel</Text>
+            <TouchableOpacity onPress={closeModal}>
+              <Text style={styles.closeButton}>Cancel</Text>
             </TouchableOpacity>
           </View>
       </Modal>
@@ -65,29 +68,30 @@ const navigation = useNavigation();
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   
   header: {
     height: 'auto',
-    paddingHorizontal: 20
+    paddingHorizontal: theme.spacing.medium
   },
   menuButton: {
-    padding: 8,
+    padding: theme.spacing.small,
   },
   modalOverlay: {
     position:'absolute',
     flex: 1,
     height:'100%',
     width:'100%',
-    backgroundColor: 'rgba(0,0,0,0.5)',
+    backgroundColor: theme.colors.text,
+    opacity:0.5
   },
   modalContent: {
     position:'absolute',
     bottom:70,
     height: '40%',
-    backgroundColor: '#fff',
-    borderRadius: 12,
-    padding: 20,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.radius.semiCircle,
+    padding: theme.spacing.large,
     justifyContent: 'center',
     alignItems: 'center',
     width: '80%',
@@ -97,27 +101,27 @@ const styles = StyleSheet.create({
     position:'absolute',
     bottom:20,
     height:40,
-    backgroundColor: '#fff',
-    borderRadius: 15,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.radius.semiCircle,
     width: '80%',
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
   },
   closeButton:{
-    color:'black'
+    color:theme.colors.buttonText
   },
   modalButton: {
     width: '100%',
     padding: 15,
-    backgroundColor: 'white', // Change color as needed
-    borderRadius: 8,
+    backgroundColor: 'transparent',
+    borderRadius: theme.radius.semiCircle,
     alignItems: 'center',
     marginVertical: 10,
   },
   modalButtonText: {
-    color: 'black',
-    fontSize: 16,
+    color:theme.colors.primary,
+    fontSize: theme.fonts.size.medium,
   },
 });
 

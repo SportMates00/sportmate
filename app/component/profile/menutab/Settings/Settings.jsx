@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Switch, StyleSheet, Alert, ScrollView } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Switch, StyleSheet, Alert, ScrollView, Platform } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -9,16 +9,21 @@ import LangChanger from '@/app/component/LangChanger';
 import { useDispatch } from 'react-redux';
 import { resetUserInfo } from '@/app/store/userSlice';
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import { useTheme } from '../../../../theme/themeContext';
 
 const Settings = () => {
-
   const [isModalVisible, setModalVisible] = useState(false);
   const openModal = () => setModalVisible(true);
   const closeModal = () => setModalVisible(false);
-  const  navigation = useNavigation();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const navigation = useNavigation();
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const dispatch = useDispatch();
+  const {theme} = useTheme();
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  // Use the ThemeContext to get the current mode and toggle function.
+  // No local dark mode state needed.
+  const { mode, toggleTheme } = useTheme();
+
   const handleVerification = () => {
     navigation.navigate('VerifyAccount');
   };
@@ -31,11 +36,11 @@ const Settings = () => {
     navigation.navigate('ContactUs');
   };
 
-  const handlePrivacyPolicy =() => {
+  const handlePrivacyPolicy = () => {
     navigation.navigate('PrivacyPolicy');
   };
 
-  const handleTermsConditions =() => {
+  const handleTermsConditions = () => {
     navigation.navigate('TermsConditions');
   };
   
@@ -43,14 +48,12 @@ const Settings = () => {
     Alert.alert('Log Out', 'Are you sure you want to log out?', [
       { text: 'Cancel', style: 'cancel' },
       { text: 'Log Out', onPress: () => {
-        dispatch(resetUserInfo())
-         // Navigate to the welcome screen and clear navigation history
+        dispatch(resetUserInfo());
         navigation.dispatch(
           CommonActions.reset({
-            index:0,
-            routes:[{name:"Welcome"}]
+            index: 0,
+            routes: [{ name: "Welcome" }]
           })
-          
         );
       } },
     ]);
@@ -59,20 +62,41 @@ const Settings = () => {
   const handleDeleteAccount = () => {
     navigation.navigate('DeleteAccount');
   };
+useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShadowVisible: false,
+          headerStyle: Platform.OS == 'web' ? {
+            borderBottom: 'none',
+            boxShadow: 'none',
+          } : {
+            borderBottomWidth: 0,
+            elevation: 0,
+            shadowOpacity: 0,
+          },
+      headerStyle: {
+        backgroundColor: theme.colors.background,
+      },
+      headerTintColor: theme.colors.text,
+      headerTitleStyle: {
+        color: theme.colors.text,
+      },
+    });
+  }, [navigation,mode]);
+
   const iconContainer = {
-    display:'flex',
-    flexDirection:'row',
-    gap:10,
-    alignItems:'center',
-    width:'100%',
-    backgroundColor: '#fff',
-    marginRight: 10,
-    borderRadius: 50,
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: theme.colors.background,
+    marginRight: theme.spacing.medium,
+    borderRadius: theme.radius.circle,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-  }
+    shadowRadius: theme.radius.semiCircle,
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -92,14 +116,12 @@ const Settings = () => {
       </TouchableOpacity>
 
       {/* Preferences */}
-
-      {/* Use the LanguageModal component */}
       <Text style={styles.sectionHeader}>Preferences</Text>
-        <TouchableOpacity onPress={openModal} style={styles.option}>
-          <View style={styles.optionRow}>
+      <TouchableOpacity onPress={openModal} style={styles.option}>
+        <View style={styles.optionRow}>
           <LangChanger iconContainer={iconContainer} text={'Select language'} isModalVisible={isModalVisible} closeModal={closeModal} />
-          </View>
-        </TouchableOpacity>
+        </View>
+      </TouchableOpacity>
 
       <View style={styles.option}>
         <View style={styles.optionRow}>
@@ -107,8 +129,8 @@ const Settings = () => {
           <Text style={styles.optionText}>Dark Mode</Text>
         </View>
         <Switch
-          value={isDarkMode}
-          onValueChange={(value) => setIsDarkMode(value)}
+          value={mode === 'dark'}  // Switch is on if the current mode is 'dark'
+          onValueChange={toggleTheme}  // Toggle theme and persist change
         />
       </View>
       <View style={styles.option}>
@@ -171,10 +193,10 @@ const Settings = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.background,
     padding: 20,
   },
   sectionHeader: {
@@ -194,10 +216,10 @@ const styles = StyleSheet.create({
   optionRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 0,  // Added to ensure all rows have the same left margin
+    marginLeft: 0,
   },
   optionIcon: {
-    marginRight: 10,  // Icon spacing
+    marginRight: 10,
   },
   optionText: {
     fontSize: 16,

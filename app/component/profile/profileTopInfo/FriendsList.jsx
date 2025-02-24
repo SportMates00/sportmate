@@ -2,11 +2,13 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, Modal, TextInput } fro
 import React, { useEffect, useState } from 'react'
 import friendsIcon from "../../../../assets/images/friends.png"
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useTheme } from '@/app/theme/themeContext';
 
 const FriendsList = ({ setFriendListModalVisible, friendListModalVisible, loggedUser }) => {
   const [searchText, setSearchText] = useState('');
   const friendsList = loggedUser.profileInfo.friendsList;
-
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   // Filtered friends based on search input
   const filteredFriends = friendsList.filter(friend => 
     friend.firstName.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -29,7 +31,7 @@ const FriendsList = ({ setFriendListModalVisible, friendListModalVisible, logged
           <View style={styles.modalContainer}>
             <View style={styles.topcontainer}>
               <TouchableOpacity onPress={() => setFriendListModalVisible(false)} style={styles.backButton}>
-                <Icon name="arrow-back" size={24} color="#000" />
+                <Icon name="arrow-back" size={24} color={theme.colors.text} />
               </TouchableOpacity>
               <Text style={styles.title}>
                 {filteredFriends.length} friend{filteredFriends.length !== 1 ? 's' : ''}
@@ -55,13 +57,13 @@ const FriendsList = ({ setFriendListModalVisible, friendListModalVisible, logged
                 >
                   <View style={{ flexDirection: 'row', gap: 15, justifyContent: 'center', alignItems: 'center' }}>
                     <Image style={{ width: 44, height: 44, borderRadius: 1000 }} source={friend.profilePicture} />
-                    <Text>{friend.firstName + ' ' + friend.lastName}</Text>
+                    <Text style={{color:theme.colors.text}}>{friend.firstName + ' ' + friend.lastName}</Text>
                   </View>
                   <TouchableOpacity>
-                    <Text>Remove friend</Text>
+                    <Text style={{ color:theme.colors.text}}>Remove friend</Text>
                   </TouchableOpacity>
                 </View>
-              )) : <View style={{alignItems:'center', marginTop:20}}><Text>No results for <Text style={{fontWeight:'bold'}}>'{searchText}'</Text></Text></View>}
+              )) : <View style={{alignItems:'center', marginTop:20}}><Text style={{ color:theme.colors.text}}>No results for <Text style={{fontWeight:'bold',color:theme.colors.text}}>'{searchText}'</Text></Text></View>}
             </View>
 
           </View>
@@ -75,22 +77,18 @@ export default FriendsList;
 
 
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   sportLabel: {
-    fontSize: 14,
-    color: "#555",
-    fontWeight: "bold",
-    marginRight: 5,
+    marginRight: theme.spacing.small,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
     justifyContent: "flex-end",
   },
   modalContainer: {
     height: "100%",
-    backgroundColor: "#fff",
-    padding: 20,
+    backgroundColor: theme.colors.background,
+    padding: theme.spacing.medium,
     elevation: 10,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: -3 },
@@ -101,8 +99,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 16,
-    backgroundColor: '#fff',
+    padding: theme.spacing.medium,
+    backgroundColor: theme.colors.background,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
@@ -111,26 +109,26 @@ const styles = StyleSheet.create({
     left: 16,
   },
   title: {
-    fontSize: 18,
+    fontSize: theme.fonts.size.large,
     fontWeight: 'bold',
+    color:theme.colors.text
   },
   searchcontainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f0f0f0',
-    borderRadius: 2,
-    paddingInline:10,
-    marginTop: 10,
+    borderRadius: theme.radius.semiCircle,
+    paddingInline:theme.spacing.medium,
+    marginTop: theme.spacing.medium,
     width:'100%',
     height:45
   },
   icon: {
-    marginRight: 8,
+    marginRight: theme.spacing.small,
   },
   input: {
     width:'100%',
     height: 40,
-    fontSize: 16,
-    color: '#333',
+    fontSize: theme.fonts.size.medium,
   },
 })

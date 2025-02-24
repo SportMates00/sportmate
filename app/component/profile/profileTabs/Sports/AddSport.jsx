@@ -4,6 +4,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import React, { useState } from 'react';
 import { editUserInfo} from '@/app/store/userSlice';
 import { useDispatch } from 'react-redux';
+import { useTheme } from '@/app/theme/themeContext';
 
 const AddSport = ({ setUserInfo, userInfo }) => {
   const availableSports = ['Football', 'Basketball', 'Tennis', 'Bowling', 'Table Tennis'];
@@ -13,6 +14,9 @@ const AddSport = ({ setUserInfo, userInfo }) => {
   const [error,setError] = useState(false);
   const [sportExists,setSportExists] = useState(false);
   const dispatch = useDispatch();
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  const pickerSelectStyless = pickerSelectStyles(theme);
   const addSport = () => {
     if (!newSport.sport || !newSport.level) { 
       setError(true); // Show error if fields are empty
@@ -69,7 +73,7 @@ const AddSport = ({ setUserInfo, userInfo }) => {
                   value: sport,
                 }))}
                 placeholder={{ label: 'Select a sport', value: null }}
-                style={pickerSelectStyles}
+                style={pickerSelectStyless}
               />
 
               {/* Level Selector */}
@@ -81,7 +85,7 @@ const AddSport = ({ setUserInfo, userInfo }) => {
                   value: level,
                 }))}
                 placeholder={{ label: 'Select a level', value: null }}
-                style={pickerSelectStyles}
+                style={pickerSelectStyless}
               />
 
               {/* Modal Buttons */}
@@ -105,18 +109,18 @@ const AddSport = ({ setUserInfo, userInfo }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   addButton: {
-    backgroundColor: '#007bff',
-    borderRadius: 8,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.radius.semiCircle,
     alignItems: 'center',
     width:200,
     height:40,
     justifyContent:'center'
   },
   addButtonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: theme.colors.buttonText,
+    fontSize: theme.fonts.size.medium,
   },
   modalOverlay: {
     justifyContent: 'center',
@@ -126,50 +130,53 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     width: '80%',
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    padding: 20,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.radius.semiCircle,
+    padding: theme.spacing.large,
     alignItems: 'center',
   },
   modalTitle: {
-    fontSize: 20,
+    color:theme.colors.text,
+    fontSize: theme.fonts.size.large,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: theme.spacing.medium,
   },
   label: {
-    fontSize: 16,
-    marginTop: 10,
-    marginBottom: 5,
+    fontSize: theme.fonts.size.medium,
+    marginTop: theme.spacing.medium,
+    marginBottom: theme.spacing.small,
+    color:theme.colors.text
   },
   modalButton: {
-    backgroundColor: '#007bff',
-    padding: 15,
-    borderRadius: 8,
-    marginTop: 20,
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.medium,
+    borderRadius: theme.radius.semiCircle,
+    marginTop: theme.spacing.medium,
     width: '100%',
     alignItems: 'center',
   },
   modalButtonText: {
-    color: '#fff',
-    fontSize: 16,
+    color: theme.colors.buttonText,
+    fontSize: theme.fonts.size.medium,
   },
   cancelButton: {
-    backgroundColor: '#ff4d4d',
+    backgroundColor: theme.colors.primary,
   },
   addSportContainer: {
     flex:1
-  }
+  },
+  
 });
 
-const pickerSelectStyles = StyleSheet.create({
+const pickerSelectStyles = (theme) => StyleSheet.create({
   inputIOS: {
     fontSize: 16,
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: theme.colors.text,
     borderRadius: 4,
-    color: '#333',
+    color: theme.colors.text,
     marginBottom: 20,
   },
   inputAndroid: {
@@ -177,9 +184,9 @@ const pickerSelectStyles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: theme.colors.text,
     borderRadius: 4,
-    color: '#333',
+    color: theme.colors.text,
     marginBottom: 20,
   },
 });

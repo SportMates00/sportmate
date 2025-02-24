@@ -1,8 +1,11 @@
 import { View,Image, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import players from '../../../../../assets/images/favicon.png'
+import { useTheme } from '@/app/theme/themeContext';
 
 const PlayersComp = ({event}) => {
+    const { theme } = useTheme(); // Get current theme and toggle (if needed)
+    const styles = getStyles(theme); // Generate dynamic styles based on current theme
   return (
     <View style={styles.playersSection}>
       {(event.teamA?.length && event.teamB.length) === 1 ? (
@@ -52,15 +55,16 @@ const PlayersComp = ({event}) => {
   )
   };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   playersSection: {
-    padding: 20,
+    padding: theme.spacing.large,
     gap: 10,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: theme.fonts.size.medium,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: theme.spacing.small,
+    color:theme.colors.text
   },
   playersRow: {
     flexDirection: "row",
@@ -78,11 +82,12 @@ const styles = StyleSheet.create({
   playerImage: {
     width: 50,
     height: 50,
-    borderRadius: 25,
+    borderRadius: theme.radius.circle,
   },
   playerName: {
-    marginTop: 5,
-    fontSize: 14,
+    marginTop: theme.spacing.small,
+    fontSize: theme.fonts.size.medium,
+    color:theme.colors.text
   },
 });
 

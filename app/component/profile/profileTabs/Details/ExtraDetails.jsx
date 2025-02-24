@@ -1,7 +1,10 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
+import { useTheme } from '@/app/theme/themeContext';
 
 const ExtraDetails = ({event}) => {
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   return (
     <View>
       <View style={styles.section}>
@@ -28,20 +31,21 @@ const ExtraDetails = ({event}) => {
   )
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
     section: {
         padding: 20,
         borderBottomWidth: 1,
-        borderBottomColor: "#eee",
+        borderBottomColor: "red",
       },
       sectionTitle: {
-        fontSize: 18,
+        fontSize: theme.fonts.size.large,
         fontWeight: "bold",
         marginBottom: 5,
+        color: theme.colors.text,
       },
       sectionValue: {
-        fontSize: 16,
-        color: "#555",
+        fontSize: theme.fonts.size.medium,
+        color: theme.colors.text,
       },
 });
 

@@ -7,11 +7,13 @@ import { useDispatch } from "react-redux";
 import { profileCompletePer } from "@/app/store/userSlice";
 import ProfileCompletion from './ProfileCompletion';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '@/app/theme/themeContext';
 
 const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
-  
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   // Track which fields have already been counted
   const [countedFields, setCountedFields] = useState({
     age: loggedUser.profileInfo.age !== '',
@@ -84,10 +86,10 @@ const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
           <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
-              <Ionicons name="close" size={24} color="#333" />
+              <Ionicons name="close" size={24} color={theme.colors.text} />
             </TouchableOpacity>
-          <Text style={{color:'black', fontSize:22, paddingInline:20}}>Profile Completion</Text>
-          <Text style={{paddingInline:20, marginBottom:20, marginTop:10}}>Complete your profile to be able to join and create events</Text>
+          <Text style={{color:theme.colors.text, fontSize:22, paddingInline:20}}>Profile Completion</Text>
+          <Text style={{color:theme.colors.text,paddingInline:20, marginBottom:20, marginTop:10}}>Complete your profile to be able to join and create events</Text>
             {/* Close Button */}
           
             
@@ -101,7 +103,7 @@ const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
                 progress={progressPercentage}
                 width={null}
                 height={10}
-                borderRadius={5}
+                borderRadius={theme.radius.semiCircle}
                 color="#fff"
                 unfilledColor="rgba(255, 255, 255, 0.3)"
                 borderWidth={0}
@@ -117,41 +119,40 @@ const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   progressCard: {
-    backgroundColor: "#00AEEF",
-    borderRadius: 12,
-    padding: 16,
-    marginHorizontal: 20,
-    marginTop: 10,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.radius.semiCircle,
+    padding: theme.spacing.medium,
+    marginHorizontal: theme.spacing.medium,
+    marginTop: theme.spacing.small,
   },
   progressHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 8,
+    marginBottom: theme.spacing.small,
   },
   progressTitle: {
-    fontSize: 14,
+    fontSize: theme.fonts.size.medium,
     fontWeight: "bold",
-    color: "#fff",
+    color: theme.colors.buttonText,
   },
   progressPercentage: {
-    fontSize: 14,
+    fontSize: theme.fonts.size.medium,
     fontWeight: "bold",
-    color: "#fff",
+    color: theme.colors.buttonText,
   },
   progressBar: {
     height: 10,
-    borderRadius: 5,
+    borderRadius: theme.radius.semiCircle,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0, 0, 0, 0.4)",
     justifyContent: "flex-end",
   },
   modalContainer: {
     height: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: theme.colors.background,
     padding: 20,
     elevation: 10,
     shadowColor: "#000",

@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useTheme } from '@/app/theme/themeContext';
+import { useNavigation } from '@react-navigation/native';
 
-const ProfileViewers = ({ navigation }) => {
+const ProfileViewers = () => {
+
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   // Sample viewer data (In a real app, this would come from an API or backend)
   const [viewers, setViewers] = useState([
     {
@@ -24,12 +29,23 @@ const ProfileViewers = ({ navigation }) => {
       timestamp: '2 hours ago',
     },
   ]);
-
+  const navigation = useNavigation();
   // Handle navigating to viewer's profile page
   const handleNavigateToViewerProfile = (viewerId) => {
     navigation.navigate('ViewerProfile', { viewerId });
   };
-
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerStyle: {
+        backgroundColor: theme.colors.background,
+      },
+      headerTintColor: theme.colors.text,
+      headerTitleStyle: {
+        color: theme.colors.text,      
+      },
+      headerTitleAlign: 'center',
+    });
+  }, [navigation]);
   // Render each viewer's data
   const renderViewerItem = ({ item }) => (
     <TouchableOpacity
@@ -37,7 +53,7 @@ const ProfileViewers = ({ navigation }) => {
       onPress={() => handleNavigateToViewerProfile(item.id)}
     >
       <LinearGradient
-        colors={['#6a11cb', '#2575fc']}
+        colors={['#4CAF50', '#46C666']}
         style={styles.cardBackground}
       >
         <View style={styles.cardContent}>
@@ -60,7 +76,6 @@ const ProfileViewers = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Profile Viewers</Text>
       {viewers.length === 0 ? (
         renderEmptyState()
       ) : (
@@ -74,40 +89,34 @@ const ProfileViewers = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f7f7',
-    padding: 20,
-  },
-  header: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
-    textAlign: 'center',
+    backgroundColor: theme.colors.background,
+    padding: theme.spacing.medium,
+    paddingTop:theme.spacing.large
   },
   viewerItem: {
-    marginBottom: 20,
+    marginBottom: theme.spacing.medium,
   },
   cardBackground: {
-    borderRadius: 15,
+    borderRadius: theme.radius.semiCircle,
     overflow: 'hidden',
-    shadowColor: '#000',
+    shadowColor: theme.colors.text,
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.1,
-    shadowRadius: 5,
+    shadowRadius: theme.radius.semiCircle,
   },
   cardContent: {
     flexDirection: 'row',
-    padding: 15,
+    padding: theme.spacing.medium,
     alignItems: 'center',
   },
   viewerImage: {
     width: 60,
     height: 60,
-    borderRadius: 30,
-    marginRight: 15,
+    borderRadius: theme.radius.circle,
+    marginRight: theme.spacing.medium,
     borderWidth: 2,
     borderColor: '#fff',
     shadowColor: '#000',
@@ -119,24 +128,24 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   viewerName: {
-    fontSize: 18,
+    fontSize: theme.fonts.size.large,
     fontWeight: '600',
-    color: '#fff',
+    color: theme.colors.buttonText,
   },
   viewerTimestamp: {
-    fontSize: 14,
-    color: '#ddd',
+    fontSize: theme.fonts.size.medium,
+    color: theme.colors.buttonText,
     marginTop: 5,
   },
   emptyState: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 30,
+    marginTop: theme.spacing.large,
   },
   emptyStateText: {
-    fontSize: 16,
-    color: '#aaa',
+    fontSize: theme.fonts.size.medium,
+    color: theme.colors.text,
   },
 });
 

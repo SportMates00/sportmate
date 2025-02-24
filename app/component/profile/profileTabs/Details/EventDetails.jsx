@@ -11,10 +11,12 @@ import { Ionicons } from "@expo/vector-icons";
 import FbBg from "../../../../../assets/images/favicon.png";
 import PlayersComp from "./PlayersComp";
 import ExtraDetails from "./ExtraDetails";
+import { useTheme } from "@/app/theme/themeContext";
 
 const EventDetails = ({ event, onBack }) => {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   return (
     <View>
       {/* Button to open the modal */}
@@ -54,17 +56,17 @@ const EventDetails = ({ event, onBack }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   button: {
-    backgroundColor: "#FF6F61",
+    backgroundColor: theme.colors.primary,
     paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: theme.radius.semiCircle,
     marginTop: 12,
     alignItems: "center",
     marginHorizontal: 20,
   },
   buttonText: {
-    color: "#fff",
+    color:theme.colors.buttonText,
     fontSize: 16,
     fontWeight: "600",
   },
@@ -73,14 +75,14 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: theme.colors.background,
     overflow: "hidden",
     borderRadius: 0,
   },
   headerContainer: {
     width: "100%",
     height: 250,
-    backgroundColor: "#ccc", // fallback color
+    backgroundColor: theme.colors.background, // fallback color
     position: "relative",
   },
   headerBackground: {
@@ -94,23 +96,23 @@ const styles = StyleSheet.create({
     left:20
   },
   statusText: {
-    color: "white",
+    color: theme.colors.buttonText,
     fontWeight: "bold",
-    backgroundColor:'green',
+    backgroundColor:theme.colors.primary,
     width:80,
     textAlign:'center',
-    padding:5,
-    fontSize: 14,
+    padding:theme.spacing.small,
+    fontSize: theme.fonts.size.medium,
   },
   eventTitle: {
-    color: "red",
+    color: theme.colors.text,
     fontSize: 22,
     fontWeight: "bold",
     marginTop: 8,
   },
   eventDate: {
-    color: "red",
-    fontSize: 16,
+    color: theme.colors.text,
+    fontSize: theme.fonts.size.medium,
   },
 });
 

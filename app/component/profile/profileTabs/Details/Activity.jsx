@@ -3,9 +3,11 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import favicon from "@/assets/images/profilepicture.png";
 import EventDetails from "./EventDetails";
+import { useTheme } from "@/app/theme/themeContext";
 
 const Activity = ({loggedUser}) => {
-
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   let completedEvents = loggedUser.profileInfo.completedEvents;
   return (
     <View style={styles.container}>
@@ -17,7 +19,7 @@ const Activity = ({loggedUser}) => {
             (
             <View key={item.date} style={styles.card}>
               <View style={styles.topRow}>
-                <FontAwesome5 name={item.sport === "Football" ? "futbol" : "table-tennis"} size={30} color="#FF6F61" style={styles.sportIcon} />
+                <FontAwesome5 name={item.sport === "Football" ? "futbol" : "table-tennis"} size={30} color={theme.colors.primary} style={styles.sportIcon} />
                 <Text style={styles.date}>{item.date}</Text>
               </View>
               <View style={styles.teamContainer}>
@@ -64,27 +66,27 @@ const Activity = ({loggedUser}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8F9FB",
-    padding: 16,
+    backgroundColor: theme.colors.background,
+    padding: theme.spacing.medium,
   },
   noEvents: {
-    fontSize: 18,
-    color: "#6C757D",
+    fontSize: theme.fonts.size.medium,
+    color: theme.colors.text,
     textAlign: "center",
     marginTop: 50,
   },
   card: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 12,
-    padding: 20,
-    marginBottom: 16,
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.radius.semiCircle,
+    padding: theme.spacing.medium,
+    marginBottom: theme.spacing.medium,
     elevation: 4,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
+    shadowColor: theme.colors.text,
+    shadowOpacity: 0.5,
+    shadowRadius: theme.radius.semiCircle,
   },
   topRow: {
     flexDirection: "row",
@@ -92,19 +94,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   sportIcon: {
-    marginLeft: 10,
+    marginLeft: theme.spacing.small,
   },
   date: {
-    fontSize: 16,
+    fontSize: theme.fonts.size.medium,
     fontStyle: "italic",
-    color: "#FF6F61",
+    color: theme.colors.primary,
     fontWeight: "bold",
   },
   teamContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginVertical: 16,
+    marginVertical: theme.spacing.medium,
   },
   teamWrapper: {
     width: "40%",
@@ -116,52 +118,42 @@ const styles = StyleSheet.create({
   },
   playerContainer: {
     alignItems: "center",
-    marginVertical: 5,
+    marginVertical: theme.spacing.small,
   },
   profilePhoto: {
     width: 45,
     height: 45,
-    borderRadius: 22.5,
+    borderRadius: theme.radius.circle,
   },
   playerName: {
-    fontSize: 14,
+    fontSize: theme.fonts.size.medium,
     fontWeight: "500",
-    marginTop: 4,
     textAlign: "center",
+    marginTop: theme.spacing.small,
+    color:theme.colors.text
   },
   teamName: {
-    fontSize: 18,
+    fontSize: theme.fonts.size.medium,
     fontWeight: "bold",
+    color:theme.colors.text
   },
   vsText: {
-    fontSize: 20,
+    fontSize: theme.fonts.size.large,
     fontWeight: "bold",
-    color: "#FF6F61",
+    color: theme.colors.primary,
   },
   detailsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 8,
+    marginVertical: theme.spacing.small,
   },
   location: {
-    fontSize: 16,
+    fontSize: theme.fonts.size.medium,
     fontWeight: "500",
   },
   cityRegion: {
-    fontSize: 16,
-    color: "#6C757D",
-  },
-  button: {
-    backgroundColor: "#FF6F61",
-    paddingVertical: 12,
-    borderRadius: 8,
-    marginTop: 12,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
+    fontSize: theme.fonts.size.medium,
+    color: theme.colors.text,
   },
 });
 

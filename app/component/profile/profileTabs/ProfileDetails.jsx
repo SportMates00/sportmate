@@ -4,10 +4,12 @@ import About from './About';
 import Sports from './Sports/Sports';
 import Activity from './Details/Activity';
 import Reviews from './Reviews';
+import { useTheme } from '@/app/theme/themeContext';
 
 export default function ProfileDetails({loggedUser}) {
   const [activeTab, setActiveTab] = useState('About'); // Default to "About"
-
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   const tabs = ["About", "Sports", "Reviews", "Activity"];
 
   return (
@@ -50,29 +52,29 @@ export default function ProfileDetails({loggedUser}) {
   );
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
     flex:1,
-    backgroundColor: 'white',
-    padding: 16,
+    backgroundColor: theme.colors.background,
+    padding: theme.spacing.medium,
     height:'100%'
   },
   tabRow: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: theme.spacing.small,
   },
   tabButton: {
-    paddingVertical: 8,
+    paddingVertical: theme.spacing.small,
   },
   tabText: {
-    fontSize: 16,
-    color: '#444',
+    fontSize: theme.fonts.size.medium,
+    color: theme.colors.text,
   },
   activeTabText: {
     fontWeight: 'bold',
-    color: '#007BFF', // Highlighted text color
+    color: theme.colors.primary, // Highlighted text color
   },
   indicatorRow: {
     flexDirection: 'row',
@@ -86,15 +88,11 @@ const styles = StyleSheet.create({
     marginHorizontal: 2,
   },
   activeIndicator: {
-    backgroundColor: '#007BFF', // Light blue for active
+    backgroundColor: theme.colors.primary, // Light blue for active
   },
   contentArea: {
     flex:1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  contentText: {
-    fontSize: 18,
-    color: '#333',
   },
 });

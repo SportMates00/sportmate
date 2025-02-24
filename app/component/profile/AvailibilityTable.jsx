@@ -1,3 +1,4 @@
+import { useTheme } from "@/app/theme/themeContext";
 import React from "react";
 import {
   View,
@@ -7,6 +8,8 @@ import {
 
 const AvailabilityTable = ({loggedUser}) => {
 
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   const days = Object.keys(loggedUser.profileInfo.availability);
   const times = Object.keys(loggedUser.profileInfo.availability[days[0]]);
   return (
@@ -42,43 +45,39 @@ const AvailabilityTable = ({loggedUser}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
-    backgroundColor: "white",
-  },
-  loadingText: {
-    fontSize: 16,
-    color: "#666",
-    textAlign: "center",
+    backgroundColor: theme.colors.background,
   },
   heading: {
-    fontSize: 18,
-    marginBottom: 16,
-    fontWeight:'bold'
+    fontSize: theme.fonts.size.large,
+    marginBottom: theme.spacing.medium,
+    fontWeight:'bold',
+    color:theme.colors.text
   },
   table: {
     borderWidth: 1,
     borderColor: "#ccc",
-    borderRadius: 8,
+    borderRadius: theme.radius.semiCircle,
     overflow: "hidden",
   },
   row: {
     flexDirection: "row",
   },
   cell: {
-    width: 40,
-    height: 40,
+    flexGrow:1,
+    height: '100%',
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
     borderColor: "#ccc",
   },
   selectedCell: {
-    backgroundColor: "#00bcd4",
+    backgroundColor: theme.colors.primary,
   },
   headerCell: {
-    width: 40,
-    height: 40,
+    flex:1,
+    height: '100%',
     textAlign: "center",
     justifyContent: "center",
     alignItems: "center",
@@ -86,7 +85,8 @@ const styles = StyleSheet.create({
     lineHeight: 40,
     borderWidth: 1,
     borderColor: "#ccc",
-  },
+    color:theme.colors.text
+  }
 });
 
 export default AvailabilityTable;

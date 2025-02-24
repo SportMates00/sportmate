@@ -1,8 +1,11 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AvailabilityTable from '../AvailibilityTable'
+import { useTheme } from '@/app/theme/themeContext';
 const About = ({loggedUser}) => {
 
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   const [rating, setRating] = useState(0);
   useEffect(() => {
     const level = loggedUser.profileInfo.level
@@ -17,7 +20,7 @@ const About = ({loggedUser}) => {
   },[])
   return (
 
-    <View>
+    <View style={{backgroundColor:theme.colors.background, width:'100%'}}>
       <View style={styles.row}>
         {/* Age Column */}
         <View style={styles.column}>
@@ -37,31 +40,31 @@ const About = ({loggedUser}) => {
         </View>
       </View>
       {/* Sport Column*/}
-      <View style={{paddingTop:30, paddingBottom:30}}>
-        <Text style={{fontWeight:'bold',fontSize:18}}>Sport</Text>
-        <View style={{paddingTop:20,flexDirection:'row', alignItems:'center',alignContent:'center'}}>
-          <Text>{loggedUser.profileInfo.sport} : </Text>
+      <View style={styles.sport}>
+        <Text style={styles.sportText}>Sport</Text>
+        <View style={styles.sportInfo}>
+          <Text style={styles.sportInfoText}>{loggedUser.profileInfo.sport} : </Text>
           <Text>{rating}</Text>
         </View>
       </View>
-      <View style={{marginBottom:20,gap:20}}>
-        <Text style={{fontWeight:'bold',fontSize:16}}>About me</Text>
-        <Text>{loggedUser.profileInfo.aboutMe !== '' ? loggedUser.profileInfo.aboutMe : 'Nothing is written...'}</Text>
+      <View style={styles.sport}>
+        <Text style={[styles.sportText,{paddingBottom:20}]}>About me</Text>
+        <Text style={styles.sportInfoText}>{loggedUser.profileInfo.aboutMe !== '' ? loggedUser.profileInfo.aboutMe : 'Nothing is written...'}</Text>
       </View>
       <AvailabilityTable loggedUser={loggedUser}/>
     </View>
   )
 }
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   row: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingTop: 0,
     borderBottomWidth:1,
     borderBottomColor:'silver',
-    paddingTop:20,
-    paddingBottom:20,
+    paddingTop:theme.spacing.medium,
+    paddingBottom:theme.spacing.medium,
   },
   column: {
     alignItems: 'center',
@@ -69,11 +72,17 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: theme.fonts.size.medium,
+    color:theme.colors.text
   },
   value: {
-    fontSize: 14,
+    color:theme.colors.text,
+    fontSize: theme.fonts.size.medium,
   },
+  sport: {paddingTop:theme.spacing.medium, paddingBottom:theme.spacing.medium},
+  sportText: {fontWeight:'bold',fontSize:theme.fonts.size.large, color:theme.colors.text},
+  sportInfo: {paddingTop:20,flexDirection:'row', alignItems:'center',alignContent:'center'},
+  sportInfoText: {color:theme.colors.text}
 });
 
 export default About

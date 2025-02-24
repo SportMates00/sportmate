@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { useTheme } from '@/app/theme/themeContext';
 
 const ReviewsTab = ({loggedUser}) => {
   // Dummy data for reviews
   const reviews = loggedUser.profileInfo.reviews;
-
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   const averageRating = reviews.length
     ? (reviews.reduce((total, review) => total + review.stars, 0) / reviews.length).toFixed(2)
     : 0;
@@ -44,75 +46,77 @@ const ReviewsTab = ({loggedUser}) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#fff',
+    padding: theme.spacing.medium,
+    backgroundColor: theme.colors.background,
   },
   ratingBlock: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginVertical: 20,
-    padding: 20,
-    borderRadius: 15,
-    backgroundColor: '#f7f7f7',
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  ratingText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 10,
-    color: '#333',
-  },
-  reviewsBlock: {
-    flex: 1,
-    marginTop: 20,
-  },
-  reviewsTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 15,
-    textAlign: 'left',
-    color: '#333',
-  },
-  noReviewsText: {
-    fontSize: 16,
-    color: '#777',
-    textAlign: 'center',
-    marginTop: 20,
-  },
-  reviewCard: {
-    marginBottom: 15,
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: '#fff',
+    marginVertical: theme.spacing.medium,
+    padding: theme.spacing.medium,
+    borderRadius: theme.radius.semiCircle,
+    backgroundColor: theme.colors.background,
     borderWidth: 1,
     borderColor: '#ddd',
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 3,
+    shadowRadius: theme.radius.semiCircle,
+    elevation: 2,
+  },
+  ratingText: {
+    fontSize: theme.fonts.size.large,
+    fontWeight: 'bold',
+    marginTop: theme.spacing.medium,
+    color: theme.colors.text,
+  },
+  reviewsBlock: {
+    flex: 1,
+    marginTop: theme.spacing.medium,
+  },
+  reviewsTitle: {
+    fontSize: theme.fonts.size.large,
+    fontWeight: 'bold',
+    marginBottom: theme.spacing.medium,
+    textAlign: 'left',
+    color: theme.colors.text,
+  },
+  noReviewsText: {
+    fontSize: theme.fonts.size.medium,
+    color: theme.colors.text,
+    textAlign: 'center',
+    marginTop: theme.spacing.medium,
+  },
+  reviewCard: {
+    marginBottom: theme.spacing.medium,
+    padding: theme.spacing.medium,
+    borderRadius: theme.radius.semiCircle,
+    backgroundColor: theme.colors.background,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: theme.radius.semiCircle,
     elevation: 2,
   },
   reviewHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 5,
+    marginBottom: theme.spacing.small,
   },
   reviewStars: {
-    fontSize: 16,
-    marginLeft: 5,
-    color: '#333',
+    fontSize: theme.fonts.size.medium,
+    marginLeft: theme.spacing.small,
+    color: theme.colors.text,
     fontWeight: '600',
   },
   reviewText: {
-    fontSize: 16,
-    color: '#555',
+    fontSize: theme.fonts.size.medium,
+    color: theme.colors.text,
     lineHeight: 22,
   },
 });

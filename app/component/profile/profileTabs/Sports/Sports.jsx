@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AddSport from '../Sports/AddSport';
 import { useState } from 'react';
 import EditSports from './EditSports';
+import { useTheme } from '@/app/theme/themeContext';
 
 const sportImages = {
   Football: require('../../../../../assets/images/football.png'),
@@ -12,6 +13,9 @@ const sportImages = {
 };
 
 const Sports = ({ loggedUser }) => {
+
+  const { theme } = useTheme(); // Get current theme and toggle (if needed)
+  const styles = getStyles(theme); // Generate dynamic styles based on current theme
   const [sport, setSport] = useState({sport:'',level:''});
   const [userInfo, setUserInfo] = useState(loggedUser);
   const [openEditSport, setOpenEditSport] = useState(false)
@@ -54,9 +58,9 @@ const Sports = ({ loggedUser }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
-    marginTop: 40,
+    marginTop: theme.spacing.large,
     flex: 1,
     display:'flex',
     flexDirection:'row',
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
   card: {
     width: '44%',
     aspectRatio: 1.2,
-    borderRadius: 10,
+    borderRadius: theme.radius.semiCircle,
     overflow: 'hidden',
     position: 'relative',
   },
