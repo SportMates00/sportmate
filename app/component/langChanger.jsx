@@ -2,11 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '../theme/themeContext';
 
 const LangChanger = ({style,iconContainer,text}) => {
   const { t, i18n } = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
-
+  const {theme} = useTheme();
   const handleLanguageChange = (value) => {
     i18n.changeLanguage(value);
     setModalVisible(false); // Close the modal after language selection
@@ -21,9 +22,9 @@ const LangChanger = ({style,iconContainer,text}) => {
         accessibilityLabel="Change Language"
       >
         <Text>
-          <Fontisto name="world" size={24} color="black" />
+          <Fontisto name="world" size={theme.fonts.size.xLarge} color={theme.colors.text} />
         </Text>
-        {text === '' ? '' : <Text>{text}</Text>}
+        {text === '' ? '' : <Text style={{fontSize:theme.fonts.size.medium,color:theme.colors.text}}>{text}</Text>}
       </TouchableOpacity>
       <Modal
         visible={modalVisible}

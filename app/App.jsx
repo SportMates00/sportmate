@@ -18,8 +18,8 @@ import {store} from './store/store';
 import Activity from './(tabs)/Activity';
 import EditProfile from './component/profile/menutab/editprofile/EditProfile';
 import Settings from './component/profile/menutab/Settings/Settings';
-import VerifyAccount from './component/profile/menutab/Settings/VerifyAccount';
-import ChangePassword from './component/profile/menutab/Settings/ChangePassword';
+import VerifyAccount from './component/profile/menutab/Settings/top settings/VerifyAccount';
+import ChangePassword from './component/profile/menutab/Settings/top settings/ChangePassword';
 import ContactUs from './component/profile/menutab/Settings/ContactUs';
 import PrivacyPolicy from './component/profile/menutab/Settings/PrivacyPolicy';
 import TermConditions from './component/profile/menutab/Settings/TermsConditions';
@@ -48,7 +48,7 @@ export default function App() {
             <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
             <Stack.Screen name='ShareProfile' component={ShareProfile} options={{headerShown: true, title:''}} />
             <Stack.Screen name='EditProfile' component={EditProfile} options={{headerShown: false}} />
-            <Stack.Screen name='Settings' component={Settings} />
+            <Stack.Screen name='Settings' component={Settings}/>
             <Stack.Screen name='Reviews' component={Reviews} />
             <Stack.Screen name='ProfileViewers' component={ProfileViewers} options={{title:'Profile Viewers'}} />
             <Stack.Screen name='LangChanger' component={LangChanger} />

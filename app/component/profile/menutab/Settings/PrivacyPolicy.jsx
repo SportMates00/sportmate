@@ -1,10 +1,36 @@
-import React from 'react';
-import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import { useTheme } from '@/app/theme/themeContext';
+import { useNavigation } from '@react-navigation/native';
+import { View, Text, ScrollView, StyleSheet ,Platform} from 'react-native';
 
 const PrivacyPolicy = () => {
+    const {theme} = useTheme();
+    const styles = getStyles(theme);
+    const navigation = useNavigation();
+    useLayoutEffect(() => {
+        navigation.setOptions({
+          headerShadowVisible: false,
+              headerStyle: Platform.OS == 'web' ? {
+                borderBottom: 'none',
+                boxShadow: 'none',
+              } : {
+                borderBottomWidth: 0,
+                elevation: 0,
+                shadowOpacity: 0,
+              },
+          headerStyle: {
+            backgroundColor:theme.colors.background,
+          },
+          headerTintColor: theme.colors.text,
+          headerTitleStyle: {
+            color: theme.colors.text,
+            fontSize:theme.fonts.size.large
+          },
+          headerTitleAlign: 'center',
+        });
+      }, [navigation]);
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Privacy Policy</Text>
 
       <Text style={styles.sectionTitle}>1. Introduction</Text>
       <Text style={styles.text}>
@@ -51,36 +77,36 @@ const PrivacyPolicy = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: theme.colors.background,
   },
   header: {
-    fontSize: 24,
+    fontSize: theme.fonts.size.large,
     fontWeight: 'bold',
-    color: '#333',
+    color: theme.colors.text,
     textAlign: 'center',
     marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#444',
+    color: theme.colors.text,
     marginTop: 20,
     marginBottom: 10,
   },
   text: {
     fontSize: 14,
     lineHeight: 22,
-    color: '#666',
+    color: theme.colors.text,
   },
   footer: {
     marginTop: 30,
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#007aff',
+    color: theme.colors.primary,
     textAlign: 'center',
   },
 });

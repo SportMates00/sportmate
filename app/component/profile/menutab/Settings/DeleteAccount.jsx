@@ -1,15 +1,41 @@
 import { deleteAccount } from '@/app/store/userSlice';
+import { useTheme } from '@/app/theme/themeContext';
 import { CommonActions, useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 const DeleteAccount = () => {
+        const {theme} = useTheme();
+        const styles = getStyles(theme);
+        const navigation = useNavigation();
+        useLayoutEffect(() => {
+            navigation.setOptions({
+              headerShadowVisible: false,
+                  headerStyle: Platform.OS == 'web' ? {
+                    borderBottom: 'none',
+                    boxShadow: 'none',
+                  } : {
+                    borderBottomWidth: 0,
+                    elevation: 0,
+                    shadowOpacity: 0,
+                  },
+              headerStyle: {
+                backgroundColor:theme.colors.background,
+              },
+              headerTintColor: theme.colors.text,
+              headerTitleStyle: {
+                color: theme.colors.text,
+                fontSize:theme.fonts.size.large
+              },
+              headerTitleAlign: 'center',
+              headerTitle:'Delete Account'
+            });
+          }, [navigation]);
   const [confirmText, setConfirmText] = useState('');
   const [password, setPassword] = useState('');
   const loggedUser = useSelector((state) => state.user);
   const dispatch = useDispatch();
-  const navigation = useNavigation();
   const handleDelete = () => {
     if (confirmText.toLowerCase() !== 'delete') {
       Alert.alert('Error', 'Please type "DELETE" to confirm.');
@@ -46,7 +72,6 @@ const DeleteAccount = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Delete Your Account</Text>
       <Text style={styles.warningText}>
         Warning: Deleting your account will permanently remove all your data and cannot be undone.
       </Text>
@@ -79,19 +104,13 @@ const DeleteAccount = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.background,
     padding: 20,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  header: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
   },
   warningText: {
     fontSize: 16,
@@ -103,17 +122,20 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginTop: 20,
     marginBottom: 5,
+    color:theme.colors.text
   },
   input: {
     width: '80%',
-    padding: 10,
-    borderColor: '#ccc',
     borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 15,
+    borderColor: '#ccc',
+    borderRadius: theme.radius.semiCircle,
+    padding: 10,
+    fontSize: 16,
+    marginBottom: 20,
+    backgroundColor: '#f9f9f9',
   },
   deleteButton: {
-    backgroundColor: 'red',
+    backgroundColor: theme.colors.primary,
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 5,
@@ -130,7 +152,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   cancelButtonText: {
-    color: 'blue',
+    color:theme.colors.primary,
     fontSize: 16,
     fontWeight: 'bold',
   },

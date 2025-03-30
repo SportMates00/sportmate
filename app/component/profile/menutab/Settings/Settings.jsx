@@ -1,47 +1,28 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Switch, StyleSheet, Alert, ScrollView, Platform } from 'react-native';
+import React, { useLayoutEffect } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView, Platform, Image } from 'react-native';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import Feather from '@expo/vector-icons/Feather';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import Entypo from '@expo/vector-icons/Entypo';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-import LangChanger from '@/app/component/LangChanger';
 import { useDispatch } from 'react-redux';
 import { resetUserInfo } from '@/app/store/userSlice';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../../../theme/themeContext';
+import TopSettings from './top settings/TopSettings';
+import BottomSettings from './bottom settings/BottomSettings';
+import contact from '../../../../../assets/images/contact.png'
 
 const Settings = () => {
-  const [isModalVisible, setModalVisible] = useState(false);
-  const openModal = () => setModalVisible(true);
-  const closeModal = () => setModalVisible(false);
+
   const navigation = useNavigation();
-  const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const dispatch = useDispatch();
   const {theme} = useTheme();
-  const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  const { mode } = useTheme();
+  const styles = getStyles(theme,mode); // Generate dynamic styles based on current theme
   // Use the ThemeContext to get the current mode and toggle function.
   // No local dark mode state needed.
-  const { mode, toggleTheme } = useTheme();
-
-  const handleVerification = () => {
-    navigation.navigate('VerifyAccount');
-  };
-
-  const handleChangePassword = () => {
-    navigation.navigate('ChangePassword');
-  };
+  
 
   const handleContactUs = () => {
     navigation.navigate('ContactUs');
-  };
-
-  const handlePrivacyPolicy = () => {
-    navigation.navigate('PrivacyPolicy');
-  };
-
-  const handleTermsConditions = () => {
-    navigation.navigate('TermsConditions');
   };
   
   const handleLogout = () => {
@@ -74,157 +55,84 @@ useLayoutEffect(() => {
             shadowOpacity: 0,
           },
       headerStyle: {
-        backgroundColor: theme.colors.background,
+        backgroundColor:mode == 'dark' ? 'rgb(65, 147, 42)' : 'rgb(177, 250, 156)',
       },
       headerTintColor: theme.colors.text,
       headerTitleStyle: {
         color: theme.colors.text,
+        fontSize:theme.fonts.size.large
       },
+      headerTitleAlign: 'center',
     });
   }, [navigation,mode]);
 
-  const iconContainer = {
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 10,
-    alignItems: 'center',
-    width: '100%',
-    backgroundColor: theme.colors.background,
-    marginRight: theme.spacing.medium,
-    borderRadius: theme.radius.circle,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: theme.radius.semiCircle,
-  };
-
+ 
   return (
     <ScrollView style={styles.container}>
       {/* Account Settings */}
-      <Text style={styles.sectionHeader}>Account Settings</Text>
-      <TouchableOpacity onPress={handleVerification} style={styles.option}>
-        <View style={styles.optionRow}>
-          <MaterialIcons name="verified-user" size={24} color="black" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Verify Your Account</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleChangePassword} style={styles.option}>
-        <View style={styles.optionRow}>
-          <Feather name="lock" size={24} color="black" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Change Password</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Preferences */}
-      <Text style={styles.sectionHeader}>Preferences</Text>
-      <TouchableOpacity onPress={openModal} style={styles.option}>
-        <View style={styles.optionRow}>
-          <LangChanger iconContainer={iconContainer} text={'Select language'} isModalVisible={isModalVisible} closeModal={closeModal} />
-        </View>
-      </TouchableOpacity>
-
-      <View style={styles.option}>
-        <View style={styles.optionRow}>
-          <MaterialIcons name="dark-mode" size={24} color="black" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Dark Mode</Text>
-        </View>
-        <Switch
-          value={mode === 'dark'}  // Switch is on if the current mode is 'dark'
-          onValueChange={toggleTheme}  // Toggle theme and persist change
-        />
+      <View style={styles.contactContainer}>
+        <Image style={styles.contactImage} source={contact}/>
+        <TouchableOpacity onPress={handleContactUs} style={styles.contactButton}>
+          <Text style={styles.contactText}>
+            Contact support
+          </Text>
+        </TouchableOpacity>
       </View>
-      <View style={styles.option}>
-        <View style={styles.optionRow}>
-          <Ionicons name="notifications" size={24} color="black" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Enable Notifications</Text>
+      <View style={{padding: theme.spacing.large,}}>
+        <TopSettings />
+        <BottomSettings />
+
+        <View style={{gap:20, paddingVertical:theme.spacing.large}}>
+          <TouchableOpacity onPress={handleLogout}>
+            <View style={styles.optionRow}>
+              <SimpleLineIcons style={styles.test} name="logout" size={theme.fonts.size.xLarge} color={theme.colors.text} />
+              <Text style={styles.optionText}>Log Out</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleDeleteAccount}>
+            <View style={styles.optionRow}>
+              <MaterialIcons name="delete" style={styles.test} size={theme.fonts.size.xLarge} color={theme.colors.text} />
+              <Text style={[styles.optionText, { color: 'red' }]}>Delete My Account</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-        <Switch
-          value={notificationsEnabled}
-          onValueChange={(value) => setNotificationsEnabled(value)}
-        />
       </View>
-
-      {/* Support */}
-      <Text style={styles.sectionHeader}>Support</Text>
-      <TouchableOpacity onPress={handleContactUs} style={styles.option}>
-        <View style={styles.optionRow}>
-          <MaterialIcons name="support-agent" size={24} color="black" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Contact Us</Text>
-        </View>
-      </TouchableOpacity>
-      <View style={styles.option}>
-        <View style={styles.optionRow}>
-          <Entypo name="info" size={24} color="black" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Version Information</Text>
-        </View>
-        <Text style={styles.optionText}>1.0.0</Text>
-      </View>
-
-      {/* Legal */}
-      <Text style={styles.sectionHeader}>Legal</Text>
-      <TouchableOpacity onPress={handlePrivacyPolicy} style={styles.option}>
-        <View style={styles.optionRow}>
-          <MaterialIcons name="privacy-tip" size={24} color="black" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Privacy Policy</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleTermsConditions} style={styles.option}>
-        <View style={styles.optionRow}>
-          <MaterialIcons name="rule" size={24} color="black" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Terms & Conditions</Text>
-        </View>
-      </TouchableOpacity>
-
-      {/* Account Management */}
-      <Text style={styles.sectionHeader}>Account Management</Text>
-      <TouchableOpacity onPress={handleLogout} style={styles.option}>
-        <View style={styles.optionRow}>
-          <SimpleLineIcons name="logout" size={24} color="black" style={styles.optionIcon} />
-          <Text style={styles.optionText}>Log Out</Text>
-        </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleDeleteAccount} style={styles.option}>
-        <View style={styles.optionRow}>
-          <MaterialIcons name="delete-forever" size={24} color="black" style={styles.optionIcon} />
-          <Text style={[styles.optionText, { color: 'red' }]}>Delete My Account</Text>
-        </View>
-      </TouchableOpacity>
     </ScrollView>
   );
 };
 
-const getStyles = (theme) => StyleSheet.create({
+const getStyles = (theme,mode) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background,
-    padding: 20,
-  },
-  sectionHeader: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginVertical: 10,
-    color: '#333',
-  },
-  option: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
   },
   optionRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: 0,
-  },
-  optionIcon: {
-    marginRight: 10,
+    gap:20,
   },
   optionText: {
-    fontSize: 16,
-    color: '#555',
+    fontSize: theme.fonts.size.medium,
+    color: theme.colors.text,
   },
+  contactContainer:{
+    backgroundColor: mode == 'dark' ? 'rgb(65, 147, 42)' : 'rgb(177, 250, 156)',
+    alignItems:'center', 
+    gap:20,
+    paddingBottom:theme.spacing.large,
+  },
+  contactButton:{
+    backgroundColor:theme.colors.primary,
+    width:'65%',
+    height:40,
+    alignItems:'center',
+    justifyContent:'center',
+    borderRadius:theme.radius.semiCircle
+  },
+  contactImage:{width:'100%',height:300,resizeMode: 'contain'},
+  contactText:{
+    color:theme.colors.buttonText,
+    fontSize:theme.fonts.size.medium, }
 });
 
 export default Settings;

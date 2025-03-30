@@ -1,8 +1,35 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView, Linking } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView, Linking, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Icon Library
+import { useNavigation } from '@react-navigation/native';
+import { useTheme } from '@/app/theme/themeContext';
 
 const ContactUs = () => {
+      const {theme} = useTheme();
+      const styles = getStyles(theme);
+      const navigation = useNavigation();
+      useLayoutEffect(() => {
+          navigation.setOptions({
+            headerShadowVisible: false,
+                headerStyle: Platform.OS == 'web' ? {
+                  borderBottom: 'none',
+                  boxShadow: 'none',
+                } : {
+                  borderBottomWidth: 0,
+                  elevation: 0,
+                  shadowOpacity: 0,
+                },
+            headerStyle: {
+              backgroundColor:theme.colors.background,
+            },
+            headerTintColor: theme.colors.text,
+            headerTitleStyle: {
+              color: theme.colors.text,
+              fontSize:theme.fonts.size.large
+            },
+            headerTitleAlign: 'center',
+          });
+        }, [navigation]);
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -30,7 +57,6 @@ const ContactUs = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.header}>Contact Us</Text>
 
       <Text style={styles.label}>Name</Text>
       <TextInput
@@ -68,14 +94,14 @@ const ContactUs = () => {
         <Text style={styles.socialHeader}>Follow us on social media:</Text>
         <View style={styles.socialButtons}>
           <TouchableOpacity
-            style={[styles.socialButton, { backgroundColor: '#E1306C' }]} // Instagram button
+            style={[styles.socialButton, { backgroundColor: theme.colors.primary }]} // Instagram button
             onPress={() => handleSocialLink('https://www.instagram.com/yourpage')}
           >
             <Ionicons name="logo-instagram" size={30} color="white" />
             <Text style={styles.socialButtonText}>Instagram</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.socialButton, { backgroundColor: '#3b5998' }]} // Facebook button
+            style={[styles.socialButton, { backgroundColor: theme.colors.primary }]} // Facebook button
             onPress={() => handleSocialLink('https://www.facebook.com/yourpage')}
           >
             <Ionicons name="logo-facebook" size={30} color="white" />
@@ -87,28 +113,21 @@ const ContactUs = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: 'white',
-  },
-  header: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#333',
+    backgroundColor: theme.colors.background,
   },
   label: {
     fontSize: 16,
     marginBottom: 8,
-    color: '#555',
+    color: theme.colors.text,
   },
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 10,
+    borderRadius: theme.radius.semiCircle,
     padding: 10,
     fontSize: 16,
     marginBottom: 20,
@@ -119,14 +138,14 @@ const styles = StyleSheet.create({
     textAlignVertical: 'top',
   },
   button: {
-    backgroundColor: '#6a11cb',
+    backgroundColor: theme.colors.primary,
     padding: 15,
-    borderRadius: 10,
+    borderRadius: theme.radius.semiCircle,
     alignItems: 'center',
     marginTop: 10,
   },
   buttonText: {
-    color: 'white',
+    color: theme.colors.buttonText,
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -134,8 +153,10 @@ const styles = StyleSheet.create({
     marginTop: 40,
     alignItems: 'center',
     padding: 20,
-    borderRadius: 12,
+    borderRadius: theme.radius.semiCircle,
     backgroundColor: '#f0f4f7',
+    borderColor: '#ccc',
+    borderWidth:1
   },
   socialHeader: {
     fontSize: 18,
@@ -152,12 +173,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: 10,
-    borderRadius: 10,
+    borderRadius: theme.radius.semiCircle,
     width: '45%',
     justifyContent: 'center',
   },
   socialButtonText: {
-    color: 'white',
+    color: theme.colors.buttonText,
     fontSize: 16,
     fontWeight: '600',
     marginLeft: 8,
