@@ -4,7 +4,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'reac
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native'; // For navigation
 import Ionicons from '@expo/vector-icons/Ionicons';
-import LangChanger from '../LangChanger';
+import LangChanger from '../langChanger';
 import { users_list } from '@/app/js files/users';
 import { useSelector, useDispatch } from 'react-redux';
 import { setUserInfo } from '@/app/store/userSlice';

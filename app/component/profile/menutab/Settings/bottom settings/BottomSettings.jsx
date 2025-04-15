@@ -16,6 +16,9 @@ function BottomSettings() {
     const handleTermsConditions = () => {
         navigation.navigate('TermsConditions');
     };
+    const handleFindFriends = () => {
+      navigation.navigate('Players');
+    }
 
   return (
     <View style={styles.container}>
@@ -25,7 +28,7 @@ function BottomSettings() {
           <Text style={styles.optionText}>Rate Us</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={handleFindFriends}>
         <View style={styles.optionRow}>
           <MaterialIcons name="people" size={theme.fonts.size.xLarge} color={theme.colors.text} />
           <Text style={styles.optionText}>Find friends</Text>
