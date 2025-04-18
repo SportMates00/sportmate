@@ -1,16 +1,6 @@
 import React from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  Modal,
-  FlatList
-} from 'react-native';
+import {View,Text,StyleSheet,Image,TextInput,TouchableOpacity,ScrollView,Modal,FlatList} from 'react-native';
 import { useTheme } from '@/app/theme/themeContext';
 import { useState } from 'react';
 const Players = ({ navigation }) => {
@@ -19,7 +9,6 @@ const Players = ({ navigation }) => {
   const [activeFilter, setActiveFilter] = useState(null);
   const [selectedFilters, setSelectedFilters] = useState({});
   const [searchText, setSearchText] = useState('');
-
 
   const filterOptions = {
     Sport: ['Football', 'Basketball', 'Tennis'],
@@ -304,11 +293,11 @@ const getStyles = (theme) => StyleSheet.create({
     borderRadius: 5
   },
   inviteButton: {
-    position: 'absolute',
+  position: 'absolute',
   bottom: 20,
   left: 20,
   right: 20,
-  backgroundColor: '#28a745',
+  backgroundColor: theme.colors.primary,
   paddingVertical: 12,
   borderRadius: 10,
   alignItems: 'center',
