@@ -2,8 +2,12 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '@/app/theme/themeContext';
 
 const Sort = ({ onClose, onSelectSort = () => {} }) => {
+    const { theme } = useTheme(); // Get current theme and toggle (if needed) 
+    const styles = getStyles(theme);
+
   const sortOptions = [
     { id: 'date', label: 'Date' },
     { id: 'popularity', label: 'Popularity' },
@@ -61,7 +65,7 @@ const Sort = ({ onClose, onSelectSort = () => {} }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: { 
     flex: 1, 
     padding: 20, 
@@ -70,7 +74,7 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#1E90FF',
+    color: theme.colors.primary,
     textAlign: 'center',
     marginBottom: 20,
   },
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   optionSelected: {
-    backgroundColor: '#1E90FF',
+    backgroundColor: theme.colors.primary,
   },
   optionText: {
     fontSize: 18,
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
   },
   doneButton: {
     flex: 1,
-    backgroundColor: '#1E90FF',
+    backgroundColor: theme.colors.primary,
     paddingVertical: 12,
     borderRadius: 25,
     marginLeft: 10,

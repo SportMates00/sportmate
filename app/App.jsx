@@ -25,6 +25,7 @@ import PrivacyPolicy from './component/profile/menutab/Settings/PrivacyPolicy';
 import TermConditions from './component/profile/menutab/Settings/TermsConditions';
 import DeleteAccount from './component/profile/menutab/Settings/DeleteAccount';
 import { ThemeProvider } from './theme/themeContext';
+import ChatScreen from './(tabs)/Inbox/ChatScreen';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
@@ -59,6 +60,7 @@ export default function App() {
             <Stack.Screen name='TermsConditions' component={TermConditions} />
             <Stack.Screen name='DeleteAccount' component={DeleteAccount} />
             <Stack.Screen name='Activity' component={Activity} />
+            <Stack.Screen name='ChatScreen' component={ChatScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </ThemeProvider>

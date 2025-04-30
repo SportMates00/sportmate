@@ -4,8 +4,12 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AllGames from './AllGames';
 import MyGames from './MyGames';
 import { useSelector } from 'react-redux';
-
+import { useTheme } from '@/app/theme/themeContext';
 const Games = () => {
+
+    const { theme } = useTheme(); // Get current theme and toggle (if needed) 
+    const styles = getStyles(theme);
+
   const [activeTab, setActiveTab] = useState('AllGames');
 
   const loggedUser = useSelector(user => user.user);
@@ -30,7 +34,7 @@ const Games = () => {
   );
 };
 
-const styles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   container: { flex: 1, backgroundColor: '#f0f0f0' },
   tabsContainer: {
     flexDirection: 'row',
@@ -45,7 +49,7 @@ const styles = StyleSheet.create({
   },
   tab: { paddingVertical: 8, paddingHorizontal: 15 },
   activeTab: {
-    backgroundColor: 'lightblue',
+    backgroundColor: theme.colors.primary,
     borderRadius: 3,
   },
   activeText: { color: 'white', fontWeight: 'bold' },

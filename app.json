@@ -17,7 +17,7 @@
     "android": {
       "permissions": ["READ_MEDIA_IMAGES", "CAMERA"],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/mainpicture.png",
+        "foregroundImage": "./assets/images/mainpicture.jpg",
         "backgroundColor": "#ffffff"
       }
     },
