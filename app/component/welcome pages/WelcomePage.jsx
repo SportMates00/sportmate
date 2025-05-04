@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import mainPicture from '../../../assets/images/mainpicture.jpg';
-import LangChanger from '../langChanger';
+import LangChanger from '../LangChanger';
 import { useTheme } from '../../theme/themeContext';
 
 const WelcomeScreen = () => {

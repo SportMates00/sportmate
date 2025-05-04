@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Text, Switch, StyleSheet } from 'react-native'
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import Feather from '@expo/vector-icons/Feather';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import LangChanger from '@/app/component/langChanger';
+import LangChanger from '@/app/component/LangChanger';
 import { useNavigation } from '@react-navigation/native';
 function TopSettings() {
 

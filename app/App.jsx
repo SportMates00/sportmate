@@ -13,7 +13,7 @@ import Players from './(tabs)/Players';
 import ShareProfile from './component/profile/ShareProfile';
 import Reviews from './component/profile/profileTabs/Reviews';
 import ProfileViewers from './component/profile/menutab/ProfileViewers';
-import LangChanger from './component/langChanger';
+import LangChanger from './component/LangChanger';
 import {store} from './store/store';
 import Activity from './(tabs)/Activity';
 import EditProfile from './component/profile/menutab/editprofile/EditProfile';

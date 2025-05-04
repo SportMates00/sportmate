@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import { users_list } from '@/app/js files/users';
-import LangChanger from '../langChanger';
+import LangChanger from '../LangChanger';
 import { useDispatch } from 'react-redux';
 import { setUserInfo } from '@/app/store/userSlice';
 const LoginScreen = () => {
