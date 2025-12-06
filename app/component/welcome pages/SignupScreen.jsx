@@ -70,7 +70,7 @@ const SignUpScreen = () => {
     ) {
       setEmailExist(false);
       setPasswordError(false);
-      navigation.navigate('ClientInfo');
+      navigation.navigate('QSport');
     } else {
       setFieldError(true);
       setEmailExist(false);
