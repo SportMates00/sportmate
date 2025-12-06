@@ -12,7 +12,7 @@ import { users_list } from "@/src/js files/users";
 import { setUserInfo } from "@/src/store/userSlice";
 import { useTranslation } from "react-i18next";
 
-const AvailabilityTable = () => {
+const QSchedule = () => {
   const { t } = useTranslation();
   const days = [t("Mon"), t("Tue"), t("Wed"), t("Thu"), t("Fri"), t("Sat"), t("Sun")];
   const times = [t("Mor"), t("Aft"), t("Eve")];
@@ -202,4 +202,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AvailabilityTable;
+export default QSchedule;

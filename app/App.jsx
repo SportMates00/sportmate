@@ -26,6 +26,9 @@ import TermConditions from './component/profile/menutab/Settings/TermsConditions
 import DeleteAccount from './component/profile/menutab/Settings/DeleteAccount';
 import { ThemeProvider } from '../src/theme/themeContext';
 import ChatScreen from './(tabs)/Inbox/ChatScreen';
+import QSport from './component/welcome pages/Clientinfo/QSport';
+import QLevel from './component/welcome pages/Clientinfo/QLevel';
+import QSchedule from './component/welcome pages/Clientinfo/QSchedule';
 // Create navigators
 const Stack = createNativeStackNavigator();
 
@@ -42,7 +45,9 @@ export default function App() {
             <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Login" component={LoginScreen} options={{headerTitle:''}}/>
             <Stack.Screen name="SignUp" component={SignUpScreen}  options={{headerTitle:''}}/>
-            <Stack.Screen name="ClientInfo" component={ClientInfo} />
+            <Stack.Screen name="QSport" component={QSport} />
+            <Stack.Screen name="QLevel" component={QLevel} />
+            <Stack.Screen name="QSchedule" component={QSchedule} />
             {/* Main App Tabs */}
             <Stack.Screen name="HomeTabs" component={TabNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Players" component={Players} />
