@@ -3,7 +3,7 @@ import React from 'react'
 import MenuTab from './menutab/MenuTab';
 import { useNavigation } from '@react-navigation/native';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 const ProfileHeader = () => {
     const { theme } = useTheme(); // Get current theme and toggle (if needed)

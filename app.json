@@ -15,7 +15,10 @@
       }
     },
     "android": {
-      "permissions": ["READ_MEDIA_IMAGES", "CAMERA"],
+      "permissions": [
+        "READ_MEDIA_IMAGES",
+        "CAMERA"
+      ],
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/mainpicture.jpg",
         "backgroundColor": "#ffffff"
@@ -35,7 +38,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-router"
     ],
     "experiments": {
       "typedRoutes": true

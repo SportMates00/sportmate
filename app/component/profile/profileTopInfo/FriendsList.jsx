@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet, Modal, TextInput } fro
 import React, { useEffect, useState } from 'react'
 import friendsIcon from "../../../../assets/images/friends.png"
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 const FriendsList = ({ setFriendListModalVisible, friendListModalVisible, loggedUser }) => {
   const [searchText, setSearchText] = useState('');

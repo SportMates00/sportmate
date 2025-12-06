@@ -5,7 +5,7 @@ import SportsFilter from './SportsFilter';
 import Sort from './Sort';
 import Filter from './Filter';
 import GameEvents from './GameEvents';
-import { gamesEvents } from '@/app/js files/gamesEvents';
+import { gamesEvents } from '@/src/js files/gamesEvents';
 
 const AllGames = ({ loggedUser }) => {
   const [showSports, setShowSports] = useState(false);

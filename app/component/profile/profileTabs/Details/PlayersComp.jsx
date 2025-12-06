@@ -1,7 +1,7 @@
 import { View,Image, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import players from '../../../../../assets/images/favicon.png'
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 const PlayersComp = ({event}) => {
     const { theme } = useTheme(); // Get current theme and toggle (if needed)

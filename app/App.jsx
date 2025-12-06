@@ -14,7 +14,7 @@ import ShareProfile from './component/profile/ShareProfile';
 import Reviews from './component/profile/profileTabs/Reviews';
 import ProfileViewers from './component/profile/menutab/ProfileViewers';
 import LangChanger from './component/LangChanger';
-import {store} from './store/store';
+import {store} from '../src/store/store';
 import Activity from './(tabs)/Activity';
 import EditProfile from './component/profile/menutab/editprofile/EditProfile';
 import Settings from './component/profile/menutab/Settings/Settings';
@@ -24,7 +24,7 @@ import ContactUs from './component/profile/menutab/Settings/ContactUs';
 import PrivacyPolicy from './component/profile/menutab/Settings/PrivacyPolicy';
 import TermConditions from './component/profile/menutab/Settings/TermsConditions';
 import DeleteAccount from './component/profile/menutab/Settings/DeleteAccount';
-import { ThemeProvider } from './theme/themeContext';
+import { ThemeProvider } from '../src/theme/themeContext';
 import ChatScreen from './(tabs)/Inbox/ChatScreen';
 // Create navigators
 const Stack = createNativeStackNavigator();
@@ -40,9 +40,9 @@ export default function App() {
             <Stack.Navigator initialRouteName="Welcome">
             {/* Auth Screens */}
             <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="ClientInfo" component={ClientInfo} options={{headerShown: false}} />
+            <Stack.Screen name="Login" component={LoginScreen} options={{headerTitle:''}}/>
+            <Stack.Screen name="SignUp" component={SignUpScreen}  options={{headerTitle:''}}/>
+            <Stack.Screen name="ClientInfo" component={ClientInfo} />
             {/* Main App Tabs */}
             <Stack.Screen name="HomeTabs" component={TabNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Players" component={Players} />

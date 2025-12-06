@@ -1,7 +1,7 @@
 import React, { useState, useCallback, memo } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 const SPORTS_LIST = [
   { id: '1', name: 'Football', icon: 'football-outline' },

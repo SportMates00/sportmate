@@ -1,7 +1,7 @@
 import React from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import {View,Text,StyleSheet,Image,TextInput,TouchableOpacity,ScrollView,Modal,FlatList} from 'react-native';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 import { useState } from 'react';
 const Players = ({ navigation }) => {
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
@@ -195,7 +195,7 @@ const Players = ({ navigation }) => {
 const getStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.background,
     paddingTop: 50,
     paddingHorizontal: 15,
     position: 'relative',

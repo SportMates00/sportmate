@@ -1,31 +1,50 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Modal, StyleSheet } from 'react-native';
-import Fontisto from '@expo/vector-icons/Fontisto';
+import { View, Text, FlatList, TouchableOpacity, Modal, StyleSheet, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useTheme } from '../theme/themeContext';
+import { useTheme } from '../../src/theme/themeContext';
 
-const LangChanger = ({style,iconContainer,text}) => {
+const flags = {
+  am: require('../../assets/flags/am.png'),
+  en: require('../../assets/flags/en.png'),
+  ru: require('../../assets/flags/ru.png'),
+};
+
+const LangChanger = ({ style, iconContainer, text }) => {
   const { t, i18n } = useTranslation();
   const [modalVisible, setModalVisible] = useState(false);
-  const {theme} = useTheme();
+  const { theme } = useTheme();
+
   const handleLanguageChange = (value) => {
     i18n.changeLanguage(value);
-    setModalVisible(false); // Close the modal after language selection
+    setModalVisible(false);
   };
 
   return (
     <>
       <TouchableOpacity
-        style={[iconContainer ]}
+        style={[iconContainer]}
         onPress={() => setModalVisible(true)}
         accessible={true}
         accessibilityLabel="Change Language"
       >
-        <Text>
-          <Fontisto name="world" size={theme.fonts.size.xLarge} color={theme.colors.text} />
-        </Text>
-        {text === '' ? '' : <Text style={{fontSize:theme.fonts.size.medium,color:theme.colors.text}}>{text}</Text>}
+        <Image
+          source={flags[i18n.language]}
+          style={{
+            width: 34,
+            height: 34,
+            borderRadius: 4,
+            marginRight: text === '' ? 0 : 8,
+          }}
+        />
+
+        {text === '' ? null : (
+          <Text style={{ fontSize: theme.fonts.size.medium, color: theme.colors.text }}>
+            {text}
+          </Text>
+        )}
       </TouchableOpacity>
+
+      {/* Modal stays the same */}
       <Modal
         visible={modalVisible}
         transparent={true}

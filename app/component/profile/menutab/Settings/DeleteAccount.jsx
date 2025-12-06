@@ -1,5 +1,5 @@
-import { deleteAccount } from '@/app/store/userSlice';
-import { useTheme } from '@/app/theme/themeContext';
+import { deleteAccount } from '@/src/store/userSlice';
+import { useTheme } from '@/src/theme/themeContext';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, Platform } from 'react-native';

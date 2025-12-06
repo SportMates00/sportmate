@@ -4,10 +4,10 @@ import {
 } from 'react-native';
 import ProgressBar from "react-native-progress/Bar";
 import { useDispatch } from "react-redux";
-import { profileCompletePer } from "@/app/store/userSlice";
+import { profileCompletePer } from "@/src/store/userSlice";
 import ProfileCompletion from './ProfileCompletion';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
   const dispatch = useDispatch();

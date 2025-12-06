@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView, Linking, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // Icon Library
 import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 const ContactUs = () => {
       const {theme} = useTheme();

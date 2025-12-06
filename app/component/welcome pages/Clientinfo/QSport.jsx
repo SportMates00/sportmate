@@ -1,19 +1,22 @@
-import { setUserInfo } from '@/app/store/userSlice';
+import { setUserInfo } from '@/src/store/userSlice';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text,TouchableOpacity, StyleSheet } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 
 const QSport = ({ step, setStep }) => {
+  const {t} = useTranslation();
   const dispatch = useDispatch(); // Get the dispatch function from Redux
-  const sports = ['Football', 'Basketball', 'Tennis', 'Ping Pong', 'Hiking'];
+  const sports = [t('Football'), t('Basketball'), t('Tennis'), t('PingPong'), t('Hiking')];
   const userInfo = useSelector((state) => state.user);
   const nextStep = () => setStep(step + 1);
+
   return (
     <View style={styles.container}>
       {step === 1 && (
         <View style={styles.centerContent}>
-          <Text style={styles.questionText}>What is your favorite sport?</Text>
+          <Text style={styles.questionText}>{t('favorSport')}</Text>
           <View style={styles.optionsContainer}>
             {sports.map((val) => (
               <TouchableOpacity
@@ -36,12 +39,11 @@ const QSport = ({ step, setStep }) => {
 
         const styles = StyleSheet.create({
           container: {
-            padding: 20,
             width:'100%',
             flex: 1,
             justifyContent: 'center',
             alignItems: 'center',
-            backgroundColor: '#f8f8f8',
+            backgroundColor: 'white',
           },
           centerContent: {
             justifyContent: 'center',
@@ -58,7 +60,7 @@ const QSport = ({ step, setStep }) => {
             marginBottom: 30,
           },
           optionButton: {
-            backgroundColor: '#007BFF',
+            backgroundColor: '#4CAF50',
             padding: 10,
             borderRadius: 5,
             marginBottom: 10,

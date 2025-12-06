@@ -4,7 +4,7 @@ import About from './About';
 import Sports from './Sports/Sports';
 import Activity from './Details/Activity';
 import Reviews from './Reviews';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 export default function ProfileDetails({loggedUser}) {
   const [activeTab, setActiveTab] = useState('About'); // Default to "About"

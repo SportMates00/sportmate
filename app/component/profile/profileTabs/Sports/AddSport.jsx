@@ -2,9 +2,9 @@
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import React, { useState } from 'react';
-import { editUserInfo} from '@/app/store/userSlice';
+import { editUserInfo} from '@/src/store/userSlice';
 import { useDispatch } from 'react-redux';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 const AddSport = ({ setUserInfo, userInfo }) => {
   const availableSports = ['Football', 'Basketball', 'Tennis', 'Bowling', 'Table Tennis'];
