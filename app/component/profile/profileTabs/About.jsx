@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AvailabilityTable from '../AvailibilityTable'
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 const About = ({loggedUser}) => {
 
   const { theme } = useTheme(); // Get current theme and toggle (if needed)

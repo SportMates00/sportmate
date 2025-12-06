@@ -1,7 +1,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, FlatList, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 import { useNavigation } from '@react-navigation/native';
 
 const ProfileViewers = () => {

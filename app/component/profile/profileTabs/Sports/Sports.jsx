@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import AddSport from '../Sports/AddSport';
 import { useState } from 'react';
 import EditSports from './EditSports';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 const sportImages = {
   Football: require('../../../../../assets/images/football.png'),

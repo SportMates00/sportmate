@@ -2,9 +2,9 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import mainPicture from '../../../assets/images/mainpicture.jpg';
+import mainPicture from '../../../assets/images/applogo.jpg';
 import LangChanger from '../LangChanger';
-import { useTheme } from '../../theme/themeContext';
+import { useTheme } from '../../../src/theme/themeContext';
 
 const WelcomeScreen = () => {
   const { t } = useTranslation();  // Hook to access translations
@@ -19,20 +19,35 @@ const WelcomeScreen = () => {
   const handleSignUp = () => {
     navigation.navigate('SignUp');
   };
-
+  const handleTermsConditions = () => {
+        navigation.navigate('TermsConditions');
+  };
+  const handlePrivacyPolicy = () => {
+        navigation.navigate('PrivacyPolicy');
+  };
   return (
     <View style={styles.container}>
+        
       <ImageBackground source={mainPicture} resizeMode="cover" style={styles.mainPictureBackgroundImage}>
-        <Text style={styles.title}>{t('welcome')}</Text>  {/* Translated text */}
-        <Text style={styles.subtitle}>{t('subtitle')}</Text>  {/* Translated text */}
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>{t('login')}</Text>  {/* Translated text */}
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
-          <Text style={styles.buttonText}>{t('signup')}</Text>  {/* Translated text */}
-        </TouchableOpacity>
-        {/* World Icon Button */}
         <LangChanger text={''} iconContainer={styles.iconContainer} />
+        <View style={{marginBottom:40}}>
+          <View style={styles.secondContainer}>
+            <Text style={styles.title}>SportMate</Text>  {/* Translated text */}
+            <Text style={styles.subtitle}>{t('subtitle')}</Text>  {/* Translated text */}
+            <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+              <Text style={styles.buttonText}>{t('signup')}</Text>  {/* Translated text */}
+            </TouchableOpacity>
+            <TouchableOpacity style={{marginTop:'20'}} onPress={handleLogin}>
+              <Text style={{color:'white', }}>{t('haveAccount')}</Text>  {/* Translated text */}
+              <Text style={{textAlign:'center', color:'white', fontWeight:'800', marginTop:'8', marginBottom:'50', textDecorationLine:'underline'}}>{t('login')}</Text>
+            </TouchableOpacity>
+          </View>
+        
+          <View style={styles.bottomPage}>
+            <Text style={{color:'white',textDecorationLine:'underline'}} onPress={handleTermsConditions}>Terms and Conditions</Text>
+            <Text style={{color:'white',textDecorationLine:'underline'}} onPress={handlePrivacyPolicy}>Privacy Policy</Text>
+          </View>
+        </View>
       </ImageBackground>
     </View>
   );
@@ -49,47 +64,54 @@ const getStyles = (theme) => StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     marginBottom: theme.spacing.medium,    // dynamic spacing
-    color: theme.colors.text,              // dynamic text color
+    color: theme.colors.buttonText,              // dynamic text color
   },
   subtitle: {
     fontSize: theme.fonts.size.medium,       // dynamic font size
     marginBottom: theme.spacing.large,         // dynamic spacing
-    color: theme.colors.text,                // dynamic text color
+    color: theme.colors.buttonText,                // dynamic text color
     textAlign: 'center',
+    width:'70%'
   },
   button: {
-    backgroundColor: theme.colors.primary,   // dynamic button color
     paddingVertical: 12,                     // kept numeric; could use theme.spacing if desired
     paddingHorizontal: 30,                   // kept numeric
     borderRadius: 5,
     marginBottom: 15,
-    width: '100%',
+    width: '70%',
     alignItems: 'center',
+    borderWidth:1,
+    borderColor:theme.colors.buttonText
   },
   buttonText: {
-    color: '#fff',                           // kept as white
-    fontSize: 18,
+    color: theme.colors.buttonText,                           // kept as white
+    fontSize: 16,
+    fontWeight:900
   },
   mainPictureBackgroundImage: {
     height: '100%',
     width: '100%',
     resizeMode: 'cover',
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
     textAlign: 'center',
   },
   iconContainer: {
     position: 'absolute',
-    top: theme.spacing.large,                // dynamic top spacing
-    right: theme.spacing.medium,             // dynamic right spacing
-    backgroundColor: theme.colors.background, // dynamic background (typically white in light mode)
-    padding: 10,
-    borderRadius: 50,
-    shadowColor: theme.colors.text,          // dynamic shadow color
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    top:50,
+    right:30
   },
+  secondContainer: {
+    display:'flex',
+    alignItems:'center',
+  },
+
+  bottomPage: {
+    flexDirection:'row',
+    justifyContent:'space-around',
+    paddingInline:'40',
+    marginTop:'20',
+  }
 });
 
 export default WelcomeScreen;

@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { LinearGradient } from 'expo-linear-gradient'; // For gradient backgrounds
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 
 const ShareLink = () => {

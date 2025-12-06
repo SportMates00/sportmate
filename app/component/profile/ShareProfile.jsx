@@ -1,7 +1,7 @@
 import React, { useLayoutEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import ShareLink from './ShareLink';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 import { useNavigation } from '@react-navigation/native';
 
 const ShareProfile = ({  }) => {

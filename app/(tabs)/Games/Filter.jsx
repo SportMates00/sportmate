@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 const Filter = ({ onClose, onApplyFilters = () => {} }) => {
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
     const styles = getStyles(theme);

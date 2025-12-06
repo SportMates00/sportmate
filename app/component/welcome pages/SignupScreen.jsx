@@ -1,13 +1,13 @@
 // app/SignUpScreen.js
-import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Platform } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native'; // For navigation
 import Ionicons from '@expo/vector-icons/Ionicons';
 import LangChanger from '../LangChanger';
-import { users_list } from '@/app/js files/users';
+import { users_list } from '@/src/js files/users';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserInfo } from '@/app/store/userSlice';
+import { setUserInfo } from '@/src/store/userSlice';
 
 const SignUpScreen = () => {
   const { t } = useTranslation();
@@ -18,6 +18,31 @@ const SignUpScreen = () => {
   const [passwordError, setPasswordError] = useState(false);
   const [fieldError, setFieldError] = useState(false);
   const [userMap, setUserMap] = useState(new Map());
+
+
+
+    useLayoutEffect(() => {
+      navigation.setOptions({
+        headerShown: true,
+        headerTitle: "",                // ❗ fully removes title
+        headerShadowVisible: false, 
+        headerBackButtonDisplayMode: "minimal", // (new API)
+        headerBackTitleVisible: false,          // (for older versions, harmless if ignored)
+        headerBackTitle: "",
+              headerRight: () => (
+        <LangChanger text={""} iconContainer={styles.iconContainer} />
+      ),
+        headerStyle: Platform.OS === "web"
+          ? {
+              borderBottomWidth: 1,
+              borderColor:'white'
+            }
+          : {
+              borderBottomWidth: 1,
+              borderColor:'white'
+            },
+      });
+    }, [navigation]);
 
   useEffect(() => {
     // Preprocess user_list into a Map for fast lookups
@@ -66,18 +91,13 @@ const SignUpScreen = () => {
   }
   return (
     <View style={styles.container}>
-      {/* Back Button */}
-      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-        <Ionicons name="arrow-back-outline" size={24} color="black" />
-      </TouchableOpacity>
 
-      {/* Logo */}
-      <Image
-        source={require('../../../assets/images/icon.png')} // Adjust the path to your logo
-        style={styles.logo}
-      />
-
-      <Text style={styles.title}>{t('signupPage')}</Text>
+      <View style={{marginBottom: 60}}>
+        <Text style={styles.title}>{t('signupPage')}</Text>
+        {emailExist && <Text style={styles.error}>{t('emailInUse')}</Text>}
+        {passwordError && <Text style={styles.error}>{t('passwordDoNotMatch')}</Text>}
+        {fieldError && <Text style={styles.error}>{t('allFieldsRequired')}</Text>}
+      </View>
 
       <TextInput
         style={styles.input}
@@ -106,19 +126,15 @@ const SignUpScreen = () => {
         onChangeText={(value) => dispatch(setUserInfo({ confirmPassword: value }))}
         secureTextEntry
       />
-      {emailExist && <Text>Email is already in use</Text>}
-      {passwordError && <Text>Password does not match</Text>}
-      {fieldError && <Text>All the fields are required</Text>}
+      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+        <Text style={styles.signInText}>{t('alreadyHaveAnAccount')}</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.button} onPress={handleSignUp}>
         <Text style={styles.buttonText}>{t('signupBtn')}</Text>
       </TouchableOpacity>
 
-      {/* Sign-In Link */}
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.signInText}>{t('Already Have Account? Sign in')}</Text>
-      </TouchableOpacity>
 
-      <LangChanger text={''} iconContainer={iconContainer} />
     </View>
   );
 };
@@ -126,9 +142,8 @@ const SignUpScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 20,
+    padding:25,
+    backgroundColor:'white'
   },
   backButton: {
     position: 'absolute',
@@ -140,37 +155,39 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: '#4CAF50',
   },
-  logo: {
-    width: 100, // Adjust the size as needed
-    height: 100, // Adjust the size as needed
-    marginBottom: 20,
-  },
   title: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: 'bold',
-    marginBottom: 20,
+    letterSpacing:1,
   },
   input: {
     width: '100%',
-    padding: 10,
+    paddingVertical: 15,
     marginBottom: 15,
-    borderWidth: 1,
+    borderBottomWidth:1,
     borderColor: '#ccc',
-    borderRadius: 5,
   },
   button: {
-    backgroundColor: '#4CAF50',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
-    borderRadius: 5,
+    marginTop:40,
+    alignItems:'center'
   },
   buttonText: {
     color: '#fff',
     fontSize: 18,
+    backgroundColor:'#4CAF50' ,
+    paddingVertical: 8,
+    paddingHorizontal: 30,
+    borderRadius: 5,
+    textAlign: 'center',
+    width:'70%',
   },
   signInText: {
     color: '#4CAF50',
     fontSize: 16,
+    marginTop: 20,
+  },  
+  error: {
+    color: 'red',
     marginTop: 20,
   },
 });

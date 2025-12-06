@@ -1,53 +1,25 @@
 // app/i18n.js
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import WelcomePages from './component/welcome pages/WelcomePagesLan';
 
 // Translations
 const resources = {
   en: {
     translation: {
-      welcome: "Welcome to My App!",
-      subtitle: "Please log in or sign up to get started.",
-      login: "Log In",
-      signup: "Sign Up",
-      email: "Email",
-      password: "Password",
-      loginBtn: "Login",
-      signupBtn: "Sign Up",
-      loginPage: "Login Page",
-      signupPage: "Sign Up Page",
+      ...WelcomePages.en
     }
   },
   am: {
     translation: {
-      welcome: "Բարի Գալուստ Մեր ափ!",
-      subtitle: "Por favor, inicie sesión o regístrese para comenzar.",
-      login: "Մուտք",
-      signup: "Գրանցվել",
-      email: "Էլ. հասցե",
-      password: "Գաղտնաբար",
-      loginBtn: "Մուտք գործել",
-      signupBtn: "Գրանցվել",
-      loginPage: "Մուտքի Էջ",
-      signupPage: "Գրանցվելու էջ",
+      ...WelcomePages.am
     }
   },
   ru: {
     translation: {
-      welcome: "Bienvenue dans mon application!",
-      subtitle: "Veuillez vous connecter ou vous inscrire pour commencer.",
-      login: "Se connecter",
-      signup: "S'inscrire",
-      email: "Email",
-      password: "Password",
-      loginBtn: "Login",
-      signupBtn: "Sign Up",
-      loginPage: "Login Page",
-      signupPage: "Sign Up Page",
-      
+      ...WelcomePages.ru
     }
   }
-  // Add more languages as needed
 };
 
 i18n

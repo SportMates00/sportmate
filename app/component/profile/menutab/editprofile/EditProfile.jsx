@@ -4,7 +4,7 @@ import LocationSelector from './LocationSelector';
 import AgeGenderSelector from './AgeGenderSelector';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { editUserInfo } from '@/app/store/userSlice';
+import { editUserInfo } from '@/src/store/userSlice';
 import AboutMeInput from './AboutMeInput';
 import EditAvailabilityTable from './EditAvailability';
 import * as ImagePicker from 'expo-image-picker';

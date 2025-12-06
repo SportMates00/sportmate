@@ -3,9 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView, Platform, 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { useDispatch } from 'react-redux';
-import { resetUserInfo } from '@/app/store/userSlice';
+import { resetUserInfo } from '@/src/store/userSlice';
 import { CommonActions, useNavigation } from '@react-navigation/native';
-import { useTheme } from '../../../../theme/themeContext';
+import { useTheme } from '../../../../../src/theme/themeContext';
 import TopSettings from './top settings/TopSettings';
 import BottomSettings from './bottom settings/BottomSettings';
 import contact from '../../../../../assets/images/contact.png'

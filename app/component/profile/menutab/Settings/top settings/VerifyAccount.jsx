@@ -2,7 +2,7 @@ import React, { useLayoutEffect, useState } from 'react';
 import { ScrollView, Text, StyleSheet, TouchableOpacity, View, Alert, Platform } from 'react-native';
 import EmailVerification from './EmailVerification';
 import PhotoVerification from './PhotoVerification';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 import { useNavigation } from '@react-navigation/native';
 
 const VerifyAccount = () => {

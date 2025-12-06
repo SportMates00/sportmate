@@ -4,21 +4,23 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  ScrollView,
   Alert,
 } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
-import { users_list } from "@/app/js files/users";
-import { setUserInfo } from "@/app/store/userSlice";
-
-const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const times = ["Mor", "Aft", "Eve"];
+import { users_list } from "@/src/js files/users";
+import { setUserInfo } from "@/src/store/userSlice";
+import { useTranslation } from "react-i18next";
 
 const AvailabilityTable = () => {
+  const { t } = useTranslation();
+  const days = [t("Mon"), t("Tue"), t("Wed"), t("Thu"), t("Fri"), t("Sat"), t("Sun")];
+  const times = [t("Mor"), t("Aft"), t("Eve")];
+
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user);
   const navigation = useNavigation();
+
   const [availability, setAvailability] = useState(
     days.reduce((acc, day) => {
       acc[day] = times.reduce((timeAcc, time) => {
@@ -28,7 +30,7 @@ const AvailabilityTable = () => {
       return acc;
     }, {})
   );
-  // Handle completion of client info setup
+
   function handleClientInfoCompletion() {
     navigation.dispatch(
       CommonActions.reset({
@@ -38,7 +40,6 @@ const AvailabilityTable = () => {
     );
   }
 
-  // Toggle availability for a specific day and time
   const toggleCell = (day, time) => {
     const updatedAvailability = {
       ...availability,
@@ -50,7 +51,6 @@ const AvailabilityTable = () => {
 
     setAvailability(updatedAvailability);
 
-    // Update Redux state with the new availability
     dispatch(
       setUserInfo({
         ...userInfo,
@@ -62,53 +62,62 @@ const AvailabilityTable = () => {
     );
   };
 
-  // Check if at least one slot is selected
   const isAtLeastOneSelected = () => {
     return Object.values(availability).some((day) =>
       Object.values(day).some((time) => time)
     );
   };
 
-  // Handle Get Started button click
   const handleGetStarted = () => {
     if (!isAtLeastOneSelected()) {
-      Alert.alert("Error", "Please select at least one availability slot.");
+      Alert.alert(t("Error"), t("oneSlot"));
       return;
     }
     try {
-      // Add userInfo to AsyncStorage
       users_list.push(userInfo);
       dispatch(setUserInfo(userInfo));
       handleClientInfoCompletion();
-      console.log('USER INFO NEW I', userInfo)
+      console.log("USER INFO NEW I", userInfo);
     } catch (error) {
       console.error("Error saving user data:", error);
     }
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.heading}>Availability</Text>
+    <View style={styles.container}>
+      <Text style={styles.heading}>{t("Availability")}</Text>
+
       <View style={styles.table}>
-        {/* Table Header */}
+        {/* Header row */}
         <View style={styles.row}>
-          <View style={styles.cell} />
+          <View style={[styles.headerCell, { flex: 1 }]} />
           {days.map((day, index) => (
-            <Text key={index} style={styles.headerCell}>
-              {day}
-            </Text>
+            <View
+              key={index}
+              style={[
+                styles.headerCell,
+                index === days.length - 1 && { borderRightWidth: 0 },
+              ]}
+            >
+              <Text style={styles.headerText}>{day}</Text>
+            </View>
           ))}
         </View>
-        {/* Table Body */}
+
+        {/* Body rows */}
         {times.map((time, rowIndex) => (
           <View key={rowIndex} style={styles.row}>
-            <Text style={styles.headerCell}>{time}</Text>
+            <View style={[styles.headerCell, { borderRightWidth: 1 }]}>
+              <Text style={styles.headerText}>{time}</Text>
+            </View>
+
             {days.map((day, colIndex) => (
               <TouchableOpacity
                 key={`${rowIndex}-${colIndex}`}
                 style={[
                   styles.cell,
                   availability[day][time] && styles.selectedCell,
+                  colIndex === days.length - 1 && { borderRightWidth: 0 },
                 ]}
                 onPress={() => toggleCell(day, time)}
               />
@@ -116,10 +125,11 @@ const AvailabilityTable = () => {
           </View>
         ))}
       </View>
+
       <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
-        <Text style={styles.buttonText}>Get Started</Text>
+        <Text style={styles.buttonText}>{t("getStarted")}</Text>
       </TouchableOpacity>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -127,7 +137,10 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "100%",
   },
   heading: {
     fontSize: 20,
@@ -135,6 +148,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   table: {
+    width: "100%",
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 8,
@@ -142,33 +156,42 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
+    width: "100%",
   },
-  cell: {
-    width: 40,
-    height: 40,
+
+  // Container for header cells (days + times)
+  headerCell: {
+    flex: 1,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+  },
+  headerText: {
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+
+  cell: {
+    flex: 1,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRightWidth: 1,
+    borderBottomWidth: 1,
     borderColor: "#ccc",
   },
   selectedCell: {
-    backgroundColor: "#00bcd4",
+    backgroundColor: '#4CAF50',
   },
-  headerCell: {
-    width: 40,
-    height: 40,
-    textAlign: "center",
-    justifyContent: "center",
-    alignItems: "center",
-    fontWeight: "bold",
-    lineHeight: 40,
-    borderWidth: 1,
-    borderColor: "#ccc",
-  },
+
   button: {
-    marginTop: 16,
+    marginTop: 46,
+    width: "70%",
     padding: 12,
-    backgroundColor: "#00bcd4",
+    backgroundColor: '#4CAF50',
     borderRadius: 8,
     alignItems: "center",
   },

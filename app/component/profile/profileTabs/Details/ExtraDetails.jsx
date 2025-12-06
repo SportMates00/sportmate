@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 
 const ExtraDetails = ({event}) => {
   const { theme } = useTheme(); // Get current theme and toggle (if needed)

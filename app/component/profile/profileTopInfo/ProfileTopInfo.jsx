@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons"; // Icon for closing the modal
 import reviewStar from "../../../../assets/images/reviewStar.png"
 import FriendsList from "./FriendsList";
-import { useTheme } from "@/app/theme/themeContext";
+import { useTheme } from "@/src/theme/themeContext";
 
 const TOTAL_STEPS = 8; // Total steps for 100% profile completion
 

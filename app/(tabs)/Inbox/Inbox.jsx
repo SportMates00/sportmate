@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 import MessagesTab from './MessagesTab';       // Placeholder components (to create later)
 import GameInvitesTab from './GameInvitesTab';
 import FriendRequestsTab from './FriendRequestsTab';

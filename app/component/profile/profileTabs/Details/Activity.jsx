@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Image } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import favicon from "@/assets/images/profilepicture.png";
 import EventDetails from "./EventDetails";
-import { useTheme } from "@/app/theme/themeContext";
+import { useTheme } from "@/src/theme/themeContext";
 
 const Activity = ({loggedUser}) => {
   const { theme } = useTheme(); // Get current theme and toggle (if needed)

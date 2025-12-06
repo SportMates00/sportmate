@@ -11,7 +11,7 @@ import { Ionicons } from "@expo/vector-icons";
 import FbBg from "../../../../../assets/images/favicon.png";
 import PlayersComp from "./PlayersComp";
 import ExtraDetails from "./ExtraDetails";
-import { useTheme } from "@/app/theme/themeContext";
+import { useTheme } from "@/src/theme/themeContext";
 
 const EventDetails = ({ event, onBack }) => {
   const [modalVisible, setModalVisible] = useState(false);

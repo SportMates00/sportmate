@@ -1,4 +1,4 @@
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect } from 'react';
 import { View, Text, ScrollView, StyleSheet, Platform } from 'react-native';

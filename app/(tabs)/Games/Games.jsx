@@ -4,7 +4,7 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AllGames from './AllGames';
 import MyGames from './MyGames';
 import { useSelector } from 'react-redux';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 const Games = () => {
 
     const { theme } = useTheme(); // Get current theme and toggle (if needed) 

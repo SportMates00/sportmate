@@ -4,7 +4,7 @@ import ProfileHeader from './ProfileHeader';
 import ProfileDetails from './profileTabs/ProfileDetails';
 import ProfileTopInfo from './profileTopInfo/ProfileTopInfo';
 import { useSelector } from 'react-redux';
-import { useTheme } from '@/app/theme/themeContext';
+import { useTheme } from '@/src/theme/themeContext';
 const Profile = () => {
 
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
