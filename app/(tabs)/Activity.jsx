@@ -9,7 +9,7 @@ const mockEvents = [
   {
     sport: 'Football',
     dateTime: 'Sat, April 20 • 17:30',
-    backgroundImage: require('../../assets/images/mher.jpg'),
+    backgroundImage: require('../../assets/images/football-field.webp'),
     players: [
       'https://randomuser.me/api/portraits/men/1.jpg',
       'https://randomuser.me/api/portraits/women/2.jpg',
@@ -22,7 +22,7 @@ const mockEvents = [
   {
     sport: 'Tennis',
     dateTime: 'Sun, April 21 • 10:00',
-    backgroundImage: require('../../assets//images/njteh.jpg'),
+    backgroundImage: require('../../assets//images/tennis-court.jpg'),
     players: [
       'https://randomuser.me/api/portraits/women/3.jpg',
       null,
@@ -30,6 +30,31 @@ const mockEvents = [
     level: 'Beginner',
     location: 'Vanadzor, Armenia',
   },
+  {
+    sport: 'Football',
+    dateTime: 'Sat, April 20 • 17:30',
+    backgroundImage: require('../../assets/images/football-field.webp'),
+    players: [
+      'https://randomuser.me/api/portraits/men/1.jpg',
+      'https://randomuser.me/api/portraits/women/2.jpg',
+      null,
+      null,
+    ],
+    level: 'Intermediate',
+    location: 'Yerevan, Armenia',
+  },
+  {
+    sport: 'Tennis',
+    dateTime: 'Sun, April 21 • 10:00',
+    backgroundImage: require('../../assets//images/tennis-court.jpg'),
+    players: [
+      'https://randomuser.me/api/portraits/women/3.jpg',
+      null,
+    ],
+    level: 'Beginner',
+    location: 'Vanadzor, Armenia',
+  },
+  
 ];
 
 const HomeScreen = ({ navigation }) => {
@@ -47,7 +72,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView >
         {mockEvents.map((event, index) => (
           <View key={index} style={styles.card}>
             <Image source={event.backgroundImage} style={styles.backgroundImage} />
@@ -69,17 +94,24 @@ const HomeScreen = ({ navigation }) => {
               <Text style={styles.level}>{event.level}</Text>
               <Text style={styles.location}>{event.location}</Text>
 
-              <TouchableOpacity style={styles.joinButton} onPress={handleJoin}>
-                <Text style={styles.joinText}>Ask to Join</Text>
-              </TouchableOpacity>
+              <View style={styles.buttonsRow}>
+                <TouchableOpacity style={styles.detailsButton}>
+                 <Text style={styles.detailsText}>View Details</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={styles.joinButton}>
+                  <Text style={styles.joinText}>Ask to Join</Text>
+                </TouchableOpacity>
+              </View>
+
             </View>
           </View>
         ))}
       </ScrollView>
-
-      <TouchableOpacity style={styles.createButton} onPress={handleCreateGame}>
+<TouchableOpacity style={styles.createButton} onPress={handleCreateGame}>
         <Text style={styles.createText}>Create a Game</Text>
       </TouchableOpacity>
+      
     </View>
   );
 };
@@ -89,14 +121,11 @@ const getStyles = (theme) => StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     position: 'relative',
-    paddingBottom: 80,
-  },
-  scrollContent: {
     padding: 15,
-    paddingBottom: 100,
+    paddingBottom:80,
   },
   card: {
-    height: 240,
+    height: 180,
     borderRadius: 15,
     overflow: 'hidden',
     marginBottom: 20,
@@ -113,26 +142,26 @@ const getStyles = (theme) => StyleSheet.create({
   },
   cardContent: {
     flex: 1,
-    padding: 15,
+    padding: 10,
     justifyContent: 'space-between',
   },
   sport: {
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: 'bold',
     color: '#fff',
   },
   date: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#ddd',
-    marginBottom: 10,
+    marginBottom: 6,
   },
   playersRow: {
     flexDirection: 'row',
     marginBottom: 10,
   },
   playerPic: {
-    width: 35,
-    height: 35,
+    width: 26,
+    height: 26,
     borderRadius: 999,
     marginRight: 5,
     borderWidth: 2,
@@ -147,12 +176,13 @@ const getStyles = (theme) => StyleSheet.create({
   },
   joinButton: {
     backgroundColor: theme.colors.primary,
-    paddingVertical: 8,
+    paddingVertical: 6,
     borderRadius: 8,
     marginTop: 10,
     alignItems: 'center',
   },
   joinText: {
+    fontSize: 13,
     color: '#fff',
     fontWeight: 'bold',
   },
@@ -177,6 +207,42 @@ const getStyles = (theme) => StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
+  buttonsRow: {
+  flexDirection: 'row',
+  justifyContent: 'space-between',
+  marginTop: 6,
+},
+
+detailsButton: {
+  flex: 1,
+  backgroundColor: '#ffffffaa', // semi-transparent white
+  paddingVertical: 6,
+  borderRadius: 6,
+  alignItems: 'center',
+  marginRight: 6,
+},
+
+detailsText: {
+  color: '#000',
+  fontWeight: '600',
+  fontSize: 13,
+},
+
+joinButton: {
+  flex: 1,
+  backgroundColor: '#24a34c',
+  paddingVertical: 6,
+  borderRadius: 6,
+  alignItems: 'center',
+  marginLeft: 6,
+},
+
+joinText: {
+  color: '#fff',
+  fontWeight: '600',
+  fontSize: 13,
+},
+
 });
 
 export default HomeScreen;

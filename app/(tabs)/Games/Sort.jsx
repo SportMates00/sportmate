@@ -8,10 +8,7 @@ const Sort = ({ onClose, onSelectSort = () => {} }) => {
     const { theme } = useTheme(); // Get current theme and toggle (if needed) 
     const styles = getStyles(theme);
 
-  const sortOptions = [
-    { id: 'date', label: 'Date' },
-    { id: 'popularity', label: 'Popularity' },
-    { id: 'distance', label: 'Distance' },
+  const sortOptions = ["Date", "Popularity", "Distance"
   ];
 
   const [selectedSort, setSelectedSort] = useState(null);
@@ -41,12 +38,14 @@ const Sort = ({ onClose, onSelectSort = () => {} }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Sort Events</Text>
-      <FlatList
-        data={sortOptions}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.listContainer}
-      />
+      {sortOptions.map(val => {
+       return( <TouchableOpacity>
+          <Text>{val}</Text>
+        </TouchableOpacity>)
+      })
+    
+      }
+      
       <View style={styles.bottomButtons}>
         <TouchableOpacity onPress={onClose} style={styles.cancelButton}>
           <Text style={styles.buttonText}>Cancel</Text>
@@ -72,7 +71,7 @@ const getStyles = (theme) => StyleSheet.create({
     backgroundColor: '#fff' 
   },
   header: {
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: 'bold',
     color: theme.colors.primary,
     textAlign: 'center',
@@ -98,7 +97,7 @@ const getStyles = (theme) => StyleSheet.create({
     backgroundColor: theme.colors.primary,
   },
   optionText: {
-    fontSize: 18,
+    fontSize: 14,
     color: '#333',
   },
   optionTextSelected: {
@@ -118,7 +117,7 @@ const getStyles = (theme) => StyleSheet.create({
     backgroundColor: '#ccc',
     paddingVertical: 12,
     borderRadius: 25,
-    marginRight: 10,
+    marginRight: 5,
     alignItems: 'center',
   },
   doneButton: {
@@ -126,12 +125,12 @@ const getStyles = (theme) => StyleSheet.create({
     backgroundColor: theme.colors.primary,
     paddingVertical: 12,
     borderRadius: 25,
-    marginLeft: 10,
+    marginLeft: 5,
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });

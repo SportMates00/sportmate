@@ -81,7 +81,7 @@ const getStyles = (theme) => StyleSheet.create({
     backgroundColor: '#fff',
   },
   header: {
-    fontSize: 22,
+    fontSize: 16,
     fontWeight: 'bold',
     color: theme.colors.primary,
     textAlign: 'center',
@@ -91,7 +91,7 @@ const getStyles = (theme) => StyleSheet.create({
     marginBottom: 20,
   },
   filterTitle: {
-    fontSize: 18,
+    fontSize: 14,
     fontWeight: 'bold',
     color: '#333',
     marginBottom: 10,
@@ -113,7 +113,7 @@ const getStyles = (theme) => StyleSheet.create({
     backgroundColor: theme.colors.primary,
   },
   optionText: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#333',
   },
   optionTextSelected: {
@@ -126,14 +126,13 @@ const getStyles = (theme) => StyleSheet.create({
   bottomButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 20,
   },
   cancelButton: {
     flex: 1,
     backgroundColor: '#ccc',
     paddingVertical: 12,
     borderRadius: 25,
-    marginRight: 10,
+    marginRight: 5,
     alignItems: 'center',
   },
   doneButton: {
@@ -141,12 +140,12 @@ const getStyles = (theme) => StyleSheet.create({
     backgroundColor: theme.colors.primary,
     paddingVertical: 12,
     borderRadius: 25,
-    marginLeft: 10,
+    marginLeft: 5,
     alignItems: 'center',
   },
   buttonText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
 });

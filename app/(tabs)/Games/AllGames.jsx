@@ -1,6 +1,6 @@
 // AllGames.jsx
 import React, { useEffect, useState , useCallback, useMemo, memo} from 'react';
-import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, Modal, StyleSheet, ScrollView } from 'react-native';
 import SportsFilter from './SportsFilter';
 import Sort from './Sort';
 import Filter from './Filter';
@@ -74,7 +74,14 @@ const AllGames = ({ loggedUser }) => {
       </Modal>
 
       {/* Events List */}
-      <MemoizedGameEvents gameEvents={gameEvents} />
+      <ScrollView>
+        <MemoizedGameEvents gameEvents={gameEvents} />
+      </ScrollView>
+      
+      <TouchableOpacity style={styles.createButton} onPress={() => alert("Go to Create Game screen")}>
+         <Text style={styles.createButtonText}>Create a Game</Text>
+      </TouchableOpacity>
+
     </View>
   );
 };
@@ -119,12 +126,31 @@ borderRight: {
     justifyContent: 'flex-end',
   },
   modalContent: {
-    height: '80%',
+    height: '60%',
     backgroundColor: '#fff',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 20,
   },
+  createButton: {
+  position: 'absolute',
+  bottom: 10,
+  left: 65,
+  right: 65,
+  backgroundColor: 'rgba(36, 163, 76, 0.9)',
+  paddingVertical: 14,
+  borderRadius: 10,
+  alignItems: 'center',
+  zIndex: 999,
+  
+},
+
+createButtonText: {
+  color: '#fff',
+  fontSize: 16,
+  fontWeight: 'bold',
+},
+
 });
 
 export default AllGames;
