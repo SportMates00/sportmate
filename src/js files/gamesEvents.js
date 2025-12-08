@@ -17,8 +17,8 @@ export const gamesEvents = {
     // UI fields
     level: "Intermediate",
     location: "NY ST",                // you already had this
-    date: "Jan 30, 2025",
-    city: "Yerevan",
+    date: "Jun 30, 2025",
+    city: "Gyumri",
     region: "",
 
     // keep original team structure if needed later
@@ -45,7 +45,8 @@ export const gamesEvents = {
     level: "Beginner",               // you can set different levels
     location: "NY ST",
     date: "Feb 2, 2025",
-    city: "Yerevan",
+    time: "10am",
+    city: "Ararat",
     region: "",
 
     teamA: [
@@ -77,12 +78,12 @@ export const gamesEvents = {
 
     // UI fields shown on card
     level: "Intermediate",  // capitalized for clean UI
-    location: "Miami Court",
+    location: "Yerevan",
     date: "Feb 2, 2025",
     time: "8pm",
 
     // Extra metadata (optional but kept since you had it)
-    city: "Miami",
+    city: "Yerevan",
     region: "FL",
 
     // Keep original team structure for future match logic

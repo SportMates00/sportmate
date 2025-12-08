@@ -50,7 +50,7 @@ const users = [
     {firstName:'Lolig', lastName: 'Lion', email:'1', password:'1', profileInfo: {
       sport: 'Football',
       level: 'Beginner',
-      location:'',
+      location:'Yerevan',
       age:'',
       gender:'',
       aboutMe:'Hello my name is Mher, I am you',

@@ -1,138 +1,179 @@
 // Sort.jsx
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/themeContext';
 
-const Sort = ({ onClose, onSelectSort = () => {} }) => {
-    const { theme } = useTheme(); // Get current theme and toggle (if needed) 
-    const styles = getStyles(theme);
+const SORT_OPTIONS = [
+  { id: 'date', label: 'Date' },
+  { id: 'popularity', label: 'Popularity' },
+  { id: 'distance', label: 'Distance' },
+];
 
-  const sortOptions = ["Date", "Popularity", "Distance"
-  ];
+// ⭐ FIXED: added currentSort prop ⭐
+const Sort = ({ onClose, onSelectSort = () => {}, currentSort }) => {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
-  const [selectedSort, setSelectedSort] = useState(null);
-
-  const renderItem = ({ item }) => {
-    const isSelected = selectedSort === item.id;
-    return (
-      <TouchableOpacity
-        style={[styles.optionRow, isSelected && styles.optionSelected]}
-        onPress={() => setSelectedSort(item.id)}
-      >
-        <Text style={[styles.optionText, isSelected && styles.optionTextSelected]}>
-          {item.label}
-        </Text>
-        {isSelected && (
-          <Ionicons
-            name="checkmark-circle"
-            size={24}
-            color="#fff"
-            style={styles.checkIcon}
-          />
-        )}
-      </TouchableOpacity>
-    );
-  };
+  // ⭐ FIXED: initial state now uses currentSort ⭐
+  const [selectedSort, setSelectedSort] = useState(currentSort || null);
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Sort Events</Text>
-      {sortOptions.map(val => {
-       return( <TouchableOpacity>
-          <Text>{val}</Text>
-        </TouchableOpacity>)
-      })
-    
-      }
-      
-      <View style={styles.bottomButtons}>
-        <TouchableOpacity onPress={onClose} style={styles.cancelButton}>
-          <Text style={styles.buttonText}>Cancel</Text>
+      {/* HEADER */}
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Sort Events</Text>
+        <TouchableOpacity onPress={() => setSelectedSort(null)}>
+          <Text style={styles.clearText}>Clear</Text>
         </TouchableOpacity>
+      </View>
+
+      {/* OPTIONS */}
+      <ScrollView style={{ flex: 1 }}>
+        {SORT_OPTIONS.map((option) => {
+          const isSelected = selectedSort === option.id;
+
+          return (
+            <TouchableOpacity
+              key={option.id}
+              style={styles.row}
+              onPress={() => setSelectedSort(option.id)}
+            >
+              <Text style={styles.rowText}>{option.label}</Text>
+
+              <View
+                style={[
+                  styles.checkbox,
+                  isSelected && styles.checkboxSelected,
+                ]}
+              >
+                {isSelected && (
+                  <Ionicons name="checkmark" size={16} color="#fff" />
+                )}
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+
+      {/* FOOTER BUTTONS */}
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
+          <Text style={styles.cancelText}>Cancel</Text>
+        </TouchableOpacity>
+
         <TouchableOpacity
+          style={styles.applyBtn}
           onPress={() => {
             onSelectSort(selectedSort);
             onClose();
           }}
-          style={styles.doneButton}
         >
-          <Text style={styles.buttonText}>Done</Text>
+          <Text style={styles.applyText}>Done</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-const getStyles = (theme) => StyleSheet.create({
-  container: { 
-    flex: 1, 
-    padding: 20, 
-    backgroundColor: '#fff' 
-  },
-  header: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: theme.colors.primary,
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  listContainer: {
-    paddingBottom: 20,
-  },
-  optionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 15,
-    borderRadius: 10,
-    backgroundColor: '#f2f2f2',
-    marginBottom: 12,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  optionSelected: {
-    backgroundColor: theme.colors.primary,
-  },
-  optionText: {
-    fontSize: 14,
-    color: '#333',
-  },
-  optionTextSelected: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  checkIcon: {
-    marginLeft: 10,
-  },
-  bottomButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-  },
-  cancelButton: {
-    flex: 1,
-    backgroundColor: '#ccc',
-    paddingVertical: 12,
-    borderRadius: 25,
-    marginRight: 5,
-    alignItems: 'center',
-  },
-  doneButton: {
-    flex: 1,
-    backgroundColor: theme.colors.primary,
-    paddingVertical: 12,
-    borderRadius: 25,
-    marginLeft: 5,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+      backgroundColor: '#fff',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+    },
+
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 20,
+    },
+
+    headerText: {
+      fontSize: 18,
+      fontWeight: '700',
+      color: '#333',
+    },
+
+    clearText: {
+      fontSize: 16,
+      color: theme.colors.primary,
+      fontWeight: '500',
+    },
+
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 14,
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
+    },
+
+    rowText: {
+      fontSize: 16,
+      color: '#333',
+    },
+
+    checkbox: {
+      width: 22,
+      height: 22,
+      borderRadius: 6,
+      borderWidth: 2,
+      borderColor: '#ccc',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+
+    checkboxSelected: {
+      backgroundColor: theme.colors.primary,
+      borderColor: theme.colors.primary,
+    },
+
+    footer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 15,
+    },
+
+    cancelBtn: {
+      flex: 1,
+      backgroundColor: '#eee',
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginRight: 10,
+    },
+
+    applyBtn: {
+      flex: 1,
+      backgroundColor: theme.colors.primary,
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginLeft: 10,
+    },
+
+    cancelText: {
+      color: '#333',
+      fontSize: 16,
+      fontWeight: '500',
+    },
+
+    applyText: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: '600',
+    },
+  });
 
 export default Sort;

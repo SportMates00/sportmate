@@ -1,5 +1,11 @@
-import React, { useState, useCallback, memo } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import React from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  StyleSheet,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/themeContext';
 
@@ -12,119 +18,169 @@ const SPORTS_LIST = [
   { id: '6', name: 'Baseball', icon: 'baseball-outline' },
 ];
 
-const Sports = ({ selectedSports, setSelectedSports, onClose, onSelectSport = () => {} }) => {
+const Sports = ({ selectedSports, setSelectedSports, onClose }) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
 
-  const toggleSportSelection = useCallback((sportName) => {
+  const toggleSport = (sportName) => {
     setSelectedSports((prev) =>
-      prev.includes(sportName) ? prev.filter((s) => s !== sportName) : [...prev, sportName]
+      prev.includes(sportName)
+        ? prev.filter((s) => s !== sportName)
+        : [...prev, sportName]
     );
-  }, []);
-
-  const renderItem = useCallback(({ item }) => {
-    const isSelected = selectedSports.includes(item.name);
-    return <SportItem item={item} isSelected={isSelected} onPress={toggleSportSelection} />;
-  }, [selectedSports]);
-
-  const Header = ({ onClear }) => (
-    <View style={styles.headerContainer}>
-      <Text style={styles.header}>Filter by Sport</Text>
-      <TouchableOpacity onPress={onClear}>
-        <Text style={styles.clearText}>Clear</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  const SportItem = memo(({ item, isSelected, onPress }) => (
-    <TouchableOpacity
-      style={[styles.itemContainer, isSelected && styles.itemSelected]}
-      onPress={() => onPress(item.name)}
-    >
-      <View style={styles.itemLeft}>
-        <Ionicons name={item.icon} size={24} color={isSelected ? '#fff' : theme.colors.primary} />
-        <Text style={[styles.itemText, isSelected && styles.itemTextSelected]}>{item.name}</Text>
-      </View>
-      {isSelected && <Ionicons name="checkmark-circle" size={24} color="#fff" />}
-    </TouchableOpacity>
-  ));
-
-  const Footer = ({ onClose, onApply }) => (
-    <View style={styles.bottomButtons}>
-      <TouchableOpacity onPress={onClose} style={styles.cancelButton}>
-        <Text style={styles.buttonText}>Cancel</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={onApply} style={styles.doneButton}>
-        <Text style={styles.buttonText}>Apply</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  };
 
   return (
     <View style={styles.container}>
-      <Header onClear={() => setSelectedSports([])} />
-      <FlatList
-        data={SPORTS_LIST}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.listContainer}
-      />
-      <Footer onClose={onClose} onApply={() => { onSelectSport(selectedSports); onClose(); }} />
+
+      {/* HEADER */}
+      <View style={styles.header}>
+        <Text style={styles.headerText}>Filter by sport</Text>
+        <TouchableOpacity onPress={() => setSelectedSports([])}>
+          <Text style={styles.clearText}>Clear</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* SCROLLABLE LIST */}
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 20 }}>
+        {SPORTS_LIST.map((item) => {
+          const isSelected = selectedSports.includes(item.name);
+
+          return (
+            <TouchableOpacity
+              key={item.id}
+              style={styles.row}
+              onPress={() => toggleSport(item.name)}
+            >
+              <View style={styles.rowLeft}>
+                <Ionicons name={item.icon} size={24} color={theme.colors.primary} />
+                <Text style={styles.rowText}>{item.name}</Text>
+              </View>
+
+              <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>
+                {isSelected && <Ionicons name="checkmark" size={16} color="#fff" />}
+              </View>
+            </TouchableOpacity>
+          );
+        })}
+      </ScrollView>
+
+      {/* FOOTER BUTTONS */}
+      <View style={styles.footer}>
+        <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
+          <Text style={styles.cancelText}>Cancel</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.applyBtn}
+           onPress={onClose}
+        >
+          <Text style={styles.applyText}>Apply</Text>
+        </TouchableOpacity>
+
+      </View>
     </View>
   );
 };
 
-const getStyles = (theme) => StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  headerContainer: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 },
-  header: { fontSize: 16, fontWeight: 'bold', color: theme.colors.primary },
-  clearText: { fontSize: 16, color: theme.colors.primary },
-  listContainer: { paddingBottom: 20 },
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    padding: 10,
-    borderRadius: 10,
-    backgroundColor: '#f2f2f2',
-    marginBottom: 8,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  itemSelected: {
-    backgroundColor: theme.colors.primary,
-  },
-  itemLeft: { flexDirection: 'row', alignItems: 'center' },
-  itemText: { fontSize: 14, color: '#333', marginLeft: 10 },
-  itemTextSelected: { color: '#fff', fontWeight: 'bold' },
-  bottomButtons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 20,
-  },
-  cancelButton: {
-    flex: 1,
-    backgroundColor: '#ccc',
-    paddingVertical: 12,
-    borderRadius: 25,
-    marginRight: 10,
-    alignItems: 'center',
-  },
-  doneButton: {
-    flex: 1,
-    backgroundColor: theme.colors.primary,
-    paddingVertical: 12,
-    borderRadius: 25,
-    marginLeft: 10,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-});
+const getStyles = (theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 20,
+      backgroundColor: '#fff',
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+    },
+
+    header: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginBottom: 20,
+    },
+
+    headerText: {
+      fontSize: 18,
+      fontWeight: '700',
+      color: '#333',
+    },
+
+    clearText: {
+      fontSize: 16,
+      color: theme.colors.primary,
+      fontWeight: '500',
+    },
+
+    row: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      paddingVertical: 14,
+      borderBottomWidth: 1,
+      borderBottomColor: '#eee',
+    },
+
+    rowLeft: {
+      flexDirection: 'row',
+      alignItems: 'center',
+    },
+
+    rowText: {
+      marginLeft: 12,
+      fontSize: 16,
+      color: '#333',
+    },
+
+    checkbox: {
+      width: 22,
+      height: 22,
+      borderRadius: 6,
+      borderWidth: 2,
+      borderColor: '#ccc',
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+
+    checkboxSelected: {
+      backgroundColor: theme.colors.primary,
+      borderColor: theme.colors.primary,
+    },
+
+    footer: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      marginTop: 15,
+    },
+
+    cancelBtn: {
+      flex: 1,
+      backgroundColor: '#eee',
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginRight: 10,
+    },
+
+    applyBtn: {
+      flex: 1,
+      backgroundColor: theme.colors.primary,
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: 'center',
+      marginLeft: 10,
+    },
+
+    cancelText: {
+      color: '#333',
+      fontSize: 16,
+      fontWeight: '500',
+    },
+
+    applyText: {
+      color: '#fff',
+      fontSize: 16,
+      fontWeight: '600',
+    },
+  });
 
 export default Sports;
