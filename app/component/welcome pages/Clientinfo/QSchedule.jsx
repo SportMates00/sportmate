@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { users_list } from "@/src/js files/users";
 import { setUserInfo } from "@/src/store/userSlice";
 import { useTranslation } from "react-i18next";
+import StepBar from "./StepBar";
 
 const QSchedule = () => {
   const { t } = useTranslation();
@@ -85,6 +86,7 @@ const QSchedule = () => {
 
   return (
     <View style={styles.container}>
+      <StepBar step={3}/>
       <Text style={styles.heading}>{t("Availability")}</Text>
 
       <View style={styles.table}>

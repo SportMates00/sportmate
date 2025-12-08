@@ -2,8 +2,9 @@ import { setUserInfo } from '@/src/store/userSlice';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Platform, Image, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import StepBar from './StepBar';
 
 const QLevel = () => {
   const { t } = useTranslation();
@@ -45,9 +46,16 @@ const QLevel = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.centerContent}>
+      <StepBar step={2} />
+      <ScrollView>
+        <View style={styles.centerContent}>
 
         <Text style={styles.questionText}>{t('yourLevel')}</Text>
+
+        <TouchableOpacity style={styles.sportDetails}>
+          <Image source={userInfo.profileInfo.sport.sportIcon}/>
+          <Text style={{fontSize:18, fontWeight:800, letterSpacing:1}}>{userInfo.profileInfo.sport.sport}</Text>
+        </TouchableOpacity>
 
         <View style={styles.optionsContainer}>
           {levels.map((val) => {
@@ -76,7 +84,11 @@ const QLevel = () => {
         </View>
 
         {/* NEXT BUTTON */}
-        <TouchableOpacity
+
+      </View>
+      </ScrollView>
+
+              <TouchableOpacity
           disabled={!isNextEnabled}
           style={[
             styles.nextButton,
@@ -88,8 +100,6 @@ const QLevel = () => {
         >
           <Text style={styles.nextText}>Next</Text>
         </TouchableOpacity>
-
-      </View>
     </View>
   );
 };
@@ -99,14 +109,16 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     backgroundColor: 'white',
+    position:'relative',
+    alignItems:'center'
   },
   centerContent: {
     padding: 20,
   },
   questionText: {
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 20,
+    marginBottom: 60,
     marginTop: 20,
     color: '#333',
   },
@@ -128,12 +140,13 @@ const styles = StyleSheet.create({
     color: '#000000ff',
   },
   nextButton: {
+    position:'absolute',
+    bottom:60,
     borderRadius: 5,
-    marginBottom: 10,
     borderColor: 'silver',
     borderWidth: 1,
     height: 55,
-    width: '100%',
+    width: '90%',
     justifyContent: 'center',
   },
   nextText: {
@@ -143,6 +156,12 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     letterSpacing: 2,
   },
+  sportDetails: {
+    flexDirection:'row',
+    alignItems:'center',
+    gap:10,
+    marginBottom:30
+  }
 });
 
 export default QLevel;

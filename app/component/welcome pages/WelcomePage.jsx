@@ -17,7 +17,7 @@ const WelcomeScreen = () => {
   };
 
   const handleSignUp = () => {
-    navigation.navigate('SignUp');
+    navigation.navigate('QSport');
   };
   const handleTermsConditions = () => {
         navigation.navigate('TermsConditions');

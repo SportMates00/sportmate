@@ -1,3 +1,4 @@
+import { footballSportIcon } from "@/assets/sportIcons/sportIcons"
 import favicon from "../../assets/images/favicon.png"
 import mher from "../../assets/images/mher.jpg"
 import njteh from "../../assets/images/njteh.jpg"
@@ -48,7 +49,7 @@ let reviews = [
 
 const users = [
     {firstName:'Lolig', lastName: 'Lion', email:'1', password:'1', profileInfo: {
-      sport: 'Football',
+      sport: {sport:'Football', sportIcon: footballSportIcon },
       level: 'Beginner',
       location:'',
       age:'',
