@@ -2,9 +2,11 @@ import { setUserInfo } from '@/src/store/userSlice';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { View, Text, TouchableOpacity, StyleSheet, Platform, Image, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, ScrollView, Dimensions } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import StepBar from './StepBar';
+
+const { width } = Dimensions.get("window");
 
 const QLevel = () => {
   const { t } = useTranslation();
@@ -12,23 +14,45 @@ const QLevel = () => {
   const navigation = useNavigation();
   const userInfo = useSelector((state) => state.user);
 
-  // 🔥 selected level
-  const [selectedLevel, setSelectedLevel] = useState('');
+  // LEVELS (stable ID + translated label)
+  const levels = [
+    { id: "Starter", label: t("Starter") },
+    { id: "Beginner", label: t("Beginner") },
+    { id: "LowerIntermediate", label: t("LowerIntermediate") },
+    { id: "Intermediate", label: t("Intermediate") },
+    { id: "Advanced", label: t("Advanced") },
+    { id: "Professional", label: t("Professional") }
+  ];
 
-  const levels = [t('Beginner'), t('Intermediate'), t('Professional')];
+  // DESCRIPTION TEXTS
+  const levelDescription = {
+    Starter: t("StarterDescription"),
+    Beginner: t("BeginnerDescription"),
+    LowerIntermediate: t("LowerIntermediateDescription"),
+    Intermediate: t("IntermediateDescription"),
+    Advanced: t("AdvancedDescription"),
+    Professional: t("ProfessionalDescription")
+  };
 
-  const handleSelect = (val) => {
-    setSelectedLevel(val);
+  const [selectedLevel, setSelectedLevel] = useState("");
+
+  // HANDLE SELECTION
+  const handleSelect = (item) => {
+    setSelectedLevel(item.id); // store ID internally
 
     dispatch(
       setUserInfo({
-        profileInfo: { ...userInfo.profileInfo, level: val },
+        profileInfo: {
+          ...userInfo.profileInfo,
+          level: item.label, // store translated label for profile
+        },
       })
     );
   };
 
-  const isNextEnabled = selectedLevel !== '';
+  const isNextEnabled = selectedLevel !== "";
 
+  // HEADER SETTINGS
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
@@ -37,131 +61,164 @@ const QLevel = () => {
       headerBackButtonDisplayMode: "minimal",
       headerBackTitleVisible: false,
       headerBackTitle: "",
-      headerStyle: {
-        borderBottomWidth: 1,
-        borderColor: 'white',
-      },
+      headerStyle: { borderBottomWidth: 1, borderColor: "white" },
     });
   }, [navigation]);
 
   return (
     <View style={styles.container}>
       <StepBar step={2} />
-      <ScrollView>
-        <View style={styles.centerContent}>
 
-        <Text style={styles.questionText}>{t('yourLevel')}</Text>
+      <View style={styles.centerContent}>
+        <Text style={styles.questionText}>{t("yourLevel")}</Text>
+        <Text style={{ fontSize: 14, marginBottom: 20 }}>{t("scrollLevel")}</Text>
 
-        <TouchableOpacity style={styles.sportDetails}>
-          <Image source={userInfo.profileInfo.sport.sportIcon}/>
-          <Text style={{fontSize:18, fontWeight:800, letterSpacing:1}}>{userInfo.profileInfo.sport.sport}</Text>
-        </TouchableOpacity>
-
-        <View style={styles.optionsContainer}>
-          {levels.map((val) => {
-            const isSelected = selectedLevel === val;
-
-            return (
-              <TouchableOpacity
-                key={val}
-                style={[
-                  styles.optionButton,
-                  { backgroundColor: isSelected ? '#4CAF50' : 'white' },
-                ]}
-                onPress={() => handleSelect(val)}
-              >
-                <Text
-                  style={[
-                    styles.optionText,
-                    { color: isSelected ? 'white' : '#000000ff' },
-                  ]}
-                >
-                  {val}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+        {/* SPORT ICON + NAME */}
+        <View style={styles.sportDetails}>
+          <Image
+            source={userInfo.profileInfo.sport.sportIcon}
+            style={{ width: 40, height: 40 }}
+          />
+          <Text style={{ fontSize: 18, fontWeight: "800", letterSpacing: 1 }}>
+            {userInfo.profileInfo.sport.sport}
+          </Text>
         </View>
 
-        {/* NEXT BUTTON */}
+        {/* LEVEL BUTTONS */}
+        <View style={styles.buttonsWrapper}>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={styles.scrollContainer}
+          >
+            {levels.map((item) => {
+              const isSelected = selectedLevel === item.id;
 
+              return (
+                <TouchableOpacity
+                  key={item.id}
+                  style={[
+                    styles.optionButton,
+                    { backgroundColor: isSelected ? "#4CAF50" : "white" },
+                  ]}
+                  onPress={() => handleSelect(item)}
+                >
+                  <Text
+                    style={[
+                      styles.optionText,
+                      { color: isSelected ? "white" : "#000000ff" },
+                    ]}
+                  >
+                    {item.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
+        </View>
+
+        {/* DESCRIPTION BOX */}
+        {selectedLevel !== "" && (
+          <View style={styles.descriptionBox}>
+            <Text style={styles.descriptionText}>
+              {levelDescription[selectedLevel]}
+            </Text>
+          </View>
+        )}
       </View>
-      </ScrollView>
 
-              <TouchableOpacity
-          disabled={!isNextEnabled}
-          style={[
-            styles.nextButton,
-            { backgroundColor: isNextEnabled ? '#4CAF50' : '#A5D6A7' },
-          ]}
-          onPress={() => {
-            if (isNextEnabled) navigation.navigate('QAvailability');
-          }}
-        >
-          <Text style={styles.nextText}>Next</Text>
-        </TouchableOpacity>
+      {/* NEXT BUTTON */}
+      <TouchableOpacity
+        disabled={!isNextEnabled}
+        style={[
+          styles.nextButton,
+          { backgroundColor: isNextEnabled ? "#4CAF50" : "#A5D6A7" },
+        ]}
+        onPress={() => {
+          if (isNextEnabled) navigation.navigate("QSchedule");
+        }}
+      >
+        <Text style={styles.nextText}>Next</Text>
+      </TouchableOpacity>
     </View>
   );
 };
 
+const BUTTON_WIDTH = width * 0.42;
+
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    width: "100%",
     flex: 1,
-    backgroundColor: 'white',
-    position:'relative',
-    alignItems:'center'
+    backgroundColor: "white",
+    position: "relative",
   },
   centerContent: {
     padding: 20,
   },
+  scrollContainer: {
+    flexDirection: 'row',
+    gap: 10,
+    paddingVertical: 16,
+  },
   questionText: {
     fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 60,
+    marginBottom: 20,
     marginTop: 20,
     color: '#333',
   },
-  optionsContainer: {
-    marginBottom: 30,
+  buttonsWrapper: {
+    marginBottom: 20,
   },
   optionButton: {
-    borderRadius: 5,
-    marginBottom: 10,
-    borderColor: 'silver',
+    width: BUTTON_WIDTH,
+    paddingVertical: 14,
+    borderRadius: 8,
+    borderColor: "silver",
     borderWidth: 1,
-    height: 55,
-    width: '100%',
-    justifyContent: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   optionText: {
-    fontSize: 16,
-    marginLeft: 60,
-    color: '#000000ff',
+    fontSize: 14,
+    textAlign: "center",
+  },
+  descriptionBox: {
+    marginTop: 10,
+    backgroundColor: "#F2F2F2",
+    padding: 14,
+    borderRadius: 10,
+  },
+  descriptionText: {
+    fontSize: 14,
+    color: "#333",
   },
   nextButton: {
-    position:'absolute',
-    bottom:60,
+    position: "absolute",
+    bottom: 60,
     borderRadius: 5,
-    borderColor: 'silver',
+    borderColor: "silver",
     borderWidth: 1,
     height: 55,
-    width: '90%',
-    justifyContent: 'center',
+    width: "90%",
+    marginLeft: "5%",
+    justifyContent: "center",
   },
   nextText: {
-    textAlign: 'center',
-    color: 'white',
+    textAlign: "center",
+    color: "white",
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: "600",
     letterSpacing: 2,
   },
   sportDetails: {
-    flexDirection:'row',
-    alignItems:'center',
-    gap:10,
-    marginBottom:30
-  }
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginBottom: 20,
+    marginTop:40
+  },
 });
 
 export default QLevel;

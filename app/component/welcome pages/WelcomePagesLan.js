@@ -1,7 +1,7 @@
 export default {
   en: {
     welcome: 'Welcome',
-    subtitle: 'Find local partners for sports, activites, and friednly coffee chats in minutes.',
+    subtitle: 'Find local partners for sports, activites, and friendly coffee chats in minutes.',
     login: 'Login',
     signup: 'Sign up with email',
     loginPage: 'Login',
@@ -24,19 +24,36 @@ export default {
     emailInUse: 'Email is already in use',
     passwordDoNotMatch: 'Password does not match',
     allFieldsRequired: 'All the fields are required',
+
     favorSport: 'What is your main goal for using our application?',
     selectSport: 'You can only select one sport',
+
     Football: 'Football',
     Basketball: 'Basketball',
     Tennis:'Tennis',
     PingPong:'Ping Pong',
     Hiking:'Hiking',
+
+    scrollLevel: 'Please adjust the slider for all sports.',
     yourLevel:'What is your level?',
+    Starter: 'Starter',
     Beginner: 'Beginner',
+    LowerIntermediate: 'Lower Intermediate',
     Intermediate:'Intermediate',
+    Advanced: 'Advanced',
     Professional:'Professional',
-    Availability: 'Availability',
+
+    StarterDescription: "Very new to the sport, learning rules and basic movements with limited experience.",
+    BeginnerDescription: "Can sustain short rallies, perform basic techniques, and understands fundamental positioning.",
+    LowerIntermediateDescription: "More consistent control, able to rally at a moderate pace, starting to use different shots confidently.",
+    IntermediateDescription: "Good consistency, movement, and tactical awareness. Can maintain longer rallies and adapt during play.",
+    AdvancedDescription: "Strong technique, fast pace, tactical play, good stamina, and confident shot selection.",
+    ProfessionalDescription: "High-level competitive skills, excellent consistency, strong conditioning, and advanced strategy.",
+
+    Availability: 'Which days you will be available to join or create events?',
+    selectBoxes: 'Tap all boxes that match your available times',
     getStarted: 'Get Started',
+
     Mon: 'Mon',
     Tue: 'Tue',
     Wed: 'Wed',
@@ -44,13 +61,18 @@ export default {
     Fri: 'Fri',
     Sat: 'Sat',
     Sun: 'Sun',
+
     Mor: 'Mor',
     Aft: 'Aft',
     Eve: 'Eve',
+
     Error: 'Error',
     oneSlot: 'Please select at least one availability slot.'
   },
-  
+
+  // ---------------------------------------------------------
+  // ARMENIAN TRANSLATIONS
+  // ---------------------------------------------------------
   am: {
     welcome: 'Բարի գալուստ',
     subtitle: 'Գտեք տեղային գործընկերների սպորտի, գործունեությունների և ընկերական սուրճի զրույցների համար միայն մի քանի րոպեում։',
@@ -76,19 +98,36 @@ export default {
     emailInUse: 'Էլ. հասցեն արդեն օգտագործվում է',
     passwordDoNotMatch: 'Գաղտնաբառերը չեն համընկնում',
     allFieldsRequired: 'Բոլոր դաշտերը պարտադիր են',
-    favorSport: 'Որն է մեր հավելվածը օգտագործելու ձեր հիմնական նպատակը։',
+
+    favorSport: 'Որը՞ է մեր հավելվածը օգտագործելու ձեր հիմնական նպատակը։',
     selectSport: 'Կարող եք ընտրել միայն մեկ մարզաձև',
+
     Football: 'Ֆուտբոլ',
     Basketball: 'Բասկետբոլ',
     Tennis: 'Տենիս',
     PingPong: 'Սեղանի թենիս',
     Hiking: 'Լեռնագնացություն',
+
+    scrollLevel: 'Խնդրում ենք կարգավորել սլայդերը բոլոր մարզաձևերի համար։',
     yourLevel: 'Ինչ մակարդակի՞ եք։',
+    Starter: 'Սկսնակ մակարդակ',
     Beginner: 'Սկսնակ',
+    LowerIntermediate: 'Սկսնակ միջին',
     Intermediate: 'Միջին',
+    Advanced: 'Բարձր մակարդակ',
     Professional: 'Մասնագիտական',
-    Availability: 'Անձնական ժամանակը',
+
+    StarterDescription: 'Լիովին նոր եք մարզաձևում, դեռ սովորում եք կանոններն ու հիմնական շարժումները՝ քիչ փորձով։',
+    BeginnerDescription: 'Կարող եք կատարել հիմնական տեխնիկաներ, հասկանալ դիրքավորումը և պահպանել կարճ ռալիներ։',
+    LowerIntermediateDescription: 'Ավելի կայուն վերահսկողություն, կարողանում եք պահել միջին տեմպով խաղը և տարբեր հարվածներ օգտագործել։',
+    IntermediateDescription: 'Լավ կայունություն, շարժում և տակտիկական մտածողություն։ Կարող եք երկար ռալիներ պահել։',
+    AdvancedDescription: 'Ուժեղ տեխնიკა, արագ տեմպ, տակտիկական խաղ, լավ ֆիզիկական պատրաստվածություն։',
+    ProfessionalDescription: 'Բարձր մրցակցային հմտություններ, գերազանց կայունություն, ֆիզիկական պատրաստվածություն և առաջադեմ ռազմավարություն։',
+
+    Availability: 'Որ օրերին եք հասանելի մասնակցելու կամ կազմակերպելու միջոցառումներ։',
+    selectBoxes: 'Սեղմեք բոլոր վանդակները, որոնք համապատասխանում են ձեր ազատ ժամերին',
     getStarted: 'Սկսել',
+
     Mon: 'Երկ',
     Tue: 'Երք',
     Wed: 'Չոր',
@@ -96,13 +135,18 @@ export default {
     Fri: 'Ուրբ',
     Sat: 'Շաբ',
     Sun: 'Կիր',
+
     Mor: 'Առա',
     Aft: 'Ցեր',
     Eve: 'Երե',
+
     Error: 'Սխալ',
     oneSlot: 'Խնդրում ենք ընտրել առնվազն մեկ հասանելիության ժամ։'
   },
 
+  // ---------------------------------------------------------
+  // RUSSIAN TRANSLATIONS
+  // ---------------------------------------------------------
   ru: {
     welcome: 'Добро пожаловать',
     subtitle: 'Найдите местных партнёров для спорта, активностей и дружеских встреч за кофе за считанные минуты.',
@@ -128,19 +172,36 @@ export default {
     emailInUse: 'Адрес электронной почты уже используется',
     passwordDoNotMatch: 'Пароли не совпадают',
     allFieldsRequired: 'Все поля обязательны для заполнения',
+
     favorSport: 'Какова ваша основная цель использования нашего приложения?',
     selectSport: 'Вы можете выбрать только один вид спорта',
+
     Football: 'Футбол',
     Basketball: 'Баскетбол',
     Tennis: 'Теннис',
     PingPong: 'Настольный теннис',
     Hiking: 'Походы',
+
+    scrollLevel: 'Пожалуйста, настройте ползунок для всех видов спорта.',
     yourLevel: 'Какой у вас уровень?',
+    Starter: 'Начальный уровень',
     Beginner: 'Новичок',
+    LowerIntermediate: 'Ниже среднего',
     Intermediate: 'Средний',
+    Advanced: 'Продвинутый',
     Professional: 'Профессиональный',
-    Availability: 'Доступность',
+
+    StarterDescription: 'Очень мало опыта, изучение правил и базовых движений.',
+    BeginnerDescription: 'Может выполнять базовые техники и короткие розыгрыши, понимает основные позиции.',
+    LowerIntermediateDescription: 'Более уверенный контроль, может поддерживать средний темп и использовать различные удары.',
+    IntermediateDescription: 'Хорошая стабильность, движение и тактическое понимание. Может адаптироваться во время игры.',
+    AdvancedDescription: 'Сильная техника, быстрый темп, тактическая игра и хорошая выносливость.',
+    ProfessionalDescription: 'Высокий уровень навыков, отличная стабильность, спортивная подготовка и продвинутая стратегия.',
+
+    Availability: 'В какие дни вы готовы присоединяться или создавать мероприятия?',
+    selectBoxes: 'Нажмите на все ячейки, соответствующие вашему свободному времени',
     getStarted: 'Начать',
+
     Mon: 'Пн',
     Tue: 'Вт',
     Wed: 'Ср',
@@ -148,9 +209,11 @@ export default {
     Fri: 'Пт',
     Sat: 'Сб',
     Sun: 'Вс',
+
     Mor: 'Утр',
     Aft: 'Ден',
     Eve: 'Веч',
+
     Error: 'Ошибка',
     oneSlot: 'Пожалуйста, выберите хотя бы один доступный слот.'
   }

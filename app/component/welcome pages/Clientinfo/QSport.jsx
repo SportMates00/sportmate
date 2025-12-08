@@ -100,7 +100,7 @@ const QSport = () => {
           style={[
             styles.nextButton,
             {
-              backgroundColor: isNextEnabled ? '#4CAF50' : '#A5D6A7',
+              backgroundColor: isNextEnabled ? 'rgba(36, 163, 76, 0.9)' : 'rgba(126, 219, 155, 0.9)',
             },
           ]}
           onPress={() => {

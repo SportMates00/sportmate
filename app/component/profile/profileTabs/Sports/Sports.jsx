@@ -23,12 +23,12 @@ const Sports = ({ loggedUser }) => {
     <View style={{alignItems:'center',gap:20}}>
       <View style={styles.container}>
       <TouchableOpacity  onPress={() => {
-            setSport({sport:loggedUser.profileInfo.sport,level:loggedUser.profileInfo.level})
+            setSport({sport:loggedUser.profileInfo.sport.sport,level:loggedUser.profileInfo.level})
             setOpenEditSport(true) 
           }} style={styles.card}>
         <Image style={styles.cardImage} source={sportImages[loggedUser.profileInfo.sport]}/>
         <View style={styles.cardOverlay}>
-              <Text style={styles.sportText}>{loggedUser.profileInfo.sport}</Text>
+              <Text style={styles.sportText}>{loggedUser.profileInfo.sport.sport}</Text>
               <Text style={styles.levelText}>{loggedUser.profileInfo.level}</Text>
         </View>
       </TouchableOpacity>

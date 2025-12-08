@@ -11,7 +11,7 @@ const AllGames = ({ loggedUser }) => {
   const [showSports, setShowSports] = useState(false);
   const [showSort, setShowSort] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
-  const [selectedSports, setSelectedSports] = useState([loggedUser.profileInfo.sport]);
+  const [selectedSports, setSelectedSports] = useState([loggedUser.profileInfo.sport.sport]);
   const [selectedSort, setSelectedSort] = useState(null);
   const [filters, setFilters] = useState({skillLevel: [],location: [],date: [],time: [],});
 

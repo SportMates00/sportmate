@@ -43,7 +43,7 @@ const About = ({loggedUser}) => {
       <View style={styles.sport}>
         <Text style={styles.sportText}>Sport</Text>
         <View style={styles.sportInfo}>
-          <Text style={styles.sportInfoText}>{loggedUser.profileInfo.sport} : </Text>
+          <Text style={styles.sportInfoText}>{loggedUser.profileInfo.sport.sport} : </Text>
           <Text>{rating}</Text>
         </View>
       </View>

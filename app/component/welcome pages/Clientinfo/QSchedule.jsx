@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import {
   View,
   Text,
@@ -21,6 +21,18 @@ const QSchedule = () => {
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user);
   const navigation = useNavigation();
+
+    useLayoutEffect(() => {
+      navigation.setOptions({
+        headerShown: true,
+        headerTitle: "",
+        headerShadowVisible: false,
+        headerBackButtonDisplayMode: "minimal",
+        headerBackTitleVisible: false,
+        headerBackTitle: "",
+        headerStyle: { borderBottomWidth: 1, borderColor: "white" },
+      });
+    }, [navigation]);
 
   const [availability, setAvailability] = useState(
     days.reduce((acc, day) => {
@@ -87,24 +99,27 @@ const QSchedule = () => {
   return (
     <View style={styles.container}>
       <StepBar step={3}/>
-      <Text style={styles.heading}>{t("Availability")}</Text>
 
-      <View style={styles.table}>
-        {/* Header row */}
-        <View style={styles.row}>
-          <View style={[styles.headerCell, { flex: 1 }]} />
-          {days.map((day, index) => (
-            <View
-              key={index}
-              style={[
-                styles.headerCell,
-                index === days.length - 1 && { borderRightWidth: 0 },
-              ]}
-            >
-              <Text style={styles.headerText}>{day}</Text>
-            </View>
-          ))}
-        </View>
+      <View style={{padding:20}}>
+        <Text style={styles.heading}>{t("Availability")}</Text>
+        <Text style={{ fontSize: 14, marginBottom: 60 }}>{t("selectBoxes")}</Text>
+
+        <View style={styles.table}>
+          {/* Header row */}
+          <View style={styles.row}>
+            <View style={[styles.headerCell, { flex: 1 }]} />
+            {days.map((day, index) => (
+              <View
+                key={index}
+                style={[
+                  styles.headerCell,
+                  index === days.length - 1 && { borderRightWidth: 0 },
+                ]}
+              >
+                <Text style={styles.headerText}>{day}</Text>
+              </View>
+            ))}
+          </View>
 
         {/* Body rows */}
         {times.map((time, rowIndex) => (
@@ -127,6 +142,7 @@ const QSchedule = () => {
           </View>
         ))}
       </View>
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleGetStarted}>
         <Text style={styles.buttonText}>{t("getStarted")}</Text>
@@ -137,17 +153,18 @@ const QSchedule = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    padding: 16,
-    backgroundColor: "white",
-    justifyContent: "center",
-    alignItems: "center",
     width: "100%",
+    flex: 1,
+    backgroundColor: "white",
+    position: "relative",
+    alignItems:'center'
   },
   heading: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 16,
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 20,
+    color: '#333',
   },
   table: {
     width: "100%",
