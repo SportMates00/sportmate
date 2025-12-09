@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 const SPORTS_LIST = [
   { id: '1', name: 'Football', icon: 'football-outline' },
@@ -18,9 +19,23 @@ const SPORTS_LIST = [
   { id: '6', name: 'Baseball', icon: 'baseball-outline' },
 ];
 
+
+
 const Sports = ({ selectedSports, setSelectedSports, onClose }) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
+ const { t } = useTranslation();
+
+  const sports = [
+  { key: "Football", label: t("Football"), icon: 'football-outline' },
+  { key: "Basketball", label: t("Basketball"), icon: 'basketball-outline' },
+  { key: "Tennis", label: t("Tennis"), icon: 'tennisball-outline' },
+  { key: "PingPong", label: t("PingPong"), icon: 'baseball-outline' },
+  { key: "Hiking", label: t("Hiking"), icon: 'baseball-outline' },
+  { key: "Tennis1", label: t("Tennis1"), icon: 'baseball-outline' },
+  { key: "PingPong1", label: t("PingPong1"), icon: 'baseball-outline' },
+  { key: "Hiking1", label: t("Hiking1"), icon: 'baseball-outline' },
+];
 
   const toggleSport = (sportName) => {
     setSelectedSports((prev) =>
@@ -43,18 +58,18 @@ const Sports = ({ selectedSports, setSelectedSports, onClose }) => {
 
       {/* SCROLLABLE LIST */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 20 }}>
-        {SPORTS_LIST.map((item) => {
-          const isSelected = selectedSports.includes(item.name);
+        {sports.map((item) => {
+          const isSelected = selectedSports.includes(item.key);
 
           return (
             <TouchableOpacity
-              key={item.id}
+              key={item.key}
               style={styles.row}
-              onPress={() => toggleSport(item.name)}
+              onPress={() => toggleSport(item.key)}
             >
               <View style={styles.rowLeft}>
                 <Ionicons name={item.icon} size={24} color={theme.colors.primary} />
-                <Text style={styles.rowText}>{item.name}</Text>
+                <Text style={styles.rowText}>{t(`${item.key}`)}</Text>
               </View>
 
               <View style={[styles.checkbox, isSelected && styles.checkboxSelected]}>

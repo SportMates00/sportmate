@@ -15,18 +15,16 @@ const QSport = () => {
 
   const [selectedSport, setSelectedSport] = useState('');
 
-  const sports = [
-    { sport: t('Football'), sportIcon: footballSportIcon },
-    { sport: t('Basketball'), sportIcon: basketballSportIcon },
-    { sport: t('Tennis'), sportIcon: tennisSportIcon },
-    { sport: t('PingPong'), sportIcon: pingPongSportIcon },
-    { sport: t('Hiking'), sportIcon: hikingSportIcon },
-    { sport: t('Football1'), sportIcon: footballSportIcon },
-    { sport: t('Basketball1'), sportIcon: basketballSportIcon },
-    { sport: t('Tennis1'), sportIcon: tennisSportIcon },
-    { sport: t('PingPong1'), sportIcon: pingPongSportIcon },
-    { sport: t('Hiking1'), sportIcon: hikingSportIcon },
-  ];
+const sports = [
+  { key: "Football", label: t("Football"), sportIcon: footballSportIcon },
+  { key: "Basketball", label: t("Basketball"), sportIcon: basketballSportIcon },
+  { key: "Tennis", label: t("Tennis"), sportIcon: tennisSportIcon },
+  { key: "PingPong", label: t("PingPong"), sportIcon: pingPongSportIcon },
+  { key: "Hiking", label: t("Hiking"), sportIcon: hikingSportIcon },
+  { key: "Tennis1", label: t("Tennis1"), sportIcon: tennisSportIcon },
+  { key: "PingPong1", label: t("PingPong1"), sportIcon: pingPongSportIcon },
+  { key: "Hiking1", label: t("Hiking1"), sportIcon: hikingSportIcon },
+];
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -43,15 +41,18 @@ const QSport = () => {
     });
   }, [navigation]);
 
-  const handleSelect = (val) => {
-    setSelectedSport(val.sport);
+const handleSelect = (val) => {
+  setSelectedSport(val.key);
 
-    dispatch(
-      setUserInfo({
-        profileInfo: { ...userInfo.profileInfo, sport: val },
-      })
-    );
-  };
+  dispatch(
+    setUserInfo({
+      profileInfo: {
+        ...userInfo.profileInfo,
+        sport: { key: val.key }
+      },
+    })
+  );
+};
 
   const isNextEnabled = selectedSport !== '';
 
@@ -65,7 +66,7 @@ const QSport = () => {
 
         <View style={styles.optionsContainer}>
           {sports.map((val) => {
-            const isSelected = selectedSport === val.sport;
+            const isSelected = selectedSport === val.key;
 
             return (
               <TouchableOpacity
@@ -84,7 +85,7 @@ const QSport = () => {
                       { color: isSelected ? 'white' : '#000000ff' },
                     ]}
                   >
-                    {val.sport}
+                    {val.label}
                   </Text>
                 </View>
               </TouchableOpacity>

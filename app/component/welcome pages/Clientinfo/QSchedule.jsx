@@ -15,28 +15,36 @@ import StepBar from "./StepBar";
 
 const QSchedule = () => {
   const { t } = useTranslation();
-  const days = [t("Mon"), t("Tue"), t("Wed"), t("Thu"), t("Fri"), t("Sat"), t("Sun")];
-  const times = [t("Mor"), t("Aft"), t("Eve")];
-
   const dispatch = useDispatch();
   const userInfo = useSelector((state) => state.user);
   const navigation = useNavigation();
 
-    useLayoutEffect(() => {
-      navigation.setOptions({
-        headerShown: true,
-        headerTitle: "",
-        headerShadowVisible: false,
-        headerBackButtonDisplayMode: "minimal",
-        headerBackTitleVisible: false,
-        headerBackTitle: "",
-        headerStyle: { borderBottomWidth: 1, borderColor: "white" },
-      });
-    }, [navigation]);
+  // ------------------------------------------------------------
+  // FIXED VERSION: universal keys + translated labels
+  // ------------------------------------------------------------
 
+  const dayKeys = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+  const timeKeys = ["Mor", "Aft", "Eve"];
+
+  const dayLabels = dayKeys.map((key) => ({ key, label: t(key) }));
+  const timeLabels = timeKeys.map((key) => ({ key, label: t(key) }));
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerTitle: "",
+      headerShadowVisible: false,
+      headerBackButtonDisplayMode: "minimal",
+      headerBackTitleVisible: false,
+      headerBackTitle: "",
+      headerStyle: { borderBottomWidth: 1, borderColor: "white" },
+    });
+  }, [navigation]);
+
+  // Availability is stored using universal KEYS only
   const [availability, setAvailability] = useState(
-    days.reduce((acc, day) => {
-      acc[day] = times.reduce((timeAcc, time) => {
+    dayKeys.reduce((acc, day) => {
+      acc[day] = timeKeys.reduce((timeAcc, time) => {
         timeAcc[time] = false;
         return timeAcc;
       }, {});
@@ -53,12 +61,12 @@ const QSchedule = () => {
     );
   }
 
-  const toggleCell = (day, time) => {
+  const toggleCell = (dayKey, timeKey) => {
     const updatedAvailability = {
       ...availability,
-      [day]: {
-        ...availability[day],
-        [time]: !availability[day][time],
+      [dayKey]: {
+        ...availability[dayKey],
+        [timeKey]: !availability[dayKey][timeKey],
       },
     };
 
@@ -69,7 +77,7 @@ const QSchedule = () => {
         ...userInfo,
         profileInfo: {
           ...userInfo.profileInfo,
-          availability: updatedAvailability,
+          availability: updatedAvailability, // STORES KEYS, NOT LABELS
         },
       })
     );
@@ -86,6 +94,7 @@ const QSchedule = () => {
       Alert.alert(t("Error"), t("oneSlot"));
       return;
     }
+
     try {
       users_list.push(userInfo);
       dispatch(setUserInfo(userInfo));
@@ -98,50 +107,52 @@ const QSchedule = () => {
 
   return (
     <View style={styles.container}>
-      <StepBar step={3}/>
+      <StepBar step={3} />
 
-      <View style={{padding:20}}>
+      <View style={{ padding: 20 }}>
         <Text style={styles.heading}>{t("Availability")}</Text>
-        <Text style={{ fontSize: 14, marginBottom: 60 }}>{t("selectBoxes")}</Text>
+        <Text style={{ fontSize: 14, marginBottom: 60 }}>
+          {t("selectBoxes")}
+        </Text>
 
         <View style={styles.table}>
           {/* Header row */}
           <View style={styles.row}>
             <View style={[styles.headerCell, { flex: 1 }]} />
-            {days.map((day, index) => (
+            {dayLabels.map((d, index) => (
               <View
-                key={index}
+                key={d.key}
                 style={[
                   styles.headerCell,
-                  index === days.length - 1 && { borderRightWidth: 0 },
+                  index === dayKeys.length - 1 && { borderRightWidth: 0 },
                 ]}
               >
-                <Text style={styles.headerText}>{day}</Text>
+                <Text style={styles.headerText}>{d.label}</Text>
               </View>
             ))}
           </View>
 
-        {/* Body rows */}
-        {times.map((time, rowIndex) => (
-          <View key={rowIndex} style={styles.row}>
-            <View style={[styles.headerCell, { borderRightWidth: 1 }]}>
-              <Text style={styles.headerText}>{time}</Text>
-            </View>
+          {/* Body rows */}
+          {timeLabels.map((time) => (
+            <View key={time.key} style={styles.row}>
+              <View style={[styles.headerCell, { borderRightWidth: 1 }]}>
+                <Text style={styles.headerText}>{time.label}</Text>
+              </View>
 
-            {days.map((day, colIndex) => (
-              <TouchableOpacity
-                key={`${rowIndex}-${colIndex}`}
-                style={[
-                  styles.cell,
-                  availability[day][time] && styles.selectedCell,
-                  colIndex === days.length - 1 && { borderRightWidth: 0 },
-                ]}
-                onPress={() => toggleCell(day, time)}
-              />
-            ))}
-          </View>
-        ))}
-      </View>
+              {dayKeys.map((dayKey, colIndex) => (
+                <TouchableOpacity
+                  key={`${time.key}-${dayKey}`}
+                  style={[
+                    styles.cell,
+                    availability[dayKey][time.key] && styles.selectedCell,
+                    colIndex === dayKeys.length - 1 && { borderRightWidth: 0 },
+                  ]}
+                  onPress={() => toggleCell(dayKey, time.key)}
+                />
+              ))}
+            </View>
+          ))}
+        </View>
       </View>
 
       <TouchableOpacity style={styles.button} onPress={handleGetStarted}>

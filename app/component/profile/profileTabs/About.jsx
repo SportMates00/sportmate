@@ -2,10 +2,12 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import AvailabilityTable from '../AvailibilityTable'
 import { useTheme } from '@/src/theme/themeContext';
+import { useTranslation } from 'react-i18next';
 const About = ({loggedUser}) => {
 
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
   const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  const { t } = useTranslation();
   const [rating, setRating] = useState(0);
   useEffect(() => {
     const level = loggedUser.profileInfo.level
@@ -43,7 +45,7 @@ const About = ({loggedUser}) => {
       <View style={styles.sport}>
         <Text style={styles.sportText}>Sport</Text>
         <View style={styles.sportInfo}>
-          <Text style={styles.sportInfoText}>{loggedUser.profileInfo.sport.sport} : </Text>
+          <Text style={styles.sportInfoText}>{t(`${loggedUser.profileInfo.sport.key}`)} : </Text>
           <Text>{rating}</Text>
         </View>
       </View>

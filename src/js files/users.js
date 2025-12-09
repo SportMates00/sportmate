@@ -49,7 +49,7 @@ let reviews = [
 
 const users = [
     {firstName:'Lolig', lastName: 'Lion', email:'1', password:'1', profileInfo: {
-      sport: {sport:'Football', sportIcon: footballSportIcon },
+      sport: {key:'Football', sportIcon: footballSportIcon },
       level: 'Beginner',
       location:'Yerevan',
       age:'',

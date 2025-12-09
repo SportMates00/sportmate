@@ -11,13 +11,13 @@ const AllGames = ({ loggedUser }) => {
   const [showSports, setShowSports] = useState(false);
   const [showSort, setShowSort] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
-  const [selectedSports, setSelectedSports] = useState([loggedUser.profileInfo.sport.sport]);
+  const [selectedSports, setSelectedSports] = useState([loggedUser.profileInfo.sport.key]);
   const [selectedSort, setSelectedSort] = useState(null);
   const [filters, setFilters] = useState({skillLevel: [],location: [],date: [],time: [],});
 
   // Memoize gameEvents so it only updates when selectedSports or gamesEvents change
  const gameEvents = useMemo(() => {
-  if (!loggedUser?.profileInfo?.sport) return [];
+  if (!loggedUser?.profileInfo?.sport.key) return [];
 
   // 1️) BASE EVENTS FOR SELECTED SPORTS
   let events = selectedSports.flatMap(

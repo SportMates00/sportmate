@@ -3,38 +3,50 @@ import React from "react";
 import {
   View,
   Text,
-  StyleSheet,
+  StyleSheet
 } from "react-native";
+import { useTranslation } from "react-i18next";
 
-const AvailabilityTable = ({loggedUser}) => {
+const AvailabilityTable = ({ loggedUser }) => {
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
+  const { t } = useTranslation();
 
-  const { theme } = useTheme(); // Get current theme and toggle (if needed)
-  const styles = getStyles(theme); // Generate dynamic styles based on current theme
-  const days = Object.keys(loggedUser.profileInfo.availability);
-  const times = Object.keys(loggedUser.profileInfo.availability[days[0]]);
+  // KEYS stored in DB
+  const dayKeys = Object.keys(loggedUser.profileInfo.availability);
+  const timeKeys = Object.keys(loggedUser.profileInfo.availability[dayKeys[0]]);
+
+  // LABELS translated using i18n
+  const dayLabels = dayKeys.map((key) => ({ key, label: t(key) }));
+  const timeLabels = timeKeys.map((key) => ({ key, label: t(key) }));
+
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Availability</Text>
+      <Text style={styles.heading}>{t("Availability ")}</Text>
+
       <View style={styles.table}>
-        {/* Table Header */}
+        {/* Header Row */}
         <View style={styles.row}>
           <View style={styles.cell} />
-          {days.map((day, index) => (
-            <Text key={index} style={styles.headerCell}>
-              {day}
+          {dayLabels.map((day, index) => (
+            <Text key={day.key} style={styles.headerCell}>
+              {day.label}
             </Text>
           ))}
         </View>
-        {/* Table Body */}
-        {times.map((time, rowIndex) => (
-          <View key={rowIndex} style={styles.row}>
-            <Text style={styles.headerCell}>{time}</Text>
-            {days.map((day, colIndex) => (
+
+        {/* Body Rows */}
+        {timeLabels.map((time) => (
+          <View key={time.key} style={styles.row}>
+            <Text style={styles.headerCell}>{time.label}</Text>
+
+            {dayKeys.map((dayKey, colIndex) => (
               <View
-                key={`${rowIndex}-${colIndex}`} // Unique key
+                key={`${time.key}-${dayKey}`}
                 style={[
                   styles.cell,
-                  loggedUser.profileInfo.availability[day][time] && styles.selectedCell,
+                  loggedUser.profileInfo.availability[dayKey][time.key] &&
+                    styles.selectedCell,
                 ]}
               />
             ))}
