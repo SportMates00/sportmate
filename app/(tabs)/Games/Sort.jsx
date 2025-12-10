@@ -1,5 +1,6 @@
 // Sort.jsx
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   View,
   Text,
@@ -10,16 +11,17 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/themeContext';
 
-const SORT_OPTIONS = [
-  { id: 'date', label: 'Date' },
-  { id: 'popularity', label: 'Popularity' },
-  { id: 'distance', label: 'Distance' },
-];
 
 // ⭐ FIXED: added currentSort prop ⭐
 const Sort = ({ onClose, onSelectSort = () => {}, currentSort }) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
+  const { t } = useTranslation();
+  const SORT_OPTIONS = [
+  { key: 'date', label: t('SortGamesbyDate') },
+  { key: 'popularity', label: t('SortGamesbyPopularity') },
+  { key: 'distance', label: t('SortGamesbyDistance') },
+];
 
   // ⭐ FIXED: initial state now uses currentSort ⭐
   const [selectedSort, setSelectedSort] = useState(currentSort || null);
@@ -28,9 +30,9 @@ const Sort = ({ onClose, onSelectSort = () => {}, currentSort }) => {
     <View style={styles.container}>
       {/* HEADER */}
       <View style={styles.header}>
-        <Text style={styles.headerText}>Sort Events</Text>
+        <Text style={styles.headerText}>{t('SortGamesEvents')}</Text>
         <TouchableOpacity onPress={() => setSelectedSort(null)}>
-          <Text style={styles.clearText}>Clear</Text>
+          <Text style={styles.clearText}>{t('ClearSortingGames')}</Text>
         </TouchableOpacity>
       </View>
 
@@ -41,9 +43,9 @@ const Sort = ({ onClose, onSelectSort = () => {}, currentSort }) => {
 
           return (
             <TouchableOpacity
-              key={option.id}
+              key={option.key}
               style={styles.row}
-              onPress={() => setSelectedSort(option.id)}
+              onPress={() => setSelectedSort(option.key)}
             >
               <Text style={styles.rowText}>{option.label}</Text>
 
@@ -65,7 +67,7 @@ const Sort = ({ onClose, onSelectSort = () => {}, currentSort }) => {
       {/* FOOTER BUTTONS */}
       <View style={styles.footer}>
         <TouchableOpacity style={styles.cancelBtn} onPress={onClose}>
-          <Text style={styles.cancelText}>Cancel</Text>
+          <Text style={styles.cancelText}>{t('CancelSortGamesButton')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -75,7 +77,7 @@ const Sort = ({ onClose, onSelectSort = () => {}, currentSort }) => {
             onClose();
           }}
         >
-          <Text style={styles.applyText}>Done</Text>
+          <Text style={styles.applyText}>{t('DoneSortGamesButton')}</Text>
         </TouchableOpacity>
       </View>
     </View>

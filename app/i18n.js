@@ -2,22 +2,23 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import WelcomePagesLan from './component/welcome pages/WelcomePagesLan';
+import GamesLan from '../app/(tabs)/Games/GamesLan';
 
 // Translations
 const resources = {
   en: {
     translation: {
-      ...WelcomePagesLan.en
+      ...WelcomePagesLan.en, ...GamesLan.en
     }
   },
   am: {
     translation: {
-      ...WelcomePagesLan.am
+      ...WelcomePagesLan.am, ...GamesLan.am
     }
   },
   ru: {
     translation: {
-      ...WelcomePagesLan.ru
+      ...WelcomePagesLan.ru, ...GamesLan.ru
     }
   }
 };
