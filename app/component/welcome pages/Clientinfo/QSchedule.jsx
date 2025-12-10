@@ -37,7 +37,12 @@ const QSchedule = () => {
       headerBackButtonDisplayMode: "minimal",
       headerBackTitleVisible: false,
       headerBackTitle: "",
-      headerStyle: { borderBottomWidth: 1, borderColor: "white" },
+      headerStyle: {
+      backgroundColor: "white",
+      borderBottomWidth: 0, // remove line
+      elevation: 0,         // Android
+      shadowOpacity: 0,     // iOS
+    },
     });
   }, [navigation]);
 

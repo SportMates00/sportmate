@@ -30,17 +30,14 @@ const SignUpScreen = () => {
         headerBackTitleVisible: false,          // (for older versions, harmless if ignored)
         headerBackTitle: "",
               headerRight: () => (
-        <LangChanger text={""} iconContainer={styles.iconContainer} />
+        <LangChanger text={""}  />
       ),
-        headerStyle: Platform.OS === "web"
-          ? {
-              borderBottomWidth: 1,
-              borderColor:'white'
-            }
-          : {
-              borderBottomWidth: 1,
-              borderColor:'white'
-            },
+        headerStyle: {
+      backgroundColor: "white",
+      borderBottomWidth: 0, // remove line
+      elevation: 0,         // Android
+      shadowOpacity: 0,     // iOS
+    },
       });
     }, [navigation]);
 

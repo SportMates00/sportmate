@@ -16,7 +16,7 @@ const MenuTab = () => {
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={openModal} style={styles.menuButton}>
-          <Entypo name="menu" size={24} color="black" />
+          <Entypo name="menu" size={30} color="black" />
         </TouchableOpacity>
       </View>
 

@@ -35,9 +35,11 @@ const sports = [
       headerBackTitleVisible: false,
       headerBackTitle: '',
       headerStyle: {
-        borderBottomWidth: 1,
-        borderColor: 'white',
-      },
+      backgroundColor: "white",
+      borderBottomWidth: 0, // remove line
+      elevation: 0,         // Android
+      shadowOpacity: 0,     // iOS
+    },
     });
   }, [navigation]);
 
@@ -48,7 +50,7 @@ const handleSelect = (val) => {
     setUserInfo({
       profileInfo: {
         ...userInfo.profileInfo,
-        sport: { key: val.key }
+        sport: { ...val, key: val.key, sportIcon: val.sportIcon  }
       },
     })
   );

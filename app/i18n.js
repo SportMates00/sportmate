@@ -1,23 +1,23 @@
 // app/i18n.js
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import WelcomePages from './component/welcome pages/WelcomePagesLan';
+import WelcomePagesLan from './component/welcome pages/WelcomePagesLan';
 
 // Translations
 const resources = {
   en: {
     translation: {
-      ...WelcomePages.en
+      ...WelcomePagesLan.en
     }
   },
   am: {
     translation: {
-      ...WelcomePages.am
+      ...WelcomePagesLan.am
     }
   },
   ru: {
     translation: {
-      ...WelcomePages.ru
+      ...WelcomePagesLan.ru
     }
   }
 };

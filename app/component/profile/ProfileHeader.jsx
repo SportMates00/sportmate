@@ -14,11 +14,7 @@ const ProfileHeader = () => {
       };
 
   return (
-        <View style={styles.header}>
-            <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
-                <Text style={styles.backButtonText}>Back</Text>
-            </TouchableOpacity>
-            <Text style={styles.title}>Profile</Text>
+        <View>
             <View style={styles.profileHeaderRight}>
                 <TouchableOpacity onPress={() => navigation.navigate('ShareProfile')}>
                 <AntDesign name="adduser" size={24} color={theme.colors.text} />
@@ -30,31 +26,7 @@ const ProfileHeader = () => {
 }
 
 const getStyles = (theme) => StyleSheet.create({
-    header: {
-      position:'absolute',   // This ensures the header sticks to the top
-      zIndex: 1000,
-      top: theme.spacing.large,
-      left: 0,
-      right: 0,
-      padding: theme.spacing.small,
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: theme.colors.background, // Adjust as needed
-    },
-    backButton: {
-        padding: theme.spacing.small,
-    },
-    backButtonText: {
-        fontSize: theme.fonts.size.medium,
-        color: theme.colors.primary,
-    },
-    title: {
-        fontSize: theme.fonts.size.large,
-        fontWeight: 'bold',
-        textAlign: 'center',
-        color:theme.colors.text
-    },
+
     profileHeaderRight: {
         display:'flex',
         flexDirection:'row',

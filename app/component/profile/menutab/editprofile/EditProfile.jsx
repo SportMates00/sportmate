@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
-import React, { useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import LocationSelector from './LocationSelector';
 import AgeGenderSelector from './AgeGenderSelector';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +20,36 @@ const EditProfile = () => {
   const [firstNameError, setFirstNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [availabilityError, setAvailabilityError] = useState('');
+
+useLayoutEffect(() => {
+  navigation.setOptions({
+    headerShown: true,
+    headerTitle: "Edit Profile",
+    headerShadowVisible: false,
+    headerBackButtonDisplayMode: "minimal",
+    headerBackTitleVisible: false,
+    headerBackTitle: "",
+
+    headerLeft : () =>      (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.buttonText}>Cancel</Text>
+        </TouchableOpacity>
+
+    ),
+    headerRight : () =>      (
+        <TouchableOpacity onPress={saveUserInfo} disabled={!hasChanges}>
+          <Text style={[styles.buttonText, !hasChanges && styles.disabledButton]}>Save</Text>
+        </TouchableOpacity>
+    ),
+    // FIXED: No borders, no lines
+    headerStyle: {
+      backgroundColor: "white",
+      borderBottomWidth: 0, // remove line
+      elevation: 0,         // Android
+      shadowOpacity: 0,     // iOS
+    },
+  });
+}, [navigation]);
 
   // Check if there are any changes to enable/disable the save button
   const hasChanges = !_.isEqual(loggedUser, editUser);
@@ -91,19 +121,11 @@ function saveUserInfo() {
     navigation.navigate('Profile');
   }
 }
-console.log('aaaaaaaaaaaaaaaaaaaaaaaaaa',editUser)
+
   return (
-    <ScrollView ref={scrollViewRef} style={{ padding: 20, marginTop: 24, backgroundColor: 'white', flex: 1 }}>
+    <ScrollView ref={scrollViewRef} style={{ padding: 20, backgroundColor: 'white', flex: 1 }}>
       {/* Header */}
-      <View style={styles.headerContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
-        <Text style={styles.title}>Edit Profile</Text>
-        <TouchableOpacity onPress={saveUserInfo} disabled={!hasChanges}>
-          <Text style={[styles.buttonText, !hasChanges && styles.disabledButton]}>Save</Text>
-        </TouchableOpacity>
-      </View>
+
 
       {/* Profile Picture */}
       <View style={styles.profilePictureContainer}>
@@ -185,14 +207,6 @@ console.log('aaaaaaaaaaaaaaaaaaaaaaaaaa',editUser)
 };
 
 const styles = StyleSheet.create({
-  headerContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'sticky', // Sticky behavior
-    top: 0,
-    zIndex: 1000,
-  },
   errorText: {
     color: 'red',
     fontSize: 12,
@@ -201,6 +215,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     color: '#007AFF', // iOS-style blue
+    paddingInline:20
   },
   disabledButton: {
     color: 'gray', // Disabled color

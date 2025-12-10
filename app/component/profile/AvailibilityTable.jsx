@@ -60,6 +60,7 @@ const AvailabilityTable = ({ loggedUser }) => {
 const getStyles = (theme) => StyleSheet.create({
   container: {
     backgroundColor: theme.colors.background,
+    paddingBottom:40
   },
   heading: {
     fontSize: theme.fonts.size.large,

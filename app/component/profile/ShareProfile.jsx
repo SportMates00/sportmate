@@ -11,6 +11,12 @@ const ShareProfile = ({  }) => {
   const navigation = useNavigation();
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerShown: true,
+    headerTitle: "",
+    headerShadowVisible: false,
+    headerBackButtonDisplayMode: "minimal",
+    headerBackTitleVisible: false,
+    headerBackTitle: "",
       headerStyle: {
         backgroundColor: theme.colors.background, // Change header background color
       },

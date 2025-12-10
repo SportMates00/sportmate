@@ -61,15 +61,12 @@ const dispatch = useDispatch();
       headerRight: () => (
         <LangChanger text={""} iconContainer={styles.iconContainer} />
       ),
-      headerStyle: Platform.OS === "web"
-        ? {
-            borderBottomWidth: 1,
-            borderColor:'white'
-          }
-        : {
-            borderBottomWidth: 1,
-            borderColor:'white'
-          },
+      headerStyle: {
+      backgroundColor: "white",
+      borderBottomWidth: 0, // remove line
+      elevation: 0,         // Android
+      shadowOpacity: 0,     // iOS
+    },
     });
   }, [navigation]);
 

@@ -1,12 +1,10 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import WelcomeScreen from './component/welcome pages/WelcomePage'; // Welcome screen
+import WelcomeScreen from './component/welcome pages/WelcomePage';
 import LoginScreen from './component/welcome pages/LoginScreen';
 import SignUpScreen from './component/welcome pages/SignupScreen';
 import i18n from './i18n';
 import TabNavigator from './(tabs)/Tabnavigator';
-import ClientInfo from './component/welcome pages/Clientinfo/ClientInfo';
 import Profile from './component/profile/Profile';
 import { Provider } from 'react-redux';
 import Players from './(tabs)/Players';
@@ -14,7 +12,7 @@ import ShareProfile from './component/profile/ShareProfile';
 import Reviews from './component/profile/profileTabs/Reviews';
 import ProfileViewers from './component/profile/menutab/ProfileViewers';
 import LangChanger from './component/LangChanger';
-import {store} from '../src/store/store';
+import { store } from '../src/store/store';
 import Activity from './(tabs)/Activity';
 import EditProfile from './component/profile/menutab/editprofile/EditProfile';
 import Settings from './component/profile/menutab/Settings/Settings';
@@ -29,43 +27,52 @@ import ChatScreen from './(tabs)/Inbox/ChatScreen';
 import QSport from './component/welcome pages/Clientinfo/QSport';
 import QLevel from './component/welcome pages/Clientinfo/QLevel';
 import QSchedule from './component/welcome pages/Clientinfo/QSchedule';
-// Create navigators
-const Stack = createNativeStackNavigator();
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {createStackNavigator } from '@react-navigation/stack'
+// ✅ Create JS Stack Navigator
+const Stack = createStackNavigator();
 
-
-// Main App Navigation
 export default function App() {
-
   return (
     <Provider store={store}>
       <ThemeProvider>
-          <NavigationContainer>
-            <Stack.Navigator initialRouteName="Welcome">
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="Welcome"
+            screenOptions={{
+              headerShadowVisible: false,      // removes shadow in JS stack
+              headerStyle: {
+                backgroundColor: 'white',
+              },
+              headerTitleAlign: 'center',
+            }}
+          >
             {/* Auth Screens */}
             <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
-            <Stack.Screen name="Login" component={LoginScreen} options={{headerTitle:''}}/>
-            <Stack.Screen name="SignUp" component={SignUpScreen}  options={{headerTitle:''}}/>
+            <Stack.Screen name="Login" component={LoginScreen} options={{ headerTitle: '' }} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerTitle: '' }} />
             <Stack.Screen name="QSport" component={QSport} />
             <Stack.Screen name="QLevel" component={QLevel} />
             <Stack.Screen name="QSchedule" component={QSchedule} />
-            {/* Main App Tabs */}
+
+            {/* Main App */}
             <Stack.Screen name="HomeTabs" component={TabNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Players" component={Players} />
             <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
-            <Stack.Screen name='ShareProfile' component={ShareProfile} options={{headerShown: true, title:''}} />
-            <Stack.Screen name='EditProfile' component={EditProfile} options={{headerShown: false}} />
-            <Stack.Screen name='Settings' component={Settings}/>
-            <Stack.Screen name='Reviews' component={Reviews} />
-            <Stack.Screen name='ProfileViewers' component={ProfileViewers} options={{title:'Profile Viewers'}} />
-            <Stack.Screen name='LangChanger' component={LangChanger} />
-            <Stack.Screen name='VerifyAccount' component={VerifyAccount} />
-            <Stack.Screen name='ChangePassword' component={ChangePassword} />
-            <Stack.Screen name='ContactUs' component={ContactUs} />
-            <Stack.Screen name='PrivacyPolicy' component={PrivacyPolicy} />
-            <Stack.Screen name='TermsConditions' component={TermConditions} />
-            <Stack.Screen name='DeleteAccount' component={DeleteAccount} />
-            <Stack.Screen name='Activity' component={Activity} />
-            <Stack.Screen name='ChatScreen' component={ChatScreen} />
+            <Stack.Screen name="ShareProfile" component={ShareProfile} options={{ headerShown: true, title: '' }} />
+            <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
+            <Stack.Screen name="Settings" component={Settings} />
+            <Stack.Screen name="Reviews" component={Reviews} />
+            <Stack.Screen name="ProfileViewers" component={ProfileViewers} options={{ title: 'Profile Viewers' }} />
+            <Stack.Screen name="LangChanger" component={LangChanger} />
+            <Stack.Screen name="VerifyAccount" component={VerifyAccount} />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} />
+            <Stack.Screen name="ContactUs" component={ContactUs} />
+            <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
+            <Stack.Screen name="TermsConditions" component={TermConditions} />
+            <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
+            <Stack.Screen name="Activity" component={Activity} />
+            <Stack.Screen name="ChatScreen" component={ChatScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </ThemeProvider>

@@ -44,7 +44,7 @@ const QLevel = () => {
       setUserInfo({
         profileInfo: {
           ...userInfo.profileInfo,
-          level: item.label, // store translated label for profile
+          level: item.id, // store translated label for profile
         },
       })
     );
@@ -61,7 +61,12 @@ const QLevel = () => {
       headerBackButtonDisplayMode: "minimal",
       headerBackTitleVisible: false,
       headerBackTitle: "",
-      headerStyle: { borderBottomWidth: 1, borderColor: "white" },
+      headerStyle: {
+      backgroundColor: "white",
+      borderBottomWidth: 0, // remove line
+      elevation: 0,         // Android
+      shadowOpacity: 0,     // iOS
+    },
     });
   }, [navigation]);
 
@@ -80,7 +85,7 @@ const QLevel = () => {
             style={{ width: 40, height: 40 }}
           />
           <Text style={{ fontSize: 18, fontWeight: "800", letterSpacing: 1 }}>
-            {userInfo.profileInfo.sport.sport}
+            {userInfo.profileInfo.sport.key}
           </Text>
         </View>
 

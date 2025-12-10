@@ -3,7 +3,7 @@
 export const THEME = {
   light: {
     colors: {
-      background: '#FAFAFA',
+      background: 'white',
       text: '#212121',
       buttonText:'#FAFAFA',
       primary: '#4CAF50',   // For buttons or accents
