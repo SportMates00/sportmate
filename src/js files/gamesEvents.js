@@ -113,6 +113,7 @@ export const gamesEvents = {
       { name: "Michael", profilePhoto: favicon },
       { name: "Sara", profilePhoto: favicon },
       { name: "Luke", profilePhoto: favicon },
+      { name: "Mike", profilePhoto: favicon },
     ],
 
     // UI fields shown on card

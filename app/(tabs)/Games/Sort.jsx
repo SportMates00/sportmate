@@ -1,16 +1,9 @@
 // Sort.jsx
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import {View,Text,TouchableOpacity,ScrollView,StyleSheet,} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/themeContext';
-
 
 // ⭐ FIXED: added currentSort prop ⭐
 const Sort = ({ onClose, onSelectSort = () => {}, currentSort }) => {
@@ -39,7 +32,7 @@ const Sort = ({ onClose, onSelectSort = () => {}, currentSort }) => {
       {/* OPTIONS */}
       <ScrollView style={{ flex: 1 }}>
         {SORT_OPTIONS.map((option) => {
-          const isSelected = selectedSort === option.id;
+          const isSelected = selectedSort === option.key;
 
           return (
             <TouchableOpacity
