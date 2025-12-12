@@ -94,11 +94,12 @@ if (filters.time.length > 0) {
     if (isAM && num === 12) hour24 = 0;
 
     return filters.time.some(slot => {
-      if (slot === "Morning") return hour24 >= 6 && hour24 < 12;
-      if (slot === "Afternoon") return hour24 >= 12 && hour24 < 18;
-      if (slot === "Evening") return hour24 >= 18 && hour24 < 22;
-      if (slot === "Late Night") return hour24 >= 22 || hour24 < 2;
-    });
+  if (slot === "morning") return hour24 >= 6 && hour24 < 12;
+  if (slot === "afternoon") return hour24 >= 12 && hour24 < 18;
+  if (slot === "evening") return hour24 >= 18 && hour24 < 22;
+  if (slot === "latenight") return hour24 >= 22 || hour24 < 6;
+});
+
   });
 }
 

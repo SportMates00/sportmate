@@ -22,6 +22,35 @@ export default {
         Date: 'Date',
         Time: 'Time',
         Location: 'Location',
+
+        
+  FilterEventsTitle: "Filter Events",
+  FilterClearButton: "Clear",
+  FilterSkillLevel: "Skill Level",
+  FilterLocation: "Location",
+  FilterDate: "Date",
+  FilterTime: "Time",
+  FilterLevelBeginner: "Beginner",
+  FilterLevelIntermediate: "Intermediate",
+  FilterLevelAdvanced: "Advanced",
+  FilterCityYerevan: "Yerevan",
+  FilterCityGyumri: "Gyumri",
+  FilterCityVanadzor: "Vanadzor",
+  FilterCityAbovyan: "Abovyan",
+  FilterCityHrazdan: "Hrazdan",
+  FilterCityDilijan: "Dilijan",
+  FilterCityArtashat: "Artashat",
+  FilterCityKapan: "Kapan",
+  FilterCityGoris: "Goris",
+  FilterDateToday: "Today",
+  FilterDateThisWeek: "This Week",
+  FilterDateThisMonth: "This Month",
+  FilterTimeMorning: "Morning",
+  FilterTimeAfternoon: "Afternoon",
+  FilterTimeEvening: "Evening",
+  FilterTimeLateNight: "Late Night",
+  FilterCancelButton: "Cancel",
+  FilterApplyButton: "Apply"
     },
 
     am: {
@@ -33,7 +62,37 @@ export default {
   SortGamesbyDate: 'Ամսաթիվ',
   SortGamesbyPopularity: 'Հանրաճանաչություն',
   SortGamesbyDistance: 'Հեռավորություն',
-  SkillLevel: "bla bla"
+
+  //Filter
+  FilterEventsTitle: 'Ֆիլտրել միջոցառումները',
+  FilterClearButton: 'Մաքրել',
+  FilterSkillLevel: 'Մակարդակ',
+  FilterLocation: 'Տեղակայություն',
+  FilterDate: 'Ամսաթիվ',
+  FilterTime: 'Ժամանակ',
+  FilterLevelBeginner: 'Սկսնակ',
+  FilterLevelIntermediate: 'Միջին',
+  FilterLevelAdvanced: 'Բարձր',
+  FilterCityYerevan: 'Երևան',
+  FilterCityGyumri: 'Գյումրի',
+  FilterCityVanadzor: 'Վանաձոր',
+  FilterCityAbovyan: 'Աբովյան',
+  FilterCityHrazdan: 'Հրազդան',
+  FilterCityDilijan: 'Դիլիջան',
+  FilterCityArtashat: 'Արտաշատ',
+  FilterCityKapan: 'Կապան',
+  FilterCityGoris: 'Գորիս',
+  FilterDateToday: 'Այսօր',
+  FilterDateThisWeek: 'Այս շաբաթ',
+  FilterDateThisMonth: 'Այս ամիս',
+  FilterTimeMorning: 'Առավոտ',
+  FilterTimeAfternoon: 'Ցերեկ',
+  FilterTimeEvening: 'Երեկո',
+  FilterTimeLateNight: 'Ուշ գիշեր',
+  FilterCancelButton: 'Չեղարկել',
+  FilterApplyButton: 'Կիրառել'
+
+  
   
 },
 
@@ -45,8 +104,36 @@ ru: {
   DoneSortGamesButton: 'Готово',
   SortGamesbyDate: 'Дата',
   SortGamesbyPopularity: 'Популярность',
-  SortGamesbyDistance: 'Расстояние'
+  SortGamesbyDistance: 'Расстояние',
   
+  //Filter
+  FilterEventsTitle: 'Фильтр мероприятий',
+  FilterClearButton: 'Очистить',
+  FilterSkillLevel: 'Уровень',
+  FilterLocation: 'Местоположение',
+  FilterDate: 'Дата',
+  FilterTime: 'Время',
+  FilterLevelBeginner: 'Новичок',
+  FilterLevelIntermediate: 'Средний',
+  FilterLevelAdvanced: 'Продвинутый',
+  FilterCityYerevan: 'Ереван',
+  FilterCityGyumri: 'Гюмри',
+  FilterCityVanadzor: 'Ванадзор',
+  FilterCityAbovyan: 'Абовян',
+  FilterCityHrazdan: 'Раздан',
+  FilterCityDilijan: 'Дилижан',
+  FilterCityArtashat: 'Арташат',
+  FilterCityKapan: 'Капан',
+  FilterCityGoris: 'Горис',
+  FilterDateToday: 'Сегодня',
+  FilterDateThisWeek: 'На этой неделе',
+  FilterDateThisMonth: 'В этом месяце',
+  FilterTimeMorning: 'Утро',
+  FilterTimeAfternoon: 'День',
+  FilterTimeEvening: 'Вечер',
+  FilterTimeLateNight: 'Поздняя ночь',
+  FilterCancelButton: 'Отмена',
+  FilterApplyButton: 'Применить'
 }
 
 };
