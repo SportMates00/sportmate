@@ -1,5 +1,6 @@
 import favicon from "../../assets/images/favicon.png"
 export const gamesEvents = {
+  
    football: [
   {
     id: 1,
