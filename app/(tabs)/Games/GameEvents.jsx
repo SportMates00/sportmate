@@ -30,7 +30,7 @@ const GameEvents = ({ gameEvents }) => {
                 <View style={styles.playersRow}>
                   {game.players?.map((p) => (
                     <Image
-                      key={p}
+                      key={p.name}
                       source={p.profilePhoto}
                       style={styles.playerPic}
                     />
