@@ -28,7 +28,8 @@ const getStyles = (theme) => StyleSheet.create({
         display:'flex',
         flexDirection:'row',
         justifyContent:'center',
-        alignItems:'center'
+        alignItems:'center',
+        backgroundColor:theme.colors.background
     }
 })
 

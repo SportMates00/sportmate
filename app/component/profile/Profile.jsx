@@ -25,15 +25,23 @@ useLayoutEffect(() => {
 
     headerRight: () => <ProfileHeader />,
 
-    // FIXED: No borders, no lines
+    // Header background
     headerStyle: {
-      backgroundColor: "white",
-      borderBottomWidth: 0, // remove line
-      elevation: 0,         // Android
-      shadowOpacity: 0,     // iOS
+      backgroundColor: theme.colors.background,
+      borderBottomWidth: 0,
+      elevation: 0,
+      shadowOpacity: 0,
     },
+
+    // ✅ TITLE COLOR
+    headerTitleStyle: {
+      color: theme.colors.text,
+    },
+
+    // ✅ Back arrow & icons color
+    headerTintColor: theme.colors.text,
   });
-}, [navigation]);
+}, [navigation, theme]);
 
   return (
     <View style={styles.container}>
