@@ -1,29 +1,47 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import {
+  View,
+  TextInput,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  Alert,
+} from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 const EmailVerification = ({ onVerify }) => {
+  const { t } = useTranslation();
   const [verificationCode, setVerificationCode] = useState('');
 
   const handleSubmit = () => {
-    if (verificationCode === '123456') { // Example validation
+    if (verificationCode === '123456') {
       onVerify();
     } else {
-      alert('Invalid code');
+      Alert.alert(
+        t('Error'),
+        t('InvalidVerificationCode')
+      );
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Enter your email verification code</Text>
+      <Text style={styles.header}>
+        {t('EnterEmailCode')}
+      </Text>
+
       <TextInput
         style={styles.input}
-        placeholder="Verification code"
+        placeholder={t('VerificationCode')}
         keyboardType="numeric"
         value={verificationCode}
         onChangeText={setVerificationCode}
       />
+
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-        <Text style={styles.buttonText}>Verify</Text>
+        <Text style={styles.buttonText}>
+          {t('Verify')}
+        </Text>
       </TouchableOpacity>
     </View>
   );

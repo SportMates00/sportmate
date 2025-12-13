@@ -1,34 +1,48 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  Alert,
+} from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 const ChangePassword = () => {
+  const { t } = useTranslation();
+
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [isPasswordValid, setIsPasswordValid] = useState(true); // Track validity of the password
+  const [isPasswordValid, setIsPasswordValid] = useState(true);
 
   const handleChangePassword = () => {
-    if (newPassword === confirmPassword) {
-      // You can add password validation here (length, special characters, etc.)
-      if (newPassword.length >= 8) {
-        Alert.alert('Success', 'Your password has been changed successfully.');
-        // Handle the password change logic here
-      } else {
-        setIsPasswordValid(false);
-      }
-    } else {
-      Alert.alert('Error', 'Passwords do not match.');
+    if (newPassword !== confirmPassword) {
+      Alert.alert(t('Error'), t('PasswordsDoNotMatch'));
+      return;
     }
+
+    if (newPassword.length < 8) {
+      setIsPasswordValid(false);
+      return;
+    }
+
+    setIsPasswordValid(true);
+    Alert.alert(t('Success'), t('PasswordChangedSuccess'));
+    // TODO: handle password change logic
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Change Your Password</Text>
+      <Text style={styles.header}>
+        {t('ChangePassword')}
+      </Text>
 
       {/* Current Password */}
       <TextInput
         style={styles.input}
-        placeholder="Current Password"
+        placeholder={t('CurrentPassword')}
         secureTextEntry
         value={currentPassword}
         onChangeText={setCurrentPassword}
@@ -37,31 +51,43 @@ const ChangePassword = () => {
       {/* New Password */}
       <TextInput
         style={[styles.input, !isPasswordValid && styles.invalidInput]}
-        placeholder="New Password"
+        placeholder={t('NewPassword')}
         secureTextEntry
         value={newPassword}
         onChangeText={setNewPassword}
       />
-      {!isPasswordValid && <Text style={styles.errorText}>Password must be at least 8 characters long</Text>}
+
+      {!isPasswordValid && (
+        <Text style={styles.errorText}>
+          {t('PasswordMinLength')}
+        </Text>
+      )}
 
       {/* Confirm New Password */}
       <TextInput
         style={[styles.input, !isPasswordValid && styles.invalidInput]}
-        placeholder="Confirm New Password"
+        placeholder={t('ConfirmNewPassword')}
         secureTextEntry
         value={confirmPassword}
         onChangeText={setConfirmPassword}
       />
-      {!isPasswordValid && <Text style={styles.errorText}>Passwords do not match</Text>}
 
-      {/* Submit Button */}
+      {!isPasswordValid && (
+        <Text style={styles.errorText}>
+          {t('PasswordsDoNotMatch')}
+        </Text>
+      )}
+
+      {/* Submit */}
       <TouchableOpacity style={styles.button} onPress={handleChangePassword}>
-        <Text style={styles.buttonText}>Change Password</Text>
+        <Text style={styles.buttonText}>
+          {t('ChangePassword')}
+        </Text>
       </TouchableOpacity>
 
-      {/* Password Requirements */}
+      {/* Password requirements */}
       <Text style={styles.requirements}>
-        Password must be at least 8 characters long, with at least one uppercase letter and one special character.
+        {t('PasswordRequirements')}
       </Text>
     </View>
   );

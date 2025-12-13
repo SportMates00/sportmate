@@ -51,6 +51,45 @@ export default {
         ChangeLanguage: 'Change Language',
         Notifications: 'Notifications',
         DarkMode: 'Dark Mode',
+
+        //Verify Account
+        VerifyAccount: 'Verify Your Account',
+        VerifyAccountDescription:'Complete the verification process to secure your account.',
+        VerificationSteps: 'Verification Steps:',
+        VerifyStepEmail:'1. Verify your email address by clicking the verification link sent to your email.',
+        VerifyStepPhoto:'2. Verify your profile photo by uploading a clear picture of yourself.',
+        VerificationStatus: 'Verification Status',
+        EmailVerification: 'Email Verification',
+        PhotoVerification: 'Profile Photo Verification',
+        Verified: 'Verified',
+        Pending: 'Pending',
+        Submit: 'Submit',
+        Success: 'Success',
+        Error: 'Error',
+        VerificationSuccess:'Your account and profile photo have been verified!',
+        VerificationIncomplete:'Please complete both the email and photo verification.',
+
+        //Email Verification
+        EnterEmailCode: 'Enter your email verification code',
+        VerificationCode: 'Verification code',
+        Verify: 'Verify',
+        InvalidVerificationCode: 'Invalid verification code',
+
+        //Photo Verification
+        PhotoVerificationDescription:'Upload a photo or take a selfie to verify your identity',
+        NoPhotoUploaded: 'No photo uploaded yet.',
+        UploadPhoto: 'Upload Photo',
+        TakePhoto: 'Take a Photo',
+
+        //Change Password
+        ChangePassword: 'Change Password',
+        CurrentPassword: 'Current Password',
+        NewPassword: 'New Password',
+        ConfirmNewPassword: 'Confirm New Password',
+        PasswordMinLength: 'Password must be at least 8 characters long',
+        PasswordsDoNotMatch: 'Passwords do not match',
+        PasswordChangedSuccess: 'Your password has been changed successfully.',
+        PasswordRequirements:'Password must be at least 8 characters long, with at least one uppercase letter and one special character.',
     },
 
     am: {
@@ -104,8 +143,47 @@ export default {
         ChangePassword: 'Փոխել գաղտնաբառը',
         ChangeLanguage: 'Փոխել լեզուն',
         Notifications: 'Ծանուցումներ',
-        DarkMode: 'Մութ ռեժիմ'
+        DarkMode: 'Մութ ռեժիմ',
 
+        //Verify Account
+        VerifyAccount: 'Հաստատել հաշիվը',
+        VerifyAccountDescription: 'Ավարտեք հաստատման գործընթացը՝ ձեր հաշիվը անվտանգ դարձնելու համար։',
+        VerificationSteps: 'Հաստատման քայլերը․',
+        VerifyStepEmail: '1. Հաստատեք ձեր էլ. հասցեն՝ սեղմելով ձեր էլ. փոստին ուղարկված հաստատման հղումը։',
+        VerifyStepPhoto: '2. Հաստատեք ձեր պրոֆիլի նկարը՝ վերբեռնելով ձեր հստակ լուսանկարը։',
+        VerificationStatus: 'Հաստատման կարգավիճակ',
+        EmailVerification: 'Էլ. հասցեի հաստատում',
+        PhotoVerification: 'Պրոֆիլի նկարի հաստատում',
+        Verified: 'Հաստատված',
+        Pending: 'Սպասման մեջ',
+        Submit: 'Ուղարկել',
+        Success: 'Հաջողություն',
+        Error: 'Սխալ',
+        VerificationSuccess: 'Ձեր հաշիվը և պրոֆիլի նկարը հաջողությամբ հաստատվել են։',
+        VerificationIncomplete: 'Խնդրում ենք ավարտել թե՛ էլ. հասցեի, թե՛ նկարի հաստատումը։',
+
+        //Email Verification
+        EnterEmailCode: 'Մուտքագրեք էլ. հասցեի հաստատման կոդը',
+        VerificationCode: 'Հաստատման կոդ',
+        Verify: 'Հաստատել',
+        InvalidVerificationCode: 'Հաստատման կոդը սխալ է',
+
+        //Photo Verification
+        PhotoVerificationDescription: 'Վերբեռնեք լուսանկար կամ արեք սելֆի՝ ձեր ինքնությունը հաստատելու համար',
+        NoPhotoUploaded: 'Դեռևս լուսանկար չի վերբեռնվել։',
+        UploadPhoto: 'Վերբեռնել լուսանկար',
+        TakePhoto: 'Լուսանկարել',
+
+        //Change Password
+        ChangePassword: 'Փոխել գաղտնաբառը',
+        CurrentPassword: 'Ընթացիկ գաղտնաբառ',
+        NewPassword: 'Նոր գաղտնաբառ',
+        ConfirmNewPassword: 'Հաստատել նոր գաղտնաբառը',
+        PasswordMinLength: 'Գաղտնաբառը պետք է լինի առնվազն 8 նիշ',
+        PasswordsDoNotMatch: 'Գաղտնաբառերը չեն համընկնում',
+        PasswordChangedSuccess: 'Ձեր գաղտնաբառը հաջողությամբ փոխվել է։',
+        PasswordRequirements:'Գաղտնաբառը պետք է լինի առնվազն 8 նիշ, պարունակի առնվազն մեկ մեծատառ և մեկ հատուկ նշան։',
+        
     },
 
     ru: {
@@ -159,7 +237,45 @@ export default {
         ChangePassword: 'Сменить пароль',
         ChangeLanguage: 'Сменить язык',
         Notifications: 'Уведомления',
-        DarkMode: 'Тёмный режим'
+        DarkMode: 'Тёмный режим',
 
+        //Verify Account
+        VerifyAccount: 'Подтвердить аккаунт',
+        VerifyAccountDescription: 'Завершите процесс подтверждения, чтобы обезопасить ваш аккаунт.',
+        VerificationSteps: 'Шаги подтверждения:',
+        VerifyStepEmail: '1. Подтвердите ваш email, перейдя по ссылке, отправленной на вашу почту.',
+        VerifyStepPhoto: '2. Подтвердите фото профиля, загрузив чёткое фото себя.',
+        VerificationStatus: 'Статус подтверждения',
+        EmailVerification: 'Подтверждение email',
+        PhotoVerification: 'Подтверждение фото профиля',
+        Verified: 'Подтверждено',
+        Pending: 'В ожидании',
+        Submit: 'Отправить',
+        Success: 'Успешно',
+        Error: 'Ошибка',
+        VerificationSuccess: 'Ваш аккаунт и фото профиля успешно подтверждены!',
+        VerificationIncomplete: 'Пожалуйста, завершите подтверждение email и фото профиля.',
+
+        //Email Verification
+        EnterEmailCode: 'Введите код подтверждения email',
+        VerificationCode: 'Код подтверждения',
+        Verify: 'Подтвердить',
+        InvalidVerificationCode: 'Неверный код подтверждения',
+
+        //Photo Verification
+        PhotoVerificationDescription: 'Загрузите фото или сделайте селфи для подтверждения вашей личности',
+        NoPhotoUploaded: 'Фото ещё не загружено.',
+        UploadPhoto: 'Загрузить фото',
+        TakePhoto: 'Сделать фото',
+
+        //Change Password
+        ChangePassword: 'Сменить пароль',
+        CurrentPassword: 'Текущий пароль',
+        NewPassword: 'Новый пароль',
+        ConfirmNewPassword: 'Подтвердите новый пароль',
+        PasswordMinLength: 'Пароль должен содержать не менее 8 символов',
+        PasswordsDoNotMatch: 'Пароли не совпадают',
+        PasswordChangedSuccess: 'Ваш пароль был успешно изменён.',
+        PasswordRequirements:'Пароль должен содержать не менее 8 символов, как минимум одну заглавную букву и один специальный символ.'
     }
 };
