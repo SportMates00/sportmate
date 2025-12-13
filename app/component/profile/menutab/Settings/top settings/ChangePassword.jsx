@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -8,14 +8,44 @@ import {
   Alert,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useTheme } from '@/src/theme/themeContext';
+import { useNavigation } from '@react-navigation/native';
 
 const ChangePassword = () => {
   const { t } = useTranslation();
+
+  // ✅ THEME
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordValid, setIsPasswordValid] = useState(true);
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+      navigation.setOptions({
+        headerShown: true,
+        headerTitle: '',
+        headerShadowVisible: false,
+        headerBackButtonDisplayMode: "minimal",
+        headerBackTitleVisible: false,
+        headerBackTitle: "",
+  
+        headerStyle: {
+          backgroundColor: theme.colors.background,
+          borderBottomWidth: 0,
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+            headerTitleStyle: {
+        color: theme.colors.text,
+      },
+  
+      // ✅ Back arrow & icons color
+      headerTintColor: theme.colors.text,
+      });
+    }, [navigation,theme]);
 
   const handleChangePassword = () => {
     if (newPassword !== confirmPassword) {
@@ -43,6 +73,7 @@ const ChangePassword = () => {
       <TextInput
         style={styles.input}
         placeholder={t('CurrentPassword')}
+        placeholderTextColor={theme.colors.text}
         secureTextEntry
         value={currentPassword}
         onChangeText={setCurrentPassword}
@@ -52,6 +83,7 @@ const ChangePassword = () => {
       <TextInput
         style={[styles.input, !isPasswordValid && styles.invalidInput]}
         placeholder={t('NewPassword')}
+        placeholderTextColor={theme.colors.text}
         secureTextEntry
         value={newPassword}
         onChangeText={setNewPassword}
@@ -67,6 +99,7 @@ const ChangePassword = () => {
       <TextInput
         style={[styles.input, !isPasswordValid && styles.invalidInput]}
         placeholder={t('ConfirmNewPassword')}
+        placeholderTextColor={theme.colors.text}
         secureTextEntry
         value={confirmPassword}
         onChangeText={setConfirmPassword}
@@ -93,48 +126,63 @@ const ChangePassword = () => {
   );
 };
 
-const styles = StyleSheet.create({
+export default ChangePassword;
+
+const getStyles = (theme) => StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: theme.colors.background,
   },
+
   header: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
+    color: theme.colors.text,
+    fontFamily: theme.fonts.family,
   },
+
   input: {
     height: 45,
-    borderColor: '#ccc',
+    borderColor: theme.colors.text,
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 15,
     paddingHorizontal: 10,
+    color: theme.colors.text,
+    fontFamily: theme.fonts.family,
+    backgroundColor: theme.colors.background,
   },
+
   invalidInput: {
-    borderColor: 'red',
+    borderColor: theme.colors.error,
   },
+
   button: {
-    backgroundColor: '#6a11cb',
+    backgroundColor: theme.colors.primary,
     paddingVertical: 12,
     borderRadius: 5,
     alignItems: 'center',
   },
+
   buttonText: {
-    color: '#fff',
+    color: theme.colors.buttonText,
     fontSize: 16,
+    fontFamily: theme.fonts.family,
   },
+
   errorText: {
-    color: 'red',
+    color: theme.colors.error,
     fontSize: 12,
     marginBottom: 10,
+    fontFamily: theme.fonts.family,
   },
+
   requirements: {
     fontSize: 12,
-    color: '#888',
+    color: theme.colors.text,
     marginTop: 20,
+    fontFamily: theme.fonts.family,
   },
 });
-
-export default ChangePassword;

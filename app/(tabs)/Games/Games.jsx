@@ -1,18 +1,41 @@
 // GamesScreen.js
-import React, { useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AllGames from './AllGames';
 import MyGames from './MyGames';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@/src/theme/themeContext';
+import { useNavigation } from '@react-navigation/native';
 
 const Games = () => {
   const { theme } = useTheme(); // Get current theme
   const styles = getStyles(theme);
-
+  const navigation = useNavigation();
   const [activeTab, setActiveTab] = useState('AllGames');
   const loggedUser = useSelector(user => user.user);
-
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerShadowVisible: false,
+      headerBackButtonDisplayMode: "minimal",
+      headerBackTitleVisible: false,
+      headerBackTitle: "",
+  
+      // Header background
+      headerStyle: {
+        backgroundColor: theme.colors.background,
+        borderBottomWidth: 0,
+        elevation: 0,
+        shadowOpacity: 0,
+      },
+      // ✅ TITLE COLOR
+      headerTitleStyle: {
+        color: theme.colors.text,
+      },
+      // ✅ Back arrow & icons color
+      headerTintColor: theme.colors.text,
+    });
+  }, [navigation, theme]);
   return (
     <View style={styles.container}>
       <View style={styles.tabsContainer}>

@@ -31,9 +31,7 @@ function TopSettings() {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: theme.colors.background,
-    borderRadius: theme.radius.circle,
-    gap: 18,
+    gap:5
   };
 
   return (

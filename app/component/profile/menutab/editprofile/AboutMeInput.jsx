@@ -1,54 +1,70 @@
 import React from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { useTheme } from '@/src/theme/themeContext';
 
 const AboutMeInput = ({ editUser, setEditUser }) => {
   const handleTextChange = (text) => {
     setEditUser((prev) => ({
       ...prev,
-      profileInfo: { ...prev.profileInfo, aboutMe: text }, // Save input
+      profileInfo: { ...prev.profileInfo, aboutMe: text },
     }));
   };
+
+  // ✅ THEME
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <View style={styles.container}>
       <TextInput
         style={styles.input}
         multiline
-        numberOfLines={6} // Sets visible lines
-        maxLength={1200} // Limits input length
-        value={editUser.profileInfo.aboutMe} // Bind to state
-        onChangeText={handleTextChange} // Update state on input
+        numberOfLines={6}
+        maxLength={1200}
+        value={editUser.profileInfo.aboutMe}
+        onChangeText={handleTextChange}
         placeholder="Write something about yourself..."
-        textAlignVertical="top" // Aligns text to the top
+        placeholderTextColor={theme.colors.text}
+        textAlignVertical="top"
       />
-      <Text style={styles.charCount}>{editUser.profileInfo.aboutMe.length}/1200</Text>
+      <Text style={styles.charCount}>
+        {editUser.profileInfo.aboutMe.length}/1200
+      </Text>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+export default AboutMeInput;
+
+const getStyles = (theme) => StyleSheet.create({
   container: {
     marginVertical: 12,
   },
+
   label: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 6,
+    color: theme.colors.text,
+    fontFamily: theme.fonts.family,
   },
+
   input: {
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: theme.colors.text,
     borderRadius: 8,
     padding: 10,
-    minHeight: 120, // Ensures proper height for multiple lines
-    backgroundColor: '#fff',
+    minHeight: 120,
+    backgroundColor: theme.colors.background,
+    color: theme.colors.text,
+    fontFamily: theme.fonts.family,
   },
+
   charCount: {
     fontSize: 12,
-    color: 'gray',
+    color: theme.colors.text,
     textAlign: 'right',
     marginTop: 4,
+    fontFamily: theme.fonts.family,
   },
 });
-
-export default AboutMeInput;

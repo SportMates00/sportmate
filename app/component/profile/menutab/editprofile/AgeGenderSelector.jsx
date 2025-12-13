@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
 import { Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { useTheme } from '@/src/theme/themeContext';
 
-const AgeGenderSelector = ({editUser, setEditUser}) => {
-  const [selectedAge, setSelectedAge] = useState(editUser.profileInfo.age)
+const AgeGenderSelector = ({ editUser, setEditUser }) => {
+  const [selectedAge, setSelectedAge] = useState(editUser.profileInfo.age);
   const ages = Array.from({ length: 86 }, (_, i) => i + 14);
+
+  // ✅ THEME
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
 
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={ageStyles.scrollContainer}
+      contentContainerStyle={styles.scrollContainer}
     >
       {ages.map((age) => (
         <TouchableOpacity
           key={age}
           style={[
-            ageStyles.ageItem,
-            selectedAge == age && ageStyles.selectedAgeItem,
+            styles.ageItem,
+            selectedAge == age && styles.selectedAgeItem,
           ]}
           onPress={() => {
-            setSelectedAge(age)
+            setSelectedAge(age);
             setEditUser((prev) => ({
               ...prev,
               profileInfo: { ...prev.profileInfo, age: age },
@@ -28,8 +33,8 @@ const AgeGenderSelector = ({editUser, setEditUser}) => {
         >
           <Text
             style={[
-              ageStyles.ageText,
-              selectedAge == age && ageStyles.selectedAgeText,
+              styles.ageText,
+              selectedAge == age && styles.selectedAgeText,
             ]}
           >
             {age}
@@ -42,31 +47,36 @@ const AgeGenderSelector = ({editUser, setEditUser}) => {
 
 export default AgeGenderSelector;
 
-const ageStyles = StyleSheet.create({
+const getStyles = (theme) => StyleSheet.create({
   scrollContainer: {
     flexDirection: 'row',
     gap: 10,
     paddingVertical: 16,
   },
+
   ageItem: {
     padding: 10,
     borderRadius: 12,
-    backgroundColor: 'white',
+    backgroundColor: theme.colors.background,
     alignItems: 'center',
     justifyContent: 'center',
   },
+
   selectedAgeItem: {
-    backgroundColor: '#e0e0e0',
-    borderColor: '#007AFF',
-     borderWidth:2,
-    borderColor:'#007AFF'
+    backgroundColor: theme.colors.background,
+    borderWidth: 2,
+    borderColor: theme.colors.primary,
   },
+
   ageText: {
     fontSize: 14,
-    color: '#000',
+    color: theme.colors.text,
+    fontFamily: theme.fonts.family,
   },
+
   selectedAgeText: {
-    color: '#007AFF',
+    color: theme.colors.primary,
     fontWeight: 'bold',
+    fontFamily: theme.fonts.family,
   },
 });

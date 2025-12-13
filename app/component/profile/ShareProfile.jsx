@@ -1,8 +1,8 @@
 import React, { useLayoutEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import ShareLink from './ShareLink';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useTheme } from '@/src/theme/themeContext';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const ShareProfile = ({  }) => {
 
@@ -56,7 +56,14 @@ const ShareProfile = ({  }) => {
         </View>
 
         {/* Share Link Button */}
-        <ShareLink />
+              <TouchableOpacity onPress={() => navigation.navigate('ShareLink')} style={styles.shareButton}>
+                <LinearGradient
+                  colors={['#4CAF50', '#66BB6A']}
+                  style={[styles.gradientButton, { alignItems: 'center', justifyContent: 'center' }]} // Ensure content is centered
+                >
+                  <Text style={styles.shareButtonText}>Share Link</Text>
+                </LinearGradient>
+              </TouchableOpacity>
       </View>
       
   );
@@ -113,7 +120,20 @@ const getStyles = (theme) => StyleSheet.create({
     fontSize: theme.fonts.size.medium,
     color: theme.colors.buttonText,
     flex: 1,
-  }
+  },
+        shareButtonText: {
+        fontSize: theme.fonts.size.medium,
+        color: theme.colors.buttonText,
+        fontWeight: '600',
+      },
+            gradientButton: {
+        paddingVertical: theme.spacing.medium,
+        paddingHorizontal: theme.spacing.medium,
+        borderRadius: theme.radius.semiCircle,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+
 });
 
 export default ShareProfile;

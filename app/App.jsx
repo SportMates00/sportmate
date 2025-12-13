@@ -27,8 +27,8 @@ import ChatScreen from './(tabs)/Inbox/ChatScreen';
 import QSport from './component/welcome pages/Clientinfo/QSport';
 import QLevel from './component/welcome pages/Clientinfo/QLevel';
 import QSchedule from './component/welcome pages/Clientinfo/QSchedule';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {createStackNavigator } from '@react-navigation/stack'
+import ShareLink from './component/profile/ShareLink';
 // ✅ Create JS Stack Navigator
 const Stack = createStackNavigator();
 
@@ -60,6 +60,7 @@ export default function App() {
             <Stack.Screen name="Players" component={Players} />
             <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
             <Stack.Screen name="ShareProfile" component={ShareProfile} options={{ headerShown: true, title: '' }} />
+            <Stack.Screen name="ShareLink" component={ShareLink} options={{ headerShown: true, title: '' }} />
             <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />
             <Stack.Screen name="Settings" component={Settings} />
             <Stack.Screen name="Reviews" component={Reviews} />
@@ -73,6 +74,7 @@ export default function App() {
             <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
             <Stack.Screen name="Activity" component={Activity} />
             <Stack.Screen name="ChatScreen" component={ChatScreen} />
+
           </Stack.Navigator>
         </NavigationContainer>
       </ThemeProvider>
