@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { useTranslation } from 'react-i18next';
 
 const PhotoVerification = ({ onPhotoVerified }) => {
+  const { t } = useTranslation();
   const [photoUri, setPhotoUri] = useState(null);
 
   const handlePhotoUpload = () => {
@@ -37,20 +39,28 @@ const PhotoVerification = ({ onPhotoVerified }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Upload a photo or take a selfie to verify your identity</Text>
+      <Text style={styles.header}>
+        {t('PhotoVerificationDescription')}
+      </Text>
 
       {photoUri ? (
         <Image source={{ uri: photoUri }} style={styles.imagePreview} />
       ) : (
-        <Text style={styles.instructions}>No photo uploaded yet.</Text>
+        <Text style={styles.instructions}>
+          {t('NoPhotoUploaded')}
+        </Text>
       )}
 
       <TouchableOpacity style={styles.button} onPress={handlePhotoUpload}>
-        <Text style={styles.buttonText}>Upload Photo</Text>
+        <Text style={styles.buttonText}>
+          {t('UploadPhoto')}
+        </Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.button} onPress={handleTakePhoto}>
-        <Text style={styles.buttonText}>Take a Photo</Text>
+        <Text style={styles.buttonText}>
+          {t('TakePhoto')}
+        </Text>
       </TouchableOpacity>
     </View>
   );
