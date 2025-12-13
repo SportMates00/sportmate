@@ -3,20 +3,22 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { useTheme } from '@/src/theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 const ProfileCompletion = ({loggedUser,setModalVisible}) => {
   const navigation = useNavigation();
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
   const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  const {t} = useTranslation();
   const completionSteps = [
-    {id:1,step:loggedUser.firstName, text:'Input your first name'},
-    {id:2,step:loggedUser.lastName, text:'Input your last name'},
-    {id:3,step:loggedUser.profileInfo.sport, text:'Choose your preferred sport'},
-    {id:4,step:loggedUser.profileInfo.availability, text:'Fill your available time slot(s)'},
-    {id:5,step:loggedUser.profileInfo.age, text:'Choose your age'},
-    {id:6,step:loggedUser.profileInfo.location, text:'Set the location closest to you'},
-    {id:7,step:loggedUser.profileInfo.gender, text:'Choose your gender'},
-    {id:8,step:loggedUser.profileInfo.profileImageUrl, text:'Upload your profile picture'},
+    {id:1,step:loggedUser.firstName, text:t('inputName')},
+    {id:2,step:loggedUser.lastName, text:t('inputLastName')},
+    {id:3,step:loggedUser.profileInfo.sport, text:t('preferredSport')},
+    {id:4,step:loggedUser.profileInfo.availability, text:t('fillTimeSlots')},
+    {id:5,step:loggedUser.profileInfo.age, text:t('chooseAge')},
+    {id:6,step:loggedUser.profileInfo.location, text:t('setLocation')},
+    {id:7,step:loggedUser.profileInfo.gender, text:t('chooseGender')},
+    {id:8,step:loggedUser.profileInfo.profileImageUrl, text:t('uploadPicture')},
   ] 
 
   return (

@@ -1,11 +1,27 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
-const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-const times = ["Mor", "Aft", "Eve"];
+
 
 const EditAvailabilityTable = ({ editUser, setEditUser }) => {
   // Handle toggling of availability
+  const {t} = useTranslation();
+  const days = [
+  { key: 'Mon', label: t('Mon') },
+  { key: 'Tue', label: t('Tue') },
+  { key: 'Wed', label: t('Wed') },
+  { key: 'Thu', label: t('Thu') },
+  { key: 'Fri', label: t('Fri') },
+  { key: 'Sat', label: t('Sat') },
+  { key: 'Sun', label: t('Sun') }
+];
+
+const times = [
+  { key: 'Mor', label: t('Mor') },
+  { key: 'Aft', label: t('Aft') },
+  { key: 'Eve', label: t('Eve') }
+];
   const toggleCell = (day, time) => {
     const updatedAvailability = {
       ...editUser.profileInfo.availability,
@@ -32,7 +48,7 @@ const EditAvailabilityTable = ({ editUser, setEditUser }) => {
         <View style={styles.emptyCell} /> {/* Empty cell to keep alignment */}
         {days.map((day, index) => (
           <Text key={index} style={[styles.headerCell, styles.textCenter]}>
-            {day}
+            {day.label}
           </Text>
         ))}
       </View>
@@ -40,16 +56,16 @@ const EditAvailabilityTable = ({ editUser, setEditUser }) => {
       {times.map((time, rowIndex) => (
         <View key={rowIndex} style={styles.row}>
           <Text style={[styles.cell, styles.headerCell, styles.textCenter]}>
-            {time}
+            {time.label}
           </Text>
           {days.map((day, colIndex) => (
             <TouchableOpacity
               key={`${rowIndex}-${colIndex}`}
               style={[
                 styles.cell,
-                editUser.profileInfo.availability[day][time] && styles.selectedCell,
+                editUser.profileInfo.availability[day.key][time.key] && styles.selectedCell,
               ]}
-              onPress={() => toggleCell(day, time)}
+              onPress={() => toggleCell(day.key, time.key)}
             />
           ))}
         </View>

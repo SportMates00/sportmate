@@ -4,22 +4,23 @@ import { initReactI18next } from 'react-i18next';
 import WelcomePagesLan from './component/welcome pages/WelcomePagesLan';
 import GamesLan from '../app/(tabs)/Games/GamesLan';
 import SettingsLan from '../app/component/profile/menutab/Settings/SettingsLan';
+import profileLan from './component/profile/profileLan';
 
 // Translations
 const resources = {
   en: {
     translation: {
-      ...WelcomePagesLan.en, ...GamesLan.en, ...SettingsLan.en
+      ...WelcomePagesLan.en, ...GamesLan.en, ...SettingsLan.en, ...profileLan.en
     }
   },
   am: {
     translation: {
-      ...WelcomePagesLan.am, ...GamesLan.am, ...SettingsLan.am
+      ...WelcomePagesLan.am, ...GamesLan.am, ...SettingsLan.am, ...profileLan.am
     }
   },
   ru: {
     translation: {
-      ...WelcomePagesLan.ru, ...GamesLan.ru, ...SettingsLan.ru
+      ...WelcomePagesLan.ru, ...GamesLan.ru, ...SettingsLan.ru, ...profileLan.ru
     }
   }
 };

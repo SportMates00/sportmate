@@ -11,6 +11,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 
 import _ from 'lodash';  // Import lodash
+import { useTranslation } from 'react-i18next';
 
 const EditProfile = () => {
   const navigation = useNavigation();
@@ -20,11 +21,18 @@ const EditProfile = () => {
   const [firstNameError, setFirstNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');
   const [availabilityError, setAvailabilityError] = useState('');
+  const {t} = useTranslation();
+
+  const genders = [
+  { key: 'Male', label: t('Male') },
+  { key: 'Female', label: t('Female') },
+  { key: 'Other', label: t('Other') }
+];
 
 useLayoutEffect(() => {
   navigation.setOptions({
     headerShown: true,
-    headerTitle: "Edit Profile",
+    headerTitle: t('editProfile'),
     headerShadowVisible: false,
     headerBackButtonDisplayMode: "minimal",
     headerBackTitleVisible: false,
@@ -32,13 +40,13 @@ useLayoutEffect(() => {
 
     headerLeft : () =>      (
         <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>Cancel</Text>
+          <Text style={styles.buttonText}>{t('cancelEditProfile')}</Text>
         </TouchableOpacity>
 
     ),
     headerRight : () =>      (
         <TouchableOpacity onPress={saveUserInfo} disabled={!hasChanges}>
-          <Text style={[styles.buttonText, !hasChanges && styles.disabledButton]}>Save</Text>
+          <Text style={[styles.buttonText, !hasChanges && styles.disabledButton]}>{t('saveEditProfile')}</Text>
         </TouchableOpacity>
     ),
     // FIXED: No borders, no lines
@@ -79,7 +87,7 @@ useLayoutEffect(() => {
         setEditUser({ ...editUser, profileInfo: { ...editUser.profileInfo, profileImageUrl: uri } });
         console.log(loggedUser)
       } else {
-        alert('Please select a PNG or JPEG image.');
+        alert(t('imageError'));
       }
     }
   };
@@ -89,7 +97,7 @@ function saveUserInfo() {
 
   // Validate first name
   if (editUser.firstName.trim() === '') {
-    setFirstNameError('First name cannot be empty');
+    setFirstNameError(t('firstNameError'));
     isValid = false;
   } else {
     setFirstNameError('');
@@ -97,7 +105,7 @@ function saveUserInfo() {
 
   // Validate last name
   if (editUser.lastName.trim() === '') {
-    setLastNameError('Last name cannot be empty');
+    setLastNameError(t('lastNameError'));
     isValid = false;
   } else {
     setLastNameError('');
@@ -105,13 +113,13 @@ function saveUserInfo() {
 
   // Validate availability
   if (!isAvailabilityValid(editUser.profileInfo.availability)) {
-    setAvailabilityError('At least one time slot must be selected');
+    setAvailabilityError();
     isValid = false;
     
     // Scroll to the availability section
     scrollViewRef.current?.scrollToEnd({ animated: true });
   } else {
-    setAvailabilityError('');
+    setAvailabilityError(t('oneTimeSlotError'));
   }
 
   // Save if all validations pass and there are changes
@@ -148,57 +156,57 @@ function saveUserInfo() {
 
       {/* Personal Info LOCATION */}
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionHeading}>PERSONAL INFO</Text>
-        <Text style={styles.label}>First Name</Text>
+        <Text style={styles.sectionHeading}>{t('personalInfo')}</Text>
+        <Text style={styles.label}>{t('firstNameEditProfile')}</Text>
         <TextInput 
           style={styles.input} 
-          placeholder='Write your name...' 
+          placeholder={t('namePlaceHolder')} 
           value={editUser.firstName}
           onChangeText={(value) => setEditUser({ ...editUser, firstName: value })} 
         />
         {firstNameError ? <Text style={styles.errorText}>{firstNameError}</Text> : null}
-        <Text style={styles.label}>Last Name</Text>
+        <Text style={styles.label}>{t('lastNameEditProfile')}</Text>
         <TextInput 
           style={styles.input} 
-          placeholder='Write your last name...' 
+          placeholder={t('lastNamePlaceHolder')}
           value={editUser.lastName}
           onChangeText={(value) => setEditUser({ ...editUser, lastName: value })} 
         />
         {lastNameError ? <Text style={styles.errorText}>{lastNameError}</Text> : null}
-        <Text style={styles.label}>Location</Text>
+        <Text style={styles.label}>{t('locationEditProfile')}</Text>
         <LocationSelector setEditUser={setEditUser} editUser={editUser} />
       </View>
 
       {/* Age and Gender */}
-      <Text style={styles.sectionHeading}>AGE AND GENDER</Text>
+      <Text style={styles.sectionHeading}>{t('ageAndGender')}</Text>
       <AgeGenderSelector editUser={editUser} setEditUser={setEditUser} />
       <View style={styles.genderContainer}>
-        {['Male', 'Female', 'Other'].map((gender) => (
+        {genders.map((gender) => (
           <TouchableOpacity
-            key={gender}
+            key={gender.key}
             style={[
               styles.genderButton,
-              editUser.profileInfo.gender === gender && styles.selectedButton, // Dynamically highlight selected button
+              editUser.profileInfo.gender === gender.key && styles.selectedButton, // Dynamically highlight selected button
             ]}
             onPress={() => setEditUser((prev) => ({
               ...prev,
-              profileInfo: { ...prev.profileInfo, gender },
+              profileInfo: { ...prev.profileInfo, gender:gender.key },
             }))}
           >
-            <Text style={styles.genderText}>{gender}</Text>
+            <Text style={styles.genderText}>{gender.label}</Text>
           </TouchableOpacity>
         ))}
       </View>
 
       {/* ABOUT ME */}
       <View>
-        <Text style={styles.sectionHeading}>ABOUT ME</Text>
+        <Text style={styles.sectionHeading}>{t('profileAboutTab')}</Text>
         <AboutMeInput editUser={editUser} setEditUser={setEditUser} />
       </View>
 
       {/* AVAILABILITY */}
       <View style={{ paddingBottom: 100, width: '100%' }}>
-        <Text style={styles.sectionHeading}>AVAILABILITY</Text>
+        <Text style={styles.sectionHeading}>{t('myFreeTimeProfile')}</Text>
         <EditAvailabilityTable editUser={editUser} setEditUser={setEditUser} />
         {availabilityError ? <Text style={styles.errorText}>{availabilityError}</Text> : null}
       </View>

@@ -5,12 +5,19 @@ import Sports from './Sports/Sports';
 import Activity from './Details/Activity';
 import Reviews from './Reviews';
 import { useTheme } from '@/src/theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 export default function ProfileDetails({loggedUser}) {
-  const [activeTab, setActiveTab] = useState('About'); // Default to "About"
+  const [activeTab, setActiveTab] = useState('profileAboutTab'); // Default to "About"
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
   const styles = getStyles(theme); // Generate dynamic styles based on current theme
-  const tabs = ["About", "Sports", "Reviews", "Activity"];
+  const {t} = useTranslation();
+  const tabs = [
+    {key:'profileAboutTab', label: t("profileAboutTab")}, 
+    {key:'profileSports', label:t("profileSports")},
+    {key:'profileReviews', label:t("profileReviews")}, 
+    {key:'profileActivity', label:t("profileActivity")}
+    ];
 
   return (
     <View style={styles.container}>
@@ -18,12 +25,12 @@ export default function ProfileDetails({loggedUser}) {
       <View style={styles.tabRow}>
         {tabs.map((tab) => (
           <TouchableOpacity
-            key={tab}
+            key={tab.key}
             style={styles.tabButton}
-            onPress={() => setActiveTab(tab)}
+            onPress={() => setActiveTab(tab.key)}
           >
             <Text style={[styles.tabText, activeTab === tab && styles.activeTabText]}>
-              {tab}
+              {tab.label}
             </Text>
           </TouchableOpacity>
         ))}
@@ -44,9 +51,9 @@ export default function ProfileDetails({loggedUser}) {
 
       {/* Content Area Placeholder */}
       <View style={styles.contentArea}>
-        {activeTab === 'About' ? <About loggedUser={loggedUser}/> 
-        : activeTab === 'Sports' ? <Sports loggedUser={loggedUser} /> 
-        : activeTab === 'Reviews' ? <Reviews loggedUser={loggedUser}/> : <Activity loggedUser={loggedUser}/> }
+        {activeTab === 'profileAboutTab' ? <About loggedUser={loggedUser}/> 
+        : activeTab === 'profileSports' ? <Sports loggedUser={loggedUser} /> 
+        : activeTab === 'profileReviews' ? <Reviews loggedUser={loggedUser}/> : <Activity loggedUser={loggedUser}/> }
       </View>
     </View>
   );

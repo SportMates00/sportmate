@@ -11,7 +11,6 @@ const AboutMeInput = ({ editUser, setEditUser }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>About Me</Text>
       <TextInput
         style={styles.input}
         multiline

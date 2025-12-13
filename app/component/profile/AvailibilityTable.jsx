@@ -22,7 +22,7 @@ const AvailabilityTable = ({ loggedUser }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>{t("Availability ")}</Text>
+      <Text style={styles.heading}>{t("myFreeTimeProfile")}</Text>
 
       <View style={styles.table}>
         {/* Header Row */}

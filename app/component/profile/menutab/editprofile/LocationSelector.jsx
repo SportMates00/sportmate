@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View, Text, TouchableOpacity, Modal, FlatList, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Importing the icon
 
-const regions = [
-  'Yerevan', 'Aragatsotn', 'Ararat', 'Armavir', 'Gegharkunik',
-  'Kotayk', 'Lori', 'Shirak', 'Syunik', 'Tavush', 'Vayots Dzor',
-];
+
 
 const LocationSelector = ({ editUser, setEditUser }) => {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const {t} = useTranslation();
   const handleSelectRegion = (region) => {
     setEditUser((prev) => ({
       ...prev,
@@ -17,6 +15,20 @@ const LocationSelector = ({ editUser, setEditUser }) => {
     }));
     setModalVisible(false); // Close modal when a region is selected
   };
+
+  const regions = [
+  { key: 'Yerevan', label: t('Yerevan') },
+  { key: 'Aragatsotn', label: t('Aragatsotn') },
+  { key: 'Ararat', label: t('Ararat') },
+  { key: 'Armavir', label: t('Armavir') },
+  { key: 'Gegharkunik', label: t('Gegharkunik') },
+  { key: 'Kotayk', label: t('Kotayk') },
+  { key: 'Lori', label: t('Lori') },
+  { key: 'Shirak', label: t('Shirak') },
+  { key: 'Syunik', label: t('Syunik') },
+  { key: 'Tavush', label: t('Tavush') },
+  { key: 'VayotsDzor', label: t('VayotsDzor') }
+];
 
   return (
     <View style={locationStyles.container}>
@@ -26,7 +38,7 @@ const LocationSelector = ({ editUser, setEditUser }) => {
         onPress={() => setModalVisible(true)}
       >
         <Text style={locationStyles.inputText}>
-          {editUser.profileInfo?.location || 'Select a Region'}
+          { t(`${editUser.profileInfo?.location}`) || 'Select a Region'}
         </Text>
         <Icon name="arrow-drop-down" size={24} color="gray" style={locationStyles.icon} />
       </TouchableOpacity>
@@ -41,13 +53,13 @@ const LocationSelector = ({ editUser, setEditUser }) => {
           <View style={locationStyles.modalContent}>
             <FlatList
               data={regions}
-              keyExtractor={(item) => item}
+              keyExtractor={(item) => item.key}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   style={locationStyles.item}
-                  onPress={() => handleSelectRegion(item)}
+                  onPress={() => handleSelectRegion(item.key)}
                 >
-                  <Text>{item}</Text>
+                  <Text>{item.label}</Text>
                 </TouchableOpacity>
               )}
             />

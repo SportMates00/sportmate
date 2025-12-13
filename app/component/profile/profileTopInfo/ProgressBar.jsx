@@ -8,12 +8,14 @@ import { profileCompletePer } from "@/src/store/userSlice";
 import ProfileCompletion from './ProfileCompletion';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
   const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  const {t} = useTranslation();
   // Track which fields have already been counted
   const [countedFields, setCountedFields] = useState({
     age: loggedUser.profileInfo.age !== '',
@@ -61,7 +63,7 @@ const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
       {/* Progress Bar Card */}
       <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.progressCard}>
         <View style={styles.progressHeader}>
-          <Text style={styles.progressTitle}>Complete Your Profile</Text>
+          <Text style={styles.progressTitle}>{t('completeProfileTitle')}</Text>
           <Text style={styles.progressPercentage}>{Math.round(progressPercentage * 100)}%</Text>
         </View>
         <ProgressBar
@@ -88,15 +90,15 @@ const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
           <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
               <Ionicons name="close" size={24} color={theme.colors.text} />
             </TouchableOpacity>
-          <Text style={{color:theme.colors.text, fontSize:22, paddingInline:20}}>Profile Completion</Text>
-          <Text style={{color:theme.colors.text,paddingInline:20, marginBottom:20, marginTop:10}}>Complete your profile to be able to join and create events</Text>
+          <Text style={{color:theme.colors.text, fontSize:22, paddingInline:20}}>{t('profileCompletion')}</Text>
+          <Text style={{color:theme.colors.text,paddingInline:20, marginBottom:20, marginTop:10}}>{t('profileCompletionCaption')}</Text>
             {/* Close Button */}
           
             
             {/* Progress Bar Inside Modal */}
             <TouchableOpacity style={styles.progressCard}>
               <View style={styles.progressHeader}>
-                <Text style={styles.progressTitle}>Complete Your Profile</Text>
+                <Text style={styles.progressTitle}>{t('completeProfileTitle')}</Text>
                 <Text style={styles.progressPercentage}>{Math.round(progressPercentage * 100)}%</Text>
               </View>
               <ProgressBar

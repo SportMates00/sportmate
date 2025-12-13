@@ -26,31 +26,31 @@ const About = ({loggedUser}) => {
       <View style={styles.row}>
         {/* Age Column */}
         <View style={styles.column}>
-          <Text style={styles.title}>Age</Text>
+          <Text style={styles.title}>{t('ageProfile')}</Text>
           <Text style={styles.value}>{loggedUser.profileInfo.age !== '' ? loggedUser.profileInfo.age : '-'}</Text> {/* Replace '25' with dynamic age */}
         </View>
 
         <View style={styles.column}>
-          <Text style={styles.title}>Location</Text>
+          <Text style={styles.title}>{t('locationProfile')}</Text>
           <Text style={styles.value}>{loggedUser.profileInfo.location !== '' ? loggedUser.profileInfo.location : '-'}</Text> {/* Replace '25' with dynamic age */}
         </View>
 
         {/* Gender Column */}
         <View style={styles.column}>
-          <Text style={styles.title}>Gender</Text>
+          <Text style={styles.title}>{t('genderProfile')}</Text>
           <Text style={styles.value}>{loggedUser.profileInfo.gender !== '' ? loggedUser.profileInfo.gender : '-'}</Text> {/* Replace 'Male' with dynamic gender */}
         </View>
       </View>
       {/* Sport Column*/}
       <View style={styles.sport}>
-        <Text style={styles.sportText}>Sport</Text>
+        <Text style={styles.sportText}>{t('sportProfile')}</Text>
         <View style={styles.sportInfo}>
           <Text style={styles.sportInfoText}>{t(`${loggedUser.profileInfo.sport.key}`)} : </Text>
           <Text>{rating}</Text>
         </View>
       </View>
       <View style={styles.sport}>
-        <Text style={[styles.sportText,{paddingBottom:20}]}>About me</Text>
+        <Text style={[styles.sportText,{paddingBottom:20}]}>{t('profileAboutTab')}</Text>
         <Text style={styles.sportInfoText}>{loggedUser.profileInfo.aboutMe !== '' ? loggedUser.profileInfo.aboutMe : 'Nothing is written...'}</Text>
       </View>
       <AvailabilityTable loggedUser={loggedUser}/>
