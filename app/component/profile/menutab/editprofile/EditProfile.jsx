@@ -57,7 +57,7 @@ useLayoutEffect(() => {
       shadowOpacity: 0,     // iOS
     },
   });
-}, [navigation]);
+}, [navigation, editUser]);
 
   // Check if there are any changes to enable/disable the save button
   const hasChanges = !_.isEqual(loggedUser, editUser);

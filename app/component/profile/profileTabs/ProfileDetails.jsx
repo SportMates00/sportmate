@@ -29,7 +29,7 @@ export default function ProfileDetails({loggedUser}) {
             style={styles.tabButton}
             onPress={() => setActiveTab(tab.key)}
           >
-            <Text style={[styles.tabText, activeTab === tab && styles.activeTabText]}>
+            <Text style={[styles.tabText, activeTab === tab.key && styles.activeTabText]}>
               {tab.label}
             </Text>
           </TouchableOpacity>
@@ -43,7 +43,7 @@ export default function ProfileDetails({loggedUser}) {
             key={tab}
             style={[
               styles.indicator,
-              activeTab === tab && styles.activeIndicator,
+              activeTab === tab.key && styles.activeIndicator,
             ]}
           />
         ))}
@@ -95,7 +95,7 @@ const getStyles = (theme) => StyleSheet.create({
     marginHorizontal: 2,
   },
   activeIndicator: {
-    backgroundColor: theme.colors.primary, // Light blue for active
+    backgroundColor: theme.colors.primary, // Light green for active
   },
   contentArea: {
     flex:1,

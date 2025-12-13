@@ -9,9 +9,6 @@ const ProfileHeader = () => {
     const { theme } = useTheme(); // Get current theme and toggle (if needed)
     const styles = getStyles(theme); // Generate dynamic styles based on current theme
     const navigation = useNavigation();
-    const handleBackPress = () => {
-        navigation.navigate('HomeTabs'); // Navigates back to the previous screen
-      };
 
   return (
         <View>

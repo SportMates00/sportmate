@@ -6,17 +6,18 @@ import ProfileTopInfo from './profileTopInfo/ProfileTopInfo';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@/src/theme/themeContext';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 const Profile = () => {
 
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
   const styles = getStyles(theme); // Generate dynamic styles based on current theme
   const loggedUser = useSelector((state) => state.user);
   const navigation = useNavigation();
-
+  const {t} = useTranslation()
 useLayoutEffect(() => {
   navigation.setOptions({
     headerShown: true,
-    headerTitle: "Profile",
+    headerTitle: t('profileTitle'),
     headerShadowVisible: false,
     headerBackButtonDisplayMode: "minimal",
     headerBackTitleVisible: false,

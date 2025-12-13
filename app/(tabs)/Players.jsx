@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import {View,Text,StyleSheet,Image,TextInput,TouchableOpacity,ScrollView,Modal,FlatList} from 'react-native';
 import { useTheme } from '@/src/theme/themeContext';
 import { useState } from 'react';
-const Players = ({ navigation }) => {
+import { useNavigation } from '@react-navigation/native';
+const Players = ( ) => {
+  const navigation = useNavigation();
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
   const styles = getStyles(theme); // Generate dynamic styles based on current theme
   const [activeFilter, setActiveFilter] = useState(null);
@@ -83,6 +85,44 @@ const Players = ({ navigation }) => {
     }
   ];
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerTitle: '',
+      headerShadowVisible: false,
+      headerBackButtonDisplayMode: "minimal",
+      headerBackTitleVisible: false,
+      headerBackTitle: "",
+      headerLeft : () =>      (
+        <Text style={styles.title}>Players</Text>
+      ),
+      headerRight : () =>      (
+              <View style={styles.header}>
+        
+        <View style={styles.headerRight}>
+          <TouchableOpacity onPress={() => {/* navigate to notifications */}}>
+            <Text style={styles.icon}>🔔</Text>
+          </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('Profile')}> 
+            <Image
+              source={{ uri: 'https://randomuser.me/api/portraits/men/99.jpg' }}
+              style={styles.profilePic}
+            />
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      ),
+      // FIXED: No borders, no lines
+      headerStyle: {
+        backgroundColor: "white",
+        borderBottomWidth: 0, // remove line
+        elevation: 0,         // Android
+        shadowOpacity: 0,     // iOS
+      },
+    });
+  }, [players,navigation]);
+
   const handleFilterSelect = (filterType, value) => {
     setSelectedFilters({ ...selectedFilters, [filterType]: value });
     setActiveFilter(null);
@@ -104,20 +144,7 @@ const Players = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Players</Text>
-        <View style={styles.headerRight}>
-          <TouchableOpacity onPress={() => {/* navigate to notifications */}}>
-            <Text style={styles.icon}>🔔</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => navigation.navigate('Profile')}> 
-            <Image
-              source={{ uri: 'https://randomuser.me/api/portraits/men/99.jpg' }}
-              style={styles.profilePic}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
+
 
       {/* Search and Filters */}
       <View style={styles.searchFilterContainer}>
@@ -204,7 +231,7 @@ const getStyles = (theme) => StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 10
+    marginBottom: 10,
   },
   title: {
     fontSize: 26,
