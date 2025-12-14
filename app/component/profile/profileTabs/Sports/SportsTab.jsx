@@ -4,11 +4,12 @@ import AddSport from './AddSport';
 import EditSports from './EditSports';
 import { useTheme } from '@/src/theme/themeContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { footballSportIcon } from '@/assets/sportIcons/sportIcons';
 
 const sportImages = {
-  Squash: require('../../../../../assets/images/football-field.webp'),
-  Badminton: require('../../../../../assets/images/football-field.webp'),
-  TableTennis: require('../../../../../assets/images/football-field.webp'),
+  football: footballSportIcon,
+  Football:footballSportIcon,
+  Football:footballSportIcon,
 };
 
 const SportsTab = ({ loggedUser }) => {
@@ -23,7 +24,6 @@ const SportsTab = ({ loggedUser }) => {
     {
       sport: loggedUser.profileInfo.sport.sport,
       level: loggedUser.profileInfo.level,
-      points: loggedUser.profileInfo.points || 1300,
       main: true,
     },
     ...userInfo.profileInfo.sportsList,
@@ -62,7 +62,6 @@ const SportsTab = ({ loggedUser }) => {
             <View style={styles.bottomRow}>
               <View>
                 <Text style={styles.level}>{item.level}</Text>
-                <Text style={styles.points}>{item.points} Pts.</Text>
               </View>
 
               <Ionicons name="chevron-forward" size={22} color="#fff" />
@@ -93,12 +92,15 @@ const getStyles = (theme) =>
       paddingHorizontal: 16,
       paddingTop: 16,
       gap: 16,
+      width:'100%',
+      alignItems:'center'
     },
 
     card: {
       height: 160,
       borderRadius: 18,
       overflow: 'hidden',
+      width:'100%'
     },
 
     image: {

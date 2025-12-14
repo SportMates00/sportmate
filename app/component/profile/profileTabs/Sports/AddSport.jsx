@@ -5,10 +5,29 @@ import React, { useState } from 'react';
 import { editUserInfo} from '@/src/store/userSlice';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@/src/theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 const AddSport = ({ setUserInfo, userInfo }) => {
-  const availableSports = ['Football', 'Basketball', 'Tennis', 'Bowling', 'Table Tennis'];
-  const levels = ['Beginner', 'Intermediate', 'Advanced'];
+
+  const {t} = useTranslation();
+  const availableSports = [
+    { key: "Football", label: t("Football"),  },
+    { key: "Basketball", label: t("Basketball"),  },
+    { key: "Tennis", label: t("Tennis"),  },
+    { key: "PingPong", label: t("PingPong"),  },
+    { key: "Hiking", label: t("Hiking"),  },
+    { key: "Tennis1", label: t("Tennis1"),  },
+    { key: "PingPong1", label: t("PingPong1"),  },
+    { key: "Hiking1", label: t("Hiking1"),  },
+  ];
+    const levels = [
+    { id: "Starter", label: t("Starter") },
+    { id: "Beginner", label: t("Beginner") },
+    { id: "LowerIntermediate", label: t("LowerIntermediate") },
+    { id: "Intermediate", label: t("Intermediate") },
+    { id: "Advanced", label: t("Advanced") },
+    { id: "Professional", label: t("Professional") }
+  ];
   const [modalVisible, setModalVisible] = useState(false);
   const [newSport, setNewSport] = useState({sport:'',level:''})
   const [error,setError] = useState(false);
@@ -69,8 +88,8 @@ const AddSport = ({ setUserInfo, userInfo }) => {
               <RNPickerSelect
                 onValueChange={(value) => setNewSport({...newSport,sport:value})}
                 items={availableSports.map((sport) => ({
-                  label: sport,
-                  value: sport,
+                  label: sport.label,
+                  value: sport.key,
                 }))}
                 placeholder={{ label: 'Select a sport', value: null }}
                 style={pickerSelectStyless}
@@ -81,8 +100,8 @@ const AddSport = ({ setUserInfo, userInfo }) => {
               <RNPickerSelect
                 onValueChange={(value) => setNewSport({...newSport,level:value})}
                 items={levels.map((level) => ({
-                  label: level,
-                  value: level,
+                  label: level.label,
+                  value: level.id,
                 }))}
                 placeholder={{ label: 'Select a level', value: null }}
                 style={pickerSelectStyless}

@@ -5,6 +5,7 @@ import { useTheme } from '@/src/theme/themeContext';
 const GameEvents = ({ gameEvents }) => {
 
   const { theme } = useTheme();
+  console.log(gameEvents)
   const styles = getStyles(theme);
   return (
     <View style={styles.container}>

@@ -88,7 +88,7 @@ const getStyles = (theme) => StyleSheet.create({
   modalContent: {
     position:'absolute',
     bottom:70,
-    height: '40%',
+    height: '30%',
     backgroundColor: theme.colors.background,
     borderRadius: theme.radius.semiCircle,
     padding: theme.spacing.large,

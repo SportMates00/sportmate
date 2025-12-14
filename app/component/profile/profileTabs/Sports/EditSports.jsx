@@ -5,9 +5,19 @@ import React, { useState } from 'react';
 import { deleteSport, editUserInfo} from '@/src/store/userSlice';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@/src/theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 const EditSports = ({ setOpenEditSport, openEditSport,sport,setUserInfo, userInfo }) => {
-  const levels = ['Beginner', 'Intermediate','Professional', 'Advanced'];
+  
+  const { t } = useTranslation();
+  const levels = [
+    { id: "Starter", label: t("Starter") },
+    { id: "Beginner", label: t("Beginner") },
+    { id: "LowerIntermediate", label: t("LowerIntermediate") },
+    { id: "Intermediate", label: t("Intermediate") },
+    { id: "Advanced", label: t("Advanced") },
+    { id: "Professional", label: t("Professional") }
+  ];
   const [newSport, setNewSport] = useState({sport:'',level:''})
   const [error, setError] = useState(false)
   const dispatch = useDispatch();
@@ -64,45 +74,48 @@ const EditSports = ({ setOpenEditSport, openEditSport,sport,setUserInfo, userInf
     <View style={styles.addSportContainer}>
       {/* Modal for Adding a New Sport */}
       {openEditSport && (
-        <Modal transparent={true} animationType="slide" visible={openEditSport} onRequestClose={() => setOpenEditSport(false)}>
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContainer}>
-              <Text style={styles.modalTitle}>Edit Sport</Text>
-
-              {/* Sport Selector */}
-              <Text style={styles.label}>Selected sport: {sport.sport}</Text>
-              
-
-              {/* Level Selector */}
-              <Text style={styles.label}>Select Your Level:</Text>
-              <RNPickerSelect
-                onValueChange={(value) => setNewSport({...newSport,level:value})}
-                items={levels.map((level) => ({
-                  label: level,
-                  value: level,
-                }))}
-                placeholder={{ label: 'Select a level', value: null }}
-                style={pickerSelectStyles}
-                value={sport.level}
-              />
-
-              {/* Modal Buttons */}
-              {error && sport.sport == userInfo.profileInfo.sport && <Text style={{color:"red"}}>You can not delete your main sport</Text>}
-              <TouchableOpacity onPress={() => editSport()} style={styles.modalButton}>
-                <Text style={styles.modalButtonText}>Update Sport</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => deleteSelectedSport()} style={[sport.sport == userInfo.profileInfo.sport ? styles.modalButtonX : styles.modalButton]}>
-                <Text style={styles.modalButtonText}>Delete Sport</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => {
-                setError(false)
-                setOpenEditSport(false); 
-              }} style={[styles.modalButton, styles.cancelButton]}>
-                <Text style={styles.modalButtonText}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
+              <Modal 
+                transparent={true}
+                animationType="slide"
+                onRequestClose={() => setOpenEditSport(false)}
+              >
+                <TouchableOpacity style={styles.modalOverlay} onPress={() => setOpenEditSport(false)} />
+                <View style={styles.modalContent}>
+                    <TouchableOpacity 
+                      style={styles.modalButton} 
+                      onPress={() => { 
+                      setOpenEditSport(false)
+                      }
+                       } >
+                      <Text style={styles.modalButtonText}>Set as main sport</Text>
+                    </TouchableOpacity>
+        
+                    <TouchableOpacity 
+                      style={styles.modalButton} 
+                      onPress={() => { 
+                        setOpenEditSport(false)
+                        }
+                         } // Replace 'Page2' with your actual route name
+                    >
+                      <Text style={styles.modalButtonText}>Change level</Text>
+                    </TouchableOpacity>
+        
+                    <TouchableOpacity 
+                      style={styles.modalButton}
+                      onPress={() => { 
+                        setOpenEditSport(false)
+                        }
+                         } 
+                    >
+                      <Text style={styles.modalButtonText}>Remove sport</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.cancelContent}>
+                    <TouchableOpacity onPress={() => setOpenEditSport(false)}>
+                      <Text style={styles.closeButton}>Cancel</Text>
+                    </TouchableOpacity>
+                  </View>
+              </Modal>
       )}
     </View>
   );
@@ -157,7 +170,52 @@ const getStyles = (theme) => StyleSheet.create({
   cancelButton: {
     backgroundColor: theme.colors.primary,
   },
-
+modalOverlay: {
+    position:'absolute',
+    flex: 1,
+    height:'100%',
+    width:'100%',
+    backgroundColor: theme.colors.text,
+    opacity:0.5
+  },
+  modalContent: {
+    position:'absolute',
+    bottom:70,
+    height: '30%',
+    backgroundColor: theme.colors.background,
+    borderRadius: theme.radius.semiCircle,
+    padding: theme.spacing.large,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '80%',
+    alignSelf: 'center',
+  },
+  cancelContent: {
+    position:'absolute',
+    bottom:20,
+    height:40,
+    backgroundColor: theme.colors.primary,
+    borderRadius: theme.radius.semiCircle,
+    width: '80%',
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeButton:{
+    color:theme.colors.buttonText
+  },
+  modalButton: {
+    width: '100%',
+    padding: 15,
+    backgroundColor: 'transparent',
+    borderRadius: theme.radius.semiCircle,
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  modalButtonText: {
+    color:theme.colors.primary,
+    fontSize: theme.fonts.size.medium,
+  },
 });
 
 const pickerSelectStyles = StyleSheet.create({
