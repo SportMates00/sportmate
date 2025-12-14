@@ -12,10 +12,13 @@ import {
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 const ChatScreen = ({ route, navigation }) => {
-     const { theme } = useTheme(); // Get current theme and toggle (if needed)
-      const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
+  const { t } = useTranslation();
+
   const { name, profilePic } = route.params;
 
   const [messages, setMessages] = useState([
@@ -70,7 +73,7 @@ const ChatScreen = ({ route, navigation }) => {
       >
         <View style={styles.inputArea}>
           <TextInput
-            placeholder="Type a message..."
+            placeholder={t('ChatInputPlaceholder')}
             value={input}
             onChangeText={setInput}
             style={styles.input}

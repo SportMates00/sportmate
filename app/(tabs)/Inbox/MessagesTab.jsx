@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const messages = [
   {
@@ -17,16 +18,18 @@ const messages = [
     lastMessage: 'Let’s warm up 15 mins earlier.',
     time: 'Yesterday',
   },
-  // Add more mock messages or leave empty for empty state test
 ];
 
 const MessagesTab = () => {
-    const navigation = useNavigation();
+  const navigation = useNavigation();
+  const { t } = useTranslation();
 
   if (messages.length === 0) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>You have no messages yet.</Text>
+        <Text style={styles.emptyText}>
+          {t('InboxMessagesEmpty')}
+        </Text>
       </View>
     );
   }
@@ -43,13 +46,16 @@ const MessagesTab = () => {
               profilePic: msg.profilePic,
             })
           }
-          
         >
           <Image source={{ uri: msg.profilePic }} style={styles.avatar} />
+
           <View style={styles.textContainer}>
             <Text style={styles.name}>{msg.name}</Text>
-            <Text style={styles.lastMessage} numberOfLines={1}>{msg.lastMessage}</Text>
+            <Text style={styles.lastMessage} numberOfLines={1}>
+              {msg.lastMessage}
+            </Text>
           </View>
+
           <Text style={styles.time}>{msg.time}</Text>
         </TouchableOpacity>
       ))}

@@ -1,5 +1,5 @@
 // AllGames.jsx
-import React, { useEffect, useState, useCallback, useMemo, memo } from 'react';
+import React, { useState, useCallback, useMemo, memo } from 'react';
 import {
   View,
   Text,
@@ -7,7 +7,7 @@ import {
   Modal,
   StyleSheet,
   ScrollView,
-  TouchableWithoutFeedback
+  TouchableWithoutFeedback,
 } from 'react-native';
 import SportsFilter from './SportsFilter';
 import Sort from './Sort';
@@ -15,13 +15,18 @@ import Filter from './Filter';
 import GameEvents from './GameEvents';
 import { gamesEvents } from '@/src/js files/gamesEvents';
 import { useTheme } from '@/src/theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 const AllGames = ({ loggedUser }) => {
   const [showSports, setShowSports] = useState(false);
   const [showSort, setShowSort] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
-  const [selectedSports, setSelectedSports] = useState([loggedUser.profileInfo.sport.sport]);
+
+  const [selectedSports, setSelectedSports] = useState([
+    loggedUser.profileInfo.sport.sport,
+  ]);
   const [selectedSort, setSelectedSort] = useState(null);
+
   const [filters, setFilters] = useState({
     skillLevel: [],
     location: [],
@@ -29,12 +34,12 @@ const AllGames = ({ loggedUser }) => {
     time: [],
   });
 
-  // ✅ THEME
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const styles = getStyles(theme);
 
   const gameEvents = useMemo(() => {
-    if (!loggedUser?.profileInfo?.sport.sport) return [];
+    if (!loggedUser?.profileInfo?.sport?.sport) return [];
 
     let events = selectedSports.flatMap(
       sport => gamesEvents[sport.toLowerCase()] || []
@@ -55,14 +60,14 @@ const AllGames = ({ loggedUser }) => {
         const eventDate = new Date(e.date);
 
         return filters.date.some(selected => {
-          if (selected === "Today") {
+          if (selected === 'Today') {
             return eventDate.toDateString() === now.toDateString();
           }
-          if (selected === "This Week") {
+          if (selected === 'This Week') {
             const diff = eventDate - now;
             return diff >= 0 && diff <= 7 * 24 * 60 * 60 * 1000;
           }
-          if (selected === "This Month") {
+          if (selected === 'This Month') {
             return (
               eventDate.getMonth() === now.getMonth() &&
               eventDate.getFullYear() === now.getFullYear()
@@ -78,37 +83,39 @@ const AllGames = ({ loggedUser }) => {
         if (!e.time) return false;
 
         let raw = e.time.toLowerCase().trim();
-        let num = parseInt(raw.replace(/[^0-9]/g, ""), 10);
+        let num = parseInt(raw.replace(/[^0-9]/g, ''), 10);
         if (isNaN(num)) return false;
 
-        const isPM = raw.includes("pm");
-        const isAM = raw.includes("am");
+        const isPM = raw.includes('pm');
+        const isAM = raw.includes('am');
 
         let hour24 = num;
         if (isPM && num !== 12) hour24 = num + 12;
         if (isAM && num === 12) hour24 = 0;
 
         return filters.time.some(slot => {
-          if (slot === "morning") return hour24 >= 6 && hour24 < 12;
-          if (slot === "afternoon") return hour24 >= 12 && hour24 < 18;
-          if (slot === "evening") return hour24 >= 18 && hour24 < 22;
-          if (slot === "latenight") return hour24 >= 22 || hour24 < 6;
+          if (slot === 'morning') return hour24 >= 6 && hour24 < 12;
+          if (slot === 'afternoon') return hour24 >= 12 && hour24 < 18;
+          if (slot === 'evening') return hour24 >= 18 && hour24 < 22;
+          if (slot === 'latenight') return hour24 >= 22 || hour24 < 6;
+          return false;
         });
       });
     }
 
-    if (selectedSort === "date") {
+    if (selectedSort === 'date') {
       events.sort((a, b) => new Date(a.date) - new Date(b.date));
     }
 
-    if (selectedSort === "popularity") {
+    if (selectedSort === 'popularity') {
       events.sort(
         (a, b) => (b.players?.length || 0) - (a.players?.length || 0)
       );
     }
 
-    if (selectedSort === "distance") {
-      const userCity = loggedUser?.profileInfo?.location?.toLowerCase() || "";
+    if (selectedSort === 'distance') {
+      const userCity =
+        loggedUser?.profileInfo?.location?.toLowerCase() || '';
 
       events.sort((a, b) => {
         const aMatch = a.city?.toLowerCase() === userCity;
@@ -131,21 +138,28 @@ const AllGames = ({ loggedUser }) => {
 
   return (
     <View style={styles.container}>
+      {/* Nested filter tabs */}
       <View style={styles.nestedTabsContainer}>
         <TouchableOpacity style={styles.nestedTab} onPress={openSportsModal}>
-          <Text style={styles.nestedTabText}>Sportsss</Text>
+          <Text style={styles.nestedTabText}>{t('Sports')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.nestedTab} onPress={openSortModal}>
-          <Text style={styles.nestedTabText}>Sort</Text>
+          <Text style={styles.nestedTabText}>{t('Sort')}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.nestedTab} onPress={openFilterModal}>
-          <Text style={styles.nestedTabText}>Filter</Text>
+          <Text style={styles.nestedTabText}>{t('Filter')}</Text>
         </TouchableOpacity>
       </View>
 
-      <Modal visible={showSports} animationType="slide" transparent onRequestClose={closeSportsModal}>
+      {/* Sports modal */}
+      <Modal
+        visible={showSports}
+        animationType="slide"
+        transparent
+        onRequestClose={closeSportsModal}
+      >
         <TouchableWithoutFeedback onPress={closeSportsModal}>
           <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback onPress={() => {}}>
@@ -162,7 +176,13 @@ const AllGames = ({ loggedUser }) => {
         </TouchableWithoutFeedback>
       </Modal>
 
-      <Modal visible={showSort} animationType="slide" transparent onRequestClose={closeSortModal}>
+      {/* Sort modal */}
+      <Modal
+        visible={showSort}
+        animationType="slide"
+        transparent
+        onRequestClose={closeSortModal}
+      >
         <TouchableWithoutFeedback onPress={closeSortModal}>
           <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback onPress={() => {}}>
@@ -178,7 +198,13 @@ const AllGames = ({ loggedUser }) => {
         </TouchableWithoutFeedback>
       </Modal>
 
-      <Modal visible={showFilter} animationType="slide" transparent onRequestClose={closeFilterModal}>
+      {/* Filter modal */}
+      <Modal
+        visible={showFilter}
+        animationType="slide"
+        transparent
+        onRequestClose={closeFilterModal}
+      >
         <TouchableWithoutFeedback onPress={closeFilterModal}>
           <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback onPress={() => {}}>
@@ -199,7 +225,9 @@ const AllGames = ({ loggedUser }) => {
       </ScrollView>
 
       <TouchableOpacity style={styles.createButton}>
-        <Text style={styles.createButtonText}>Create a Game</Text>
+        <Text style={styles.createButtonText}>
+          {t('CreateGame')}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -209,66 +237,67 @@ const MemoizedGameEvents = memo(({ gameEvents }) => {
   return <GameEvents gameEvents={gameEvents} />;
 });
 
-const getStyles = (theme) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.background,
-  },
+const getStyles = (theme) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+    },
 
-  nestedTabsContainer: {
-    flexDirection: 'row',
-    backgroundColor: theme.colors.background,
-    marginBottom: 10,
-  },
+    nestedTabsContainer: {
+      flexDirection: 'row',
+      backgroundColor: theme.colors.background,
+      marginBottom: 10,
+    },
 
-  nestedTab: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingVertical: 15,
-  },
+    nestedTab: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      paddingVertical: 15,
+    },
 
-  nestedTabText: {
-    color: theme.colors.text,
-    textAlign: 'center',
-    fontSize: 14,
-    fontWeight: '500',
-    width: '100%',
-    fontFamily: theme.fonts.family,
-  },
+    nestedTabText: {
+      color: theme.colors.text,
+      textAlign: 'center',
+      fontSize: 14,
+      fontWeight: '500',
+      width: '100%',
+      fontFamily: theme.fonts.family,
+    },
 
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.4)',
-    justifyContent: 'flex-end',
-  },
+    modalOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.4)',
+      justifyContent: 'flex-end',
+    },
 
-  modalContent: {
-    height: '60%',
-    backgroundColor: theme.colors.background,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    padding: 20,
-  },
+    modalContent: {
+      height: '60%',
+      backgroundColor: theme.colors.background,
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      padding: 20,
+    },
 
-  createButton: {
-    position: 'absolute',
-    bottom: 10,
-    left: 65,
-    right: 65,
-    backgroundColor: theme.colors.primary,
-    paddingVertical: 14,
-    borderRadius: 10,
-    alignItems: 'center',
-    zIndex: 999,
-  },
+    createButton: {
+      position: 'absolute',
+      bottom: 10,
+      left: 65,
+      right: 65,
+      backgroundColor: theme.colors.primary,
+      paddingVertical: 14,
+      borderRadius: 10,
+      alignItems: 'center',
+      zIndex: 999,
+    },
 
-  createButtonText: {
-    color: theme.colors.buttonText,
-    fontSize: 16,
-    fontWeight: 'bold',
-    fontFamily: theme.fonts.family,
-  },
-});
+    createButtonText: {
+      color: theme.colors.buttonText,
+      fontSize: 16,
+      fontWeight: 'bold',
+      fontFamily: theme.fonts.family,
+    },
+  });
 
 export default AllGames;

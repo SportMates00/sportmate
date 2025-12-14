@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Ionicons, FontAwesome5, MaterialIcons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/themeContext';
-import MessagesTab from './MessagesTab';       // Placeholder components (to create later)
+import { useTranslation } from 'react-i18next';
+
+import MessagesTab from './MessagesTab';
 import GameInvitesTab from './GameInvitesTab';
 import FriendRequestsTab from './FriendRequestsTab';
 
 const Inbox = ({ navigation }) => {
   const [activeTab, setActiveTab] = useState('messages');
   const { theme } = useTheme();
-  const styles = getStyles(theme); 
+  const styles = getStyles(theme);
+  const { t } = useTranslation();
 
   const renderTab = () => {
     switch (activeTab) {
@@ -27,13 +30,13 @@ const Inbox = ({ navigation }) => {
   const getTitle = () => {
     switch (activeTab) {
       case 'messages':
-        return 'Messages';
+        return t('InboxTitleMessages');
       case 'invites':
-        return 'Game Invites';
+        return t('InboxTitleGameInvites');
       case 'friends':
-        return 'Friend Requests';
+        return t('InboxTitleFriendRequests');
       default:
-        return 'Inbox';
+        return t('InboxTitle');
     }
   };
 
@@ -55,7 +58,7 @@ const Inbox = ({ navigation }) => {
         </TouchableOpacity>
       </View>
 
-      {/* Tab Navigation */}
+      {/* Tabs */}
       <View style={styles.tabContainer}>
         <TouchableOpacity
           style={[styles.tabButton, activeTab === 'messages' && styles.activeTab]}
@@ -67,6 +70,7 @@ const Inbox = ({ navigation }) => {
             color={activeTab === 'messages' ? theme.colors.primary : '#444'}
           />
         </TouchableOpacity>
+
         <TouchableOpacity
           style={[styles.tabButton, activeTab === 'invites' && styles.activeTab]}
           onPress={() => setActiveTab('invites')}
@@ -77,6 +81,7 @@ const Inbox = ({ navigation }) => {
             color={activeTab === 'invites' ? theme.colors.primary : '#444'}
           />
         </TouchableOpacity>
+
         <TouchableOpacity
           style={[styles.tabButton, activeTab === 'friends' && styles.activeTab]}
           onPress={() => setActiveTab('friends')}
@@ -133,7 +138,7 @@ const getStyles = (theme) => StyleSheet.create({
     borderRadius: 10,
   },
   activeTab: {
-    backgroundColor: '#e0ecff' ,
+    backgroundColor: '#e0ecff',
   },
   bodyContainer: {
     flex: 1,

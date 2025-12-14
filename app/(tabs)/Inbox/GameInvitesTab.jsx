@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const mockInvites = [
   {
@@ -33,28 +34,38 @@ const mockInvites = [
 
 const GameInvitesTab = () => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const [invites, setInvites] = useState(mockInvites);
 
   const handleAccept = (id) => {
-    Alert.alert('Accepted', 'You joined the game!');
+    Alert.alert(
+      t('InboxAcceptedTitle'),
+      t('InboxAcceptedMessage')
+    );
     setInvites(invites.filter((invite) => invite.id !== id));
   };
 
   const handleDecline = (id) => {
-    Alert.alert('Declined', 'Invite removed.');
+    Alert.alert(
+      t('InboxDeclinedTitle'),
+      t('InboxDeclinedMessage')
+    );
     setInvites(invites.filter((invite) => invite.id !== id));
   };
 
   const handleCardTap = (invite) => {
-    // Placeholder — later you'll navigate to CardView.jsx
-    Alert.alert('Card Tapped', `Navigate to detailed view of ${invite.sport}`);
-    // navigation.navigate('CardView', { invite });
+    Alert.alert(
+      t('InboxInviteCardTappedTitle'),
+      t('InboxInviteCardTappedMessage', { sport: invite.sport })
+    );
   };
 
   if (invites.length === 0) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No game invites yet.</Text>
+        <Text style={styles.emptyText}>
+          {t('InboxGameInvitesEmpty')}
+        </Text>
       </View>
     );
   }
@@ -87,13 +98,18 @@ const GameInvitesTab = () => {
               style={[styles.button, styles.accept]}
               onPress={() => handleAccept(invite.id)}
             >
-              <Text style={styles.buttonText}>Accept</Text>
+              <Text style={styles.buttonText}>
+                {t('InboxAccept')}
+              </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={[styles.button, styles.decline]}
               onPress={() => handleDecline(invite.id)}
             >
-              <Text style={styles.buttonText}>Decline</Text>
+              <Text style={styles.buttonText}>
+                {t('InboxDecline')}
+              </Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>

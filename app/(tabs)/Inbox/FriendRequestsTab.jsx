@@ -9,31 +9,39 @@ import {
   Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 
 const mockRequests = [
-    {
-        id: '1',
-        name: 'Narek Mkrtchyan',
-        profilePic: 'https://randomuser.me/api/portraits/men/15.jpg',
-      },
-      {
-        id: '2',
-        name: 'Tatev Grigoryan',
-        profilePic: 'https://randomuser.me/api/portraits/women/42.jpg',
-      },
+  {
+    id: '1',
+    name: 'Narek Mkrtchyan',
+    profilePic: 'https://randomuser.me/api/portraits/men/15.jpg',
+  },
+  {
+    id: '2',
+    name: 'Tatev Grigoryan',
+    profilePic: 'https://randomuser.me/api/portraits/women/42.jpg',
+  },
 ];
 
 const FriendRequestsTab = () => {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const [requests, setRequests] = useState(mockRequests);
 
   const handleAccept = (id) => {
-    Alert.alert('Accepted', 'Friend request accepted.');
+    Alert.alert(
+      t('InboxAcceptedTitle'),
+      t('InboxFriendAcceptedMessage')
+    );
     setRequests(requests.filter((r) => r.id !== id));
   };
 
   const handleDecline = (id) => {
-    Alert.alert('Declined', 'Friend request declined.');
+    Alert.alert(
+      t('InboxDeclinedTitle'),
+      t('InboxFriendDeclinedMessage')
+    );
     setRequests(requests.filter((r) => r.id !== id));
   };
 
@@ -44,7 +52,9 @@ const FriendRequestsTab = () => {
   if (requests.length === 0) {
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No friend requests yet.</Text>
+        <Text style={styles.emptyText}>
+          {t('InboxFriendRequestsEmpty')}
+        </Text>
       </View>
     );
   }
@@ -67,13 +77,18 @@ const FriendRequestsTab = () => {
               style={[styles.button, styles.accept]}
               onPress={() => handleAccept(request.id)}
             >
-              <Text style={styles.buttonText}>Accept</Text>
+              <Text style={styles.buttonText}>
+                {t('InboxAccept')}
+              </Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               style={[styles.button, styles.decline]}
               onPress={() => handleDecline(request.id)}
             >
-              <Text style={styles.buttonText}>Decline</Text>
+              <Text style={styles.buttonText}>
+                {t('InboxDecline')}
+              </Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>

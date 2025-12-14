@@ -5,6 +5,8 @@ export default {
         TabActivity: "Activity",
         TabInbox: "Inbox",
 
+      
+
     },
 
     am: {
@@ -20,6 +22,8 @@ export default {
         TabPlayers: "Игроки",
         TabActivity: "Активность",
         TabInbox: "Входящие",
+
+        
 
     }
   
