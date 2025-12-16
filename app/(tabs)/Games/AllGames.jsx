@@ -23,7 +23,7 @@ const AllGames = ({ loggedUser }) => {
   const [showFilter, setShowFilter] = useState(false);
 
   const [selectedSports, setSelectedSports] = useState([
-    loggedUser.profileInfo.sport.sport,
+    loggedUser.profileInfo.mainSport,
   ]);
   const [selectedSort, setSelectedSort] = useState(null);
 
@@ -39,7 +39,7 @@ const AllGames = ({ loggedUser }) => {
   const styles = getStyles(theme);
 
   const gameEvents = useMemo(() => {
-    if (!loggedUser?.profileInfo?.sport?.sport) return [];
+    if (!loggedUser?.profileInfo?.mainSport) return [];
 
     let events = selectedSports.flatMap(
       sport => gamesEvents[sport.toLowerCase()] || []

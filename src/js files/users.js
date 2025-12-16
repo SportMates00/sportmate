@@ -1,4 +1,4 @@
-import { footballSportIcon } from "@/assets/sportIcons/sportIcons"
+import { basketballSportIcon, footballSportIcon, tennisSportIcon } from "@/assets/sportIcons/sportIcons"
 import favicon from "../../assets/images/favicon.png"
 import mher from "../../assets/images/mher.jpg"
 import njteh from "../../assets/images/njteh.jpg"
@@ -49,13 +49,16 @@ let reviews = [
 
 const users = [
     {firstName:'Lolig', lastName: 'Lion', email:'1', password:'1', profileInfo: {
-      sport: {sport:'Football', sportIcon: footballSportIcon },
-      level: 'Beginner',
+      mainSport: 'Football',
       location:'Yerevan',
       age:'',
       gender:'',
       aboutMe:'Hello my name is Mher, I am you',
-      sportsList:[{sport:'Basketball',level:'Beginner'},{sport:'Tennis',level:'Professional'}],
+      sportsList:[
+          { id: 'basketball', sportName: 'Basketball', sportLevel: 'Beginner',sportIcon:basketballSportIcon },
+          { id: 'tennis', sportName: 'Tennis', sportLevel: 'Professional', sportIcon:tennisSportIcon },
+          { id: 'football', sportName: 'Football', sportLevel: 'Professional', sportIcon:footballSportIcon },
+      ],
       reviews:reviews,
       profileImageUrl:'',
       profileCompletePer:4,

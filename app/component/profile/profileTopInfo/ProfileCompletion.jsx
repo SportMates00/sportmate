@@ -13,7 +13,7 @@ const ProfileCompletion = ({loggedUser,setModalVisible}) => {
   const completionSteps = [
     {id:1,step:loggedUser.firstName, text:t('inputName')},
     {id:2,step:loggedUser.lastName, text:t('inputLastName')},
-    {id:3,step:loggedUser.profileInfo.sport, text:t('preferredSport')},
+    {id:3,step:loggedUser.profileInfo.mainSport, text:t('preferredSport')},
     {id:4,step:loggedUser.profileInfo.availability, text:t('fillTimeSlots')},
     {id:5,step:loggedUser.profileInfo.age, text:t('chooseAge')},
     {id:6,step:loggedUser.profileInfo.location, text:t('setLocation')},

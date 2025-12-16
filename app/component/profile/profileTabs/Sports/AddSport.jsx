@@ -47,7 +47,7 @@ const AddSport = ({ setUserInfo, userInfo }) => {
       sport => sport.sport.toLowerCase() === newSport.sport.toLowerCase()
     );
   
-    if (sportExists || newSport.sport == userInfo.profileInfo.sport) {
+    if (sportExists || newSport.sport == userInfo.profileInfo.mainSport) {
       setSportExists(true); // Show error that sport already exists
       return;
     }
@@ -135,7 +135,7 @@ const getStyles = (theme) => StyleSheet.create({
     alignItems: 'center',
     width:200,
     height:40,
-    justifyContent:'center'
+    justifyContent:'center',
   },
   addButtonText: {
     color: theme.colors.buttonText,

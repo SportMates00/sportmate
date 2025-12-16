@@ -45,10 +45,8 @@ useLayoutEffect(() => {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        <ProfileTopInfo loggedUser={loggedUser} />
+      <ProfileTopInfo loggedUser={loggedUser} /> 
         <ProfileDetails loggedUser={loggedUser} />
-      </ScrollView>
     </View>
   );
 };
@@ -59,9 +57,7 @@ const getStyles = (theme) => StyleSheet.create({
     backgroundColor: theme.colors.background,
     
   },
-  scrollView: {
-    paddingTop: theme.spacing.large,  // Ensure content doesn't go behind the header
-  },
+
 });
 
 export default Profile;

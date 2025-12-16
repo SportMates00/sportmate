@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import About from './About';
 import Sports from './Sports/SportsTab';
 import Activity from './Details/Activity';
@@ -70,17 +70,19 @@ export default function ProfileDetails({ loggedUser }) {
       </View>
 
       {/* Content */}
-      <View style={styles.contentArea}>
-        {activeTab === 'profileAboutTab' ? (
-          <About loggedUser={loggedUser} />
-        ) : activeTab === 'profileSports' ? (
-          <Sports loggedUser={loggedUser} />
-        ) : activeTab === 'profileReviews' ? (
-          <Reviews loggedUser={loggedUser} />
-        ) : (
-          <Activity loggedUser={loggedUser} />
-        )}
-      </View>
+      <ScrollView contentContainerStyle={styles.scrollView}>
+        <View style={styles.contentArea}>
+          {activeTab === 'profileAboutTab' ? (
+            <About loggedUser={loggedUser} />
+          ) : activeTab === 'profileSports' ? (
+            <Sports loggedUser={loggedUser} />
+          ) : activeTab === 'profileReviews' ? (
+            <Reviews loggedUser={loggedUser} />
+          ) : (
+            <Activity loggedUser={loggedUser} />
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -92,6 +94,9 @@ const getStyles = (theme) =>
       backgroundColor: theme.colors.background,
       padding: theme.spacing.medium,
     },
+    scrollView: {
+    paddingTop: theme.spacing.large,  // Ensure content doesn't go behind the header
+  },
     tabRow: {
       flexDirection: 'row',
       justifyContent: 'space-around',

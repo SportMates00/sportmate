@@ -4,75 +4,76 @@ import AddSport from './AddSport';
 import EditSports from './EditSports';
 import { useTheme } from '@/src/theme/themeContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { footballSportIcon } from '@/assets/sportIcons/sportIcons';
-
-const sportImages = {
-  football: footballSportIcon,
-  Football:footballSportIcon,
-  Football:footballSportIcon,
-};
+import { useTranslation } from 'react-i18next';
 
 const SportsTab = ({ loggedUser }) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
+  const { t } = useTranslation();
 
   const [selectedSport, setSelectedSport] = useState(null);
   const [openEditSport, setOpenEditSport] = useState(false);
   const [userInfo, setUserInfo] = useState(loggedUser);
 
-  const allSports = [
-    {
-      sport: loggedUser.profileInfo.sport.sport,
-      level: loggedUser.profileInfo.level,
-      main: true,
-    },
-    ...userInfo.profileInfo.sportsList,
-  ];
+  const { sportsList, mainSport } = userInfo.profileInfo;
 
   return (
     <View style={styles.container}>
-      {allSports.map((item, index) => (
-        <TouchableOpacity
-          key={index}
-          activeOpacity={0.85}
-          style={styles.card}
-          onPress={() => {
-            setSelectedSport(item);
-            setOpenEditSport(true);
-          }}
-        >
-          <ImageBackground
-            source={sportImages[item.sport]}
-            style={styles.image}
-            imageStyle={styles.imageRadius}
+      {sportsList.map((item, index) => {
+        const isMain = item.sportName === mainSport;
+
+        return (
+          <TouchableOpacity
+            key={index}
+            activeOpacity={0.85}
+            style={styles.card}
+            onPress={() => {
+              setSelectedSport(item);
+              setOpenEditSport(true);
+            }}
           >
-            <View style={styles.overlay} />
+            <ImageBackground
+              source={item.sportIcon}
+              style={styles.image}
+              imageStyle={styles.imageRadius}
+            >
+              <View style={styles.overlay} />
 
-            {/* Top Row */}
-            <View style={styles.topRow}>
-              <Text style={styles.sportName}>{item.sport}</Text>
-              {item.main && (
-                <View style={styles.mainBadge}>
-                  <Text style={styles.mainText}>Main</Text>
-                </View>
-              )}
-            </View>
+              {/* Top Row */}
+              <View style={styles.topRow}>
+                <Text style={styles.sportName}>
+                  {t(item.sportName)}
+                </Text>
 
-            {/* Bottom Row */}
-            <View style={styles.bottomRow}>
-              <View>
-                <Text style={styles.level}>{item.level}</Text>
+                {isMain && (
+                  <View style={styles.mainBadge}>
+                    <Text style={styles.mainText}>
+                      {t('mainSport')}
+                    </Text>
+                  </View>
+                )}
               </View>
 
-              <Ionicons name="chevron-forward" size={22} color="#fff" />
-            </View>
-          </ImageBackground>
-        </TouchableOpacity>
-      ))}
+              {/* Bottom Row */}
+              <View style={styles.bottomRow}>
+                <Text style={styles.level}>
+                  {t(item.sportLevel)}
+                </Text>
+                <Ionicons name="chevron-forward" size={22} color="#fff" />
+              </View>
+            </ImageBackground>
+          </TouchableOpacity>
+        );
+      })}
 
       {/* Add Sport */}
-      <AddSport loggedUser={loggedUser} setUserInfo={setUserInfo} userInfo={userInfo} />
+      <AddSport
+        loggedUser={loggedUser}
+        setUserInfo={setUserInfo}
+        userInfo={userInfo}
+      />
 
+      {/* Edit Sport */}
       <EditSports
         sport={selectedSport}
         openEditSport={openEditSport}
@@ -86,21 +87,23 @@ const SportsTab = ({ loggedUser }) => {
 
 export default SportsTab;
 
+/* ================= STYLES (UNCHANGED) ================= */
+
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
       paddingHorizontal: 16,
       paddingTop: 16,
       gap: 16,
-      width:'100%',
-      alignItems:'center'
+      width: '100%',
+      alignItems: 'center',
     },
 
     card: {
       height: 160,
       borderRadius: 18,
       overflow: 'hidden',
-      width:'100%'
+      width: '100%',
     },
 
     image: {
@@ -152,12 +155,5 @@ const getStyles = (theme) =>
       color: '#fff',
       fontSize: 22,
       fontWeight: '700',
-    },
-
-    points: {
-      color: '#fff',
-      fontSize: 14,
-      marginTop: 4,
-      opacity: 0.9,
     },
   });
