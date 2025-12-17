@@ -16,10 +16,13 @@ const SportsTab = ({ loggedUser }) => {
   const [userInfo, setUserInfo] = useState(loggedUser);
 
   const { sportsList, mainSport } = userInfo.profileInfo;
-
+  const orderedSports = [
+    ...sportsList.filter(s => s.sportName === mainSport),
+    ...sportsList.filter(s => s.sportName !== mainSport),
+  ];
   return (
     <View style={styles.container}>
-      {sportsList.map((item, index) => {
+      {orderedSports.map((item, index) => {
         const isMain = item.sportName === mainSport;
 
         return (
@@ -101,7 +104,7 @@ const getStyles = (theme) =>
 
     card: {
       height: 160,
-      borderRadius: 18,
+      borderRadius:25,
       overflow: 'hidden',
       width: '100%',
     },

@@ -1,5 +1,4 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, Modal } from "react-native";
-import favicon from "@/assets/images/favicon.png";
 import ProgressBarbar from "./ProgressBar";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons"; // Icon for closing the modal
