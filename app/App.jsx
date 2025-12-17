@@ -29,6 +29,8 @@ import QLevel from './component/welcome pages/Clientinfo/QLevel';
 import QSchedule from './component/welcome pages/Clientinfo/QSchedule';
 import {createStackNavigator } from '@react-navigation/stack'
 import ShareLink from './component/profile/ShareLink';
+import GameDetails from './(tabs)/Games/GameDetails';
+import CreateGame from './(tabs)/Games/CreateGame';
 // ✅ Create JS Stack Navigator
 const Stack = createStackNavigator();
 
@@ -74,6 +76,8 @@ export default function App() {
             <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
             <Stack.Screen name="Activity" component={Activity} />
             <Stack.Screen name="ChatScreen" component={ChatScreen} />
+            <Stack.Screen name="GameDetails" component={GameDetails} />
+            <Stack.Screen name='CreateGame' component={CreateGame} />
 
           </Stack.Navigator>
         </NavigationContainer>

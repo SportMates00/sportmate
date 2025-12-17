@@ -13,15 +13,15 @@ import SportsFilter from './SportsFilter';
 import Sort from './Sort';
 import Filter from './Filter';
 import GameEvents from './GameEvents';
-import { gamesEvents } from '@/src/js files/gamesEvents';
 import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';
+import {useNavigation } from "@react-navigation/native";
 
-const AllGames = ({ loggedUser }) => {
+const AllGames = ({ loggedUser, games, addGame }) => {
   const [showSports, setShowSports] = useState(false);
   const [showSort, setShowSort] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
-
+   const navigation = useNavigation();
   const [selectedSports, setSelectedSports] = useState([
     loggedUser.profileInfo.mainSport,
   ]);
@@ -41,9 +41,11 @@ const AllGames = ({ loggedUser }) => {
   const gameEvents = useMemo(() => {
     if (!loggedUser?.profileInfo?.mainSport) return [];
 
-    let events = selectedSports.flatMap(
-      sport => gamesEvents[sport.toLowerCase()] || []
-    );
+    let events = games.filter(
+  game =>
+    selectedSports.includes(game.sport)
+);
+
 
     if (filters.skillLevel.length > 0) {
       events = events.filter(e => filters.skillLevel.includes(e.level));
@@ -224,7 +226,10 @@ const AllGames = ({ loggedUser }) => {
         <MemoizedGameEvents gameEvents={gameEvents} />
       </ScrollView>
 
-      <TouchableOpacity style={styles.createButton}>
+      <TouchableOpacity
+          style={styles.createButton}
+          onPress={() =>
+            navigation.navigate('CreateGame', { addGame })}>
         <Text style={styles.createButtonText}>
           {t('CreateGame')}
         </Text>

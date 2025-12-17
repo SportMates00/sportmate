@@ -3,33 +3,62 @@ export const gamesEvents = {
   
    football: [
   {
-    id: 1,
-    sport: "Football",
+  id: 1,
+  sport: "Football",
 
-    // required by your card UI
-    backgroundImage: require("../../assets/images/football-field.webp"),
+  // ===== UI =====
+  title: "John's football practice game", // NEW (avoid generating titles everywhere)
+  backgroundImage: require("../../assets/images/football-field.webp"),
 
-    // merge teamA + teamB → players row
-    players: [
-      { name: "John", profilePhoto: favicon },
-      { name: "Alex", profilePhoto: favicon },
-    ],
+  // ===== DATE & TIME =====
+  date: "Jun 30, 2025",
+  time: "09:00",                 // NEW (separate from date)
+  timezone: "GMT+4",             // NEW (future-proof)
 
-    // UI fields
-    level: "Intermediate",
-    location: "NY ST",                // you already had this
-    date: "Jun 30, 2025",
-    city: "Gyumri",
-    region: "",
+  // ===== LOCATION =====
+  city: "Gyumri",
+  region: "",
+  location: "NY ST",             // keep for short card display
+  club: "DSQ Gym & Health Club", // NEW
+  courtBooked: true,             // NEW (Y/N)
 
-    // keep original team structure if needed later
-    teamA: [
-      { name: "John", profilePhoto: favicon },
-    ],
-    teamB: [
-      { name: "Alex", profilePhoto: favicon },
-    ],
+  // ===== GAME INFO =====
+  gameType: "Practice",          // NEW (Practice / Match / Tournament)
+  level: ["Intermediate"],       // CHANGE → array (matches design)
+  maxPlayers: 10,                // NEW
+  price: 0,                      // NEW (paid games later)
+
+  // ===== HOST & PLAYERS =====
+  host: {
+    id: "u1",
+    name: "John",
+    profilePhoto: favicon,
+    verified: true               // NEW (host verification)
   },
+
+  players: [
+    { id: "u1", name: "John", profilePhoto: favicon },
+    { id: "u2", name: "Alex", profilePhoto: favicon },
+  ],
+
+  pendingRequests: [
+    // users who clicked "Ask to join"
+    { id: "u3", name: "Mike" }
+  ],
+
+  // ===== SECURITY / TRUST =====
+  verifiedOnly: false,            // NEW (only verified users can join)
+  visibility: "public",           // NEW (public / private)
+
+  // ===== CHAT =====
+  chatEnabled: true,              // NEW
+  chatId: "chat_game_1",          // NEW (future backend)
+
+  // ===== STATUS =====
+  status: "active",               // NEW (active / canceled / finished)
+  createdAt: "2025-06-01T10:00",
+},
+
 
   {
     id: 2,

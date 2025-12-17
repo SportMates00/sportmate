@@ -8,10 +8,13 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
+import {useNavigation } from "@react-navigation/native";
 import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';
+import GameDetails from './GameDetails';
 
 const GameEvents = ({ gameEvents }) => {
+  const navigation = useNavigation();
   const { theme } = useTheme();
   const { t } = useTranslation();
   const styles = getStyles(theme);
@@ -53,7 +56,7 @@ const GameEvents = ({ gameEvents }) => {
                   <Text style={styles.location}>{game.location}</Text>
 
                   <View style={styles.buttonsRow}>
-                    <TouchableOpacity style={styles.detailsButton}>
+                    <TouchableOpacity style={styles.detailsButton} onPress={()=> navigation.navigate("GameDetails", {game})}>
                       <Text style={styles.detailsText}>
                         {t('ViewDetails')}
                       </Text>
