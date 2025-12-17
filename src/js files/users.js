@@ -61,7 +61,7 @@ const users = [
       ],
       reviews:reviews,
       profileImageUrl:'',
-      profileCompletePer:4,
+      profileCompletePer:5,
       friendsList:[{firstName:'Mher', lastName:'Kevorkian',profilePicture:mher},{firstName:'Njteh', lastName:'Melkonian',profilePicture:njteh}],
       completedEvents:completedEvents,
       availability: {

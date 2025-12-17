@@ -54,6 +54,19 @@ export default {
     Male: 'Male',
     Female: 'Female',
     Other: 'Other',
+
+    //sport tab
+    changeLevel: 'Change level',
+    setMainSport: 'Set main sport',
+    removeSport: 'Remove sport',
+    ChooseSport: 'Choose a sport',
+    back: 'Back',
+    ChooseLevel: 'Choose a level',
+    mainSport: 'Main sport',
+    AddSport: 'Add Sport',
+
+    //menu tab
+    profileViewers: 'Profile Viewers'
   },
 
   am: {
@@ -111,6 +124,19 @@ export default {
     Male: 'Արական',
     Female: 'Իգական',
     Other: 'Այլ',
+
+    //sport tab
+    changeLevel: 'Փոխել մակարդակը',
+    setMainSport: 'Սահմանել հիմնական մարզաձևը',
+    removeSport: 'Հեռացնել մարզաձևը',
+    ChooseSport: 'Ընտրեք մարզաձևը',
+    back: 'Հետ',
+    ChooseLevel: 'Ընտրեք մակարդակը',
+    mainSport: 'Հիմնական մարզաձև',
+    AddSport: 'Ավելացնել մարզաձև',
+
+    // menu tab
+    profileViewers: 'Պրոֆիլի դիտողներ'
   },
 
   ru: {
@@ -168,5 +194,18 @@ export default {
     Male: 'Мужской',
     Female: 'Женский',
     Other: 'Другое',
+
+    //sport tab
+    changeLevel: 'Изменить уровень',
+    setMainSport: 'Установить основной вид спорта',
+    removeSport: 'Удалить вид спорта',
+    ChooseSport: 'Выберите вид спорта',
+    back: 'Назад',
+    ChooseLevel: 'Выберите уровень',
+    mainSport: 'Основной вид спорта',
+    AddSport: 'Добавить вид спорта',
+
+    // menu tab
+    profileViewers: 'Просмотры профиля'
   }
 };

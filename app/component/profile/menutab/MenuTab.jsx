@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@/src/theme/themeContext';
+import { useTranslation } from 'react-i18next';
 
 const MenuTab = () => {
   const [isModalVisible, setModalVisible] = useState(false);
@@ -11,6 +12,8 @@ const MenuTab = () => {
   const closeModal = () => setModalVisible(false);
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
   const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  const {t} = useTranslation();
+
   return (
     <View style={styles.container}>
       {/* Header */}
@@ -35,7 +38,7 @@ const MenuTab = () => {
               closeModal();
               navigation.navigate('EditProfile')}
                } >
-              <Text style={styles.modalButtonText}>Edit Profile</Text>
+              <Text style={styles.modalButtonText}>{t('editProfile')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -45,7 +48,7 @@ const MenuTab = () => {
                 navigation.navigate('Settings')}
                  } // Replace 'Page2' with your actual route name
             >
-              <Text style={styles.modalButtonText}>Settings</Text>
+              <Text style={styles.modalButtonText}>{t('Settings')}</Text>
             </TouchableOpacity>
 
             <TouchableOpacity 
@@ -55,7 +58,7 @@ const MenuTab = () => {
                 navigation.navigate('ProfileViewers')}
                  } 
             >
-              <Text style={styles.modalButtonText}>Profile Viewers</Text>
+              <Text style={styles.modalButtonText}>{t('profileViewers')}</Text>
             </TouchableOpacity>
         </View>
         <View style={styles.cancelContent}>

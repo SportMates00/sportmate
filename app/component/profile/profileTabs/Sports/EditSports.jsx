@@ -4,6 +4,7 @@ import { editUserInfo } from '@/src/store/userSlice';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';
+import SelectSportLevel from './SelectSportLevel';
 
 const EditSports = ({
   openEditSport,
@@ -12,27 +13,18 @@ const EditSports = ({
   userInfo,
   setUserInfo,
 }) => {
-  // Safety guard
-  if (!sport) return null;
-
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { theme } = useTheme();
   const styles = getStyles(theme);
 
-  const [openLevelModal, setOpenLevelModal] = useState(false);
+  const [showLevelSheet, setShowLevelSheet] = useState(false);
+
+  // ⚠️ guard AFTER hooks
+  if (!sport) return null;
 
   const isMainSport =
     sport.sportName === userInfo.profileInfo.mainSport;
-
-  const levels = [
-    { id: 'Starter', label: t('Starter') },
-    { id: 'Beginner', label: t('Beginner') },
-    { id: 'LowerIntermediate', label: t('LowerIntermediate') },
-    { id: 'Intermediate', label: t('Intermediate') },
-    { id: 'Advanced', label: t('Advanced') },
-    { id: 'Professional', label: t('Professional') },
-  ];
 
   /* ================= SET AS MAIN SPORT ================= */
   const setAsMainSport = () => {
@@ -63,7 +55,7 @@ const EditSports = ({
     dispatch(editUserInfo({ profileInfo: updatedProfileInfo }));
     setUserInfo(prev => ({ ...prev, profileInfo: updatedProfileInfo }));
 
-    setOpenLevelModal(false);
+    setShowLevelSheet(false);
     setOpenEditSport(false);
   };
 
@@ -86,7 +78,8 @@ const EditSports = ({
 
   return (
     <View>
-      {openEditSport && (
+      {/* ================= ACTION MENU ================= */}
+      {openEditSport && !showLevelSheet && (
         <Modal transparent animationType="slide">
           <TouchableOpacity
             style={styles.modalOverlay}
@@ -107,7 +100,7 @@ const EditSports = ({
 
             <TouchableOpacity
               style={styles.modalButton}
-              onPress={() => setOpenLevelModal(true)}
+              onPress={() => setShowLevelSheet(true)}
             >
               <Text style={styles.modalButtonText}>
                 {t('changeLevel')}
@@ -136,34 +129,22 @@ const EditSports = ({
         </Modal>
       )}
 
-      {openLevelModal && (
-        <Modal transparent animationType="fade">
-          <TouchableOpacity
-            style={styles.modalOverlay}
-            onPress={() => setOpenLevelModal(false)}
-          />
-          <View style={styles.modalContent}>
-            {levels.map(level => (
-              <TouchableOpacity
-                key={level.id}
-                style={styles.modalButton}
-                onPress={() => changeLevel(level.id)}
-              >
-                <Text style={styles.modalButtonText}>
-                  {level.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </Modal>
-      )}
+      {/* ================= LEVEL BOTTOM SHEET ================= */}
+      <SelectSportLevel
+        visible={showLevelSheet}
+        currentLevel={sport.sportLevel}
+        onClose={() => setShowLevelSheet(false)}
+        onSave={changeLevel}
+        openEditSport={openEditSport}
+        setOpenEditSport={setOpenEditSport}
+      />
     </View>
   );
 };
 
 export default EditSports;
 
-/* ================= STYLES (UNCHANGED) ================= */
+/* ================= STYLES ================= */
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -193,6 +174,7 @@ const getStyles = (theme) =>
     modalButtonText: {
       color: theme.colors.primary,
       fontSize: theme.fonts.size.medium,
+      textAlign:'center'
     },
     cancelContent: {
       position: 'absolute',

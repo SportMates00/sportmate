@@ -94,9 +94,6 @@ const getStyles = (theme) =>
       backgroundColor: theme.colors.background,
       padding: theme.spacing.medium,
     },
-    scrollView: {
-    paddingTop: theme.spacing.large,  // Ensure content doesn't go behind the header
-  },
     tabRow: {
       flexDirection: 'row',
       justifyContent: 'space-around',

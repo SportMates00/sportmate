@@ -17,7 +17,7 @@ const Profile = () => {
 useLayoutEffect(() => {
   navigation.setOptions({
     headerShown: true,
-    headerTitle: t('profileTitle'),
+    headerTitle: '',
     headerShadowVisible: false,
     headerBackButtonDisplayMode: "minimal",
     headerBackTitleVisible: false,
