@@ -82,19 +82,6 @@ const About = ({ loggedUser }) => {
           <Text style={{ marginLeft: 6 }}>{rating}</Text>
         </View>
       </View>
-
-      {/* ================= ABOUT ME ================= */}
-      <View style={styles.sport}>
-        <Text style={[styles.sportText, { paddingBottom: 20 }]}>
-          {t('profileAboutTab')}
-        </Text>
-        <Text style={styles.sportInfoText}>
-          {loggedUser.profileInfo.aboutMe !== ''
-            ? loggedUser.profileInfo.aboutMe
-            : t('nothingWritten')}
-        </Text>
-      </View>
-
       <AvailabilityTable loggedUser={loggedUser} />
     </View>
   );

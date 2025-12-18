@@ -63,7 +63,7 @@ const MenuTab = () => {
         </View>
         <View style={styles.cancelContent}>
             <TouchableOpacity onPress={closeModal}>
-              <Text style={styles.closeButton}>Cancel</Text>
+              <Text style={styles.closeButton}>{t('Cancel')}</Text>
             </TouchableOpacity>
           </View>
       </Modal>

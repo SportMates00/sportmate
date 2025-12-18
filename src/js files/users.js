@@ -53,7 +53,7 @@ const users = [
       location:'Yerevan',
       age:'',
       gender:'',
-      aboutMe:'Hello my name is Mher, I am you',
+      aboutMe:'Hello my name is Mher, I am interested in playing football matches every week. You can add me as a friend so that we can create a group for weekly football matches. From time to time I am also available for hiking.',
       sportsList:[
           { id: 'basketball', sportName: 'Basketball', sportLevel: 'Beginner',sportIcon:basketballSportIcon },
           { id: 'tennis', sportName: 'Tennis', sportLevel: 'Professional', sportIcon:tennisSportIcon },
