@@ -1,4 +1,5 @@
-import { View, Text, StyleSheet, Image, TouchableOpacity, Modal } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Modal, Animated, Dimensions, Pressable } from "react-native";
+import { useRef } from "react";
 import ProgressBarbar from "./ProgressBar";
 import { useState } from "react";
 import reviewStar from "../../../../assets/images/reviewStar.png";
@@ -12,6 +13,7 @@ const ABOUT_LIMIT = 30;
 const ProfileTopInfo = ({ loggedUser = {} }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [aboutModalVisible, setAboutModalVisible] = useState(false);
+  const [renderAboutModal, setRenderAboutModal] = useState(false);
 
   const profileInfo = loggedUser.profileInfo || {};
   const aboutText = profileInfo.aboutMe || "";
@@ -25,11 +27,36 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
   const styles = getStyles(theme);
   const { t } = useTranslation();
 
+  const screenHeight = Dimensions.get("window").height;
+  const slideAnim = useRef(new Animated.Value(-screenHeight)).current;
+
+  const openAboutModal = () => {
+    setRenderAboutModal(true);
+    slideAnim.setValue(-screenHeight);
+    setAboutModalVisible(true);
+
+    Animated.timing(slideAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const closeAboutModal = () => {
+    Animated.timing(slideAnim, {
+      toValue: -screenHeight,
+      duration: 250,
+      useNativeDriver: true,
+    }).start(() => {
+      setAboutModalVisible(false);
+      setRenderAboutModal(false);
+    });
+  };
+
   return (
     <View>
       {/* Profile Info Section */}
       <View style={styles.cardContainer}>
-        {/* Profile Picture */}
         <View style={styles.profilePictureContainer}>
           <TouchableOpacity onPress={() => setModalVisible(true)}>
             <View style={styles.profilePictureWrapper}>
@@ -42,16 +69,12 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
                   </Text>
                 </View>
               ) : (
-                <Image
-                  source={{ uri: profileInfo.profileImageUrl }}
-                  style={styles.profilePicture}
-                />
+                <Image source={{ uri: profileInfo.profileImageUrl }} style={styles.profilePicture} />
               )}
             </View>
           </TouchableOpacity>
         </View>
 
-        {/* Profile Details */}
         <View style={styles.profileDetails}>
           <Text style={styles.userName}>
             {loggedUser.firstName || "Unknown"} {loggedUser.lastName || "User"}
@@ -65,9 +88,7 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
                 friendListModalVisible={friendListModalVisible}
               />
               <Text style={styles.sportText}>
-                {profileInfo.friendsList.length === 0
-                  ? "-"
-                  : profileInfo.friendsList.length}
+                {profileInfo.friendsList.length === 0 ? "-" : profileInfo.friendsList.length}
               </Text>
             </View>
 
@@ -79,35 +100,26 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
             </View>
           </View>
 
-          {/* ABOUT ME */}
           {aboutText !== "" && (
-            <View style={styles.aboutContainer}>
+            <View>
               <Text style={styles.aboutText}>
-                {isLongAbout
-                  ? `${aboutText.slice(0, ABOUT_LIMIT)}...`
-                  : aboutText}
-              </Text>
-
-              {isLongAbout && (
-                <TouchableOpacity onPress={() => setAboutModalVisible(true)}>
-                  <Text style={styles.readMoreText}>
+                {isLongAbout ? `${aboutText.slice(0, ABOUT_LIMIT)}... ` : aboutText}
+                {isLongAbout && (
+                  <Text style={styles.readMoreText} onPress={openAboutModal}>
                     {t("ReadMore")}
                   </Text>
-                </TouchableOpacity>
-              )}
+                )}
+              </Text>
             </View>
           )}
         </View>
       </View>
 
       {!isCompleted && (
-        <ProgressBarbar
-          loggedUser={loggedUser}
-          progressPercentage={progressPercentage}
-        />
+        <ProgressBarbar loggedUser={loggedUser} progressPercentage={progressPercentage} />
       )}
 
-      {/* Profile Picture Modal */}
+            {/* Profile Picture Modal */}
       <Modal
         visible={modalVisible}
         transparent
@@ -141,27 +153,28 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
       </Modal>
 
       {/* ABOUT ME MODAL */}
-      <Modal
-        visible={aboutModalVisible}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setAboutModalVisible(false)}
-      >
-        <View style={styles.aboutModalOverlay}>
-          <View style={styles.aboutModalBox}>
-            <Text style={styles.aboutModalText}>{aboutText}</Text>
+      {renderAboutModal && (
+        <Modal transparent visible={aboutModalVisible} animationType="none">
+          {/* BACKDROP */}
+          <Pressable style={styles.aboutModalOverlay} onPress={closeAboutModal}>
+            {/* CONTENT LAYER (does NOT close) */}
+            <View pointerEvents="box-none">
+              <Animated.View
+                style={[
+                  styles.aboutModalBox,
+                  { transform: [{ translateY: slideAnim }] },
+                ]}
+              >
+                <Text style={styles.aboutModalText}>{aboutText}</Text>
 
-            <TouchableOpacity
-              style={styles.closeAboutButton}
-              onPress={() => setAboutModalVisible(false)}
-            >
-              <Text style={styles.closeAboutText}>
-                {t("Close")}
-              </Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+                <TouchableOpacity style={styles.closeAboutButton} onPress={closeAboutModal}>
+                  <Text style={styles.closeAboutText}>{t("Close")}</Text>
+                </TouchableOpacity>
+              </Animated.View>
+            </View>
+          </Pressable>
+        </Modal>
+      )}
     </View>
   );
 };
@@ -175,79 +188,14 @@ const getStyles = (theme) =>
       gap: 40,
       paddingVertical: theme.spacing.medium,
       paddingInline: theme.spacing.large,
+      elevation: 3,
+      margin: theme.spacing.medium,
       shadowColor: "#000",
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 4,
-      elevation: 3,
-      margin: theme.spacing.medium,
+      borderRadius:20
     },
-    profilePictureContainer: {
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    profilePictureWrapper: {
-      width: 120,
-      height: 120,
-      borderRadius: theme.radius.circle,
-      overflow: "hidden",
-      alignItems: "center",
-      justifyContent: "center",
-    },
-    profilePicture: {
-      width: "100%",
-      height: "100%",
-    },
-    profilePlaceholder: {
-      width: "100%",
-      height: "100%",
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: theme.colors.primary,
-    },
-    profileInitial: {
-      fontSize: theme.fonts.size.xLarge,
-      color: theme.colors.buttonText,
-      fontWeight: "bold",
-    },
-    profileDetails: {
-      flex: 1,
-      marginLeft: theme.spacing.medium,
-    },
-    userName: {
-      fontSize: theme.fonts.size.medium,
-      fontWeight: "bold",
-      color: theme.colors.text,
-    },
-    sportInfo: {
-      flexDirection: "row",
-      marginVertical: theme.spacing.medium,
-    },
-    sportLabel: {
-      marginRight: theme.spacing.small,
-    },
-    sportText: {
-      fontSize: 14,
-      color: theme.colors.text,
-    },
-    levelText: {
-      fontSize: 14,
-      color: theme.colors.text,
-    },
-
-    aboutContainer: {
-    },
-    aboutText: {
-      fontSize: 14,
-      color: theme.colors.text,
-    },
-    readMoreText: {
-      marginTop: 4,
-      fontSize: 13,
-      color: theme.colors.primary,
-      fontWeight: "bold",
-    },
-
     modalOverlay: {
       flex: 1,
       alignItems: "center",
@@ -283,34 +231,36 @@ const getStyles = (theme) =>
       color: theme.colors.buttonText,
       fontWeight: "bold",
     },
+    profilePictureContainer: { alignItems: "center" },
+    profilePictureWrapper: { width: 120, height: 120, borderRadius: 60, overflow: "hidden" },
+    profilePicture: { width: "100%", height: "100%" },
+    profilePlaceholder: { flex: 1, alignItems: "center", justifyContent: "center", backgroundColor: theme.colors.primary },
+    profileInitial: { fontSize: theme.fonts.size.xLarge, color: theme.colors.buttonText, fontWeight: "bold" },
+    profileDetails: { flex: 1, marginLeft: theme.spacing.medium },
+    userName: { fontSize: theme.fonts.size.medium, fontWeight: "bold", color: theme.colors.text },
+    sportInfo: { flexDirection: "row", marginVertical: theme.spacing.medium },
+    sportText: { fontSize: 14, color: theme.colors.text },
+    levelText: { fontSize: 14, color: theme.colors.text },
+    aboutText: { fontSize: 14, color: theme.colors.text },
+    readMoreText: { color: theme.colors.primary, fontWeight: "bold" },
 
     aboutModalOverlay: {
       flex: 1,
       backgroundColor: "rgba(0,0,0,0.5)",
-      alignItems: "center",
-      justifyContent: "center",
+      justifyContent: "flex-start",
     },
     aboutModalBox: {
-      width: "80%",
-      height: "50%",
+      position: "absolute",
+      top: 0,
+      width: "100%",
       backgroundColor: theme.colors.background,
-      borderRadius: theme.radius.medium,
       padding: theme.spacing.large,
-      justifyContent: "space-between",
+      borderBottomLeftRadius: 20,
+      borderBottomRightRadius: 20,
     },
-    aboutModalText: {
-      fontSize: 14,
-      color: theme.colors.text,
-    },
-    closeAboutButton: {
-      alignSelf: "center",
-      marginTop: theme.spacing.medium,
-    },
-    closeAboutText: {
-      fontSize: 14,
-      color: theme.colors.primary,
-      fontWeight: "bold",
-    },
+    aboutModalText: { marginTop: 40, fontSize: 14, color: theme.colors.text },
+    closeAboutButton: { alignSelf: "center", marginTop: theme.spacing.medium },
+    closeAboutText: { color: theme.colors.primary, fontWeight: "bold" },
   });
 
 export default ProfileTopInfo;

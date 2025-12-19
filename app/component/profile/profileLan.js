@@ -66,7 +66,11 @@ export default {
     AddSport: 'Add Sport',
 
     //menu tab
-    profileViewers: 'Profile Viewers'
+    profileViewers: 'Profile Viewers',
+
+    //profile top info
+    ReadMore: 'read more',
+    Close: 'Close'
   },
 
   am: {
@@ -136,7 +140,11 @@ export default {
     AddSport: 'Ավելացնել մարզաձև',
 
     // menu tab
-    profileViewers: 'Պրոֆիլի դիտողներ'
+    profileViewers: 'Պրոֆիլի դիտողներ',
+
+    //profile top info
+    ReadMore: 'կարդալ ավելին',
+    Close: 'Փակել'
   },
 
   ru: {
@@ -206,6 +214,11 @@ export default {
     AddSport: 'Добавить вид спорта',
 
     // menu tab
-    profileViewers: 'Просмотры профиля'
+    profileViewers: 'Просмотры профиля',
+
+
+    //profile top info
+    ReadMore: 'читать далее',
+    Close: 'Закрыть'
   }
 };
