@@ -229,7 +229,7 @@ const AllGames = ({ loggedUser, games, addGame }) => {
       <TouchableOpacity
           style={styles.createButton}
           onPress={() =>
-            navigation.navigate('CreateGame', { addGame })}>
+            navigation.navigate('CreateGame', { addGame, loggedUser, })}>
         <Text style={styles.createButtonText}>
           {t('CreateGame')}
         </Text>
