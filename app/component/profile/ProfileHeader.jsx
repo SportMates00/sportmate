@@ -14,7 +14,7 @@ const ProfileHeader = () => {
         <View>
             <View style={styles.profileHeaderRight}>
                 <TouchableOpacity onPress={() => navigation.navigate('ShareProfile')}>
-                <AntDesign name="adduser" size={24} color={theme.colors.text} />
+
                 </TouchableOpacity>
                 <MenuTab />
             </View>
