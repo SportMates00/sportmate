@@ -14,13 +14,6 @@ const ReviewsTab = ({loggedUser}) => {
 
   return (
     <View style={styles.container}>
-      {/* User Rating Block */}
-      <View style={styles.ratingBlock}>
-        <FontAwesome name="star" size={40} color="#FFD700" />
-        <Text style={styles.ratingText}>
-          {reviews.length > 0 ? `${averageRating} / 5` : 'No ratings yet'}
-        </Text>
-      </View>
 
       {/* Reviews Section */}
       <View style={styles.reviewsBlock}>

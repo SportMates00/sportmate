@@ -77,9 +77,6 @@ const getStyles = (theme) => StyleSheet.create({
     height: 'auto',
     paddingHorizontal: theme.spacing.medium
   },
-  menuButton: {
-    padding: theme.spacing.small,
-  },
   modalOverlay: {
     position:'absolute',
     flex: 1,

@@ -31,6 +31,7 @@ import {createStackNavigator } from '@react-navigation/stack'
 import ShareLink from './component/profile/ShareLink';
 import GameDetails from './(tabs)/Games/GameDetails';
 import CreateGame from './(tabs)/Games/CreateGame';
+import FriendsList from './component/profile/profileTopInfo/FriendsList';
 // ✅ Create JS Stack Navigator
 const Stack = createStackNavigator();
 
@@ -61,6 +62,7 @@ export default function App() {
             <Stack.Screen name="HomeTabs" component={TabNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="Players" component={Players} />
             <Stack.Screen name="Profile" component={Profile} options={{ headerShown: false }} />
+            <Stack.Screen name="FriendsList" component={FriendsList}/>
             <Stack.Screen name="ShareProfile" component={ShareProfile} options={{ headerShown: true, title: '' }} />
             <Stack.Screen name="ShareLink" component={ShareLink} options={{ headerShown: true, title: '' }} />
             <Stack.Screen name="EditProfile" component={EditProfile} options={{ headerShown: false }} />

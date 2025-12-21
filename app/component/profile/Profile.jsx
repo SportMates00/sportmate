@@ -17,15 +17,14 @@ const Profile = () => {
 useLayoutEffect(() => {
   navigation.setOptions({
     headerShown: true,
-    headerTitle: '',
+    headerTitle: 'Profile',
     headerShadowVisible: false,
-    headerBackButtonDisplayMode: "minimal",
+    headerBackButtonDisplayMode: 'minimal',
     headerBackTitleVisible: false,
-    headerBackTitle: "",
+    headerBackTitle: '',
 
     headerRight: () => <ProfileHeader />,
 
-    // Header background
     headerStyle: {
       backgroundColor: theme.colors.background,
       borderBottomWidth: 0,
@@ -33,15 +32,17 @@ useLayoutEffect(() => {
       shadowOpacity: 0,
     },
 
-    // ✅ TITLE COLOR
     headerTitleStyle: {
       color: theme.colors.text,
     },
 
-    // ✅ Back arrow & icons color
     headerTintColor: theme.colors.text,
+
+    headerLeftContainerStyle: { paddingLeft: 16 },
+    headerRightContainerStyle: { paddingRight: 16 },
   });
 }, [navigation, theme]);
+
 
   return (
     <View style={styles.container}>

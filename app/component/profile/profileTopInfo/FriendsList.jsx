@@ -1,42 +1,55 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, Modal, TextInput } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import friendsIcon from "../../../../assets/images/friends.png"
+import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput } from 'react-native'
+import React, { useState, useLayoutEffect } from 'react'
 import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '@/src/theme/themeContext';
+import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
-const FriendsList = ({ setFriendListModalVisible, friendListModalVisible, loggedUser }) => {
+
+const FriendsList = () => {
   const [searchText, setSearchText] = useState('');
+  const loggedUser = useSelector((state) => state.user);
   const friendsList = loggedUser.profileInfo.friendsList;
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
   const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  const navigation = useNavigation();
   // Filtered friends based on search input
   const filteredFriends = friendsList.filter(friend => 
     friend.firstName.toLowerCase().includes(searchText.toLowerCase()) ||
     friend.lastName.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  return (
-    <View>
-      <TouchableOpacity onPress={() => setFriendListModalVisible(true)} style={styles.sportLabel}>
-        <Image source={friendsIcon} />
-      </TouchableOpacity>
+  useLayoutEffect(() => {
+  navigation.setOptions({
+    headerShown: true,
+    headerTitle: `${filteredFriends.length} friend${filteredFriends.length !== 1 ? 's' : ''}`,
+    headerShadowVisible: false,
+    headerBackButtonDisplayMode: 'minimal',
+    headerBackTitleVisible: false,
+    headerBackTitle: '',
 
-      <Modal 
-        visible={friendListModalVisible}
-        transparent={true}
-        animationType="fade"
-        onRequestClose={() => setFriendListModalVisible(false)}
-      >
+    headerStyle: {
+      backgroundColor: theme.colors.background,
+      borderBottomWidth: 0,
+      elevation: 0,
+      shadowOpacity: 0,
+    },
+
+    headerTitleStyle: {
+      color: theme.colors.text,
+    },
+
+    headerTintColor: theme.colors.text,
+
+    headerLeftContainerStyle: { paddingLeft: 16 },
+    headerRightContainerStyle: { paddingRight: 16 },
+  });
+}, [navigation, theme]);
+
+  return (
         <View style={styles.modalOverlay}>
           <View style={styles.modalContainer}>
-            <View style={styles.topcontainer}>
-              <TouchableOpacity onPress={() => setFriendListModalVisible(false)} style={styles.backButton}>
-                <Icon name="arrow-back" size={24} color={theme.colors.text} />
-              </TouchableOpacity>
-              <Text style={styles.title}>
-                {filteredFriends.length} friend{filteredFriends.length !== 1 ? 's' : ''}
-              </Text>
-            </View>
+
 
             <View style={styles.searchcontainer}>
               <Icon name="search" size={20} color="#888" style={styles.icon} />
@@ -68,8 +81,6 @@ const FriendsList = ({ setFriendListModalVisible, friendListModalVisible, logged
 
           </View>
         </View>
-      </Modal>
-    </View>
   );
 };
 
@@ -78,12 +89,8 @@ export default FriendsList;
 
 
 const getStyles = (theme) => StyleSheet.create({
-  sportLabel: {
-    marginRight: theme.spacing.small,
-  },
   modalOverlay: {
     flex: 1,
-    justifyContent: "flex-end",
   },
   modalContainer: {
     height: "100%",
