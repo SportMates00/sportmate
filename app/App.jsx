@@ -30,8 +30,8 @@ import QSchedule from './component/welcome pages/Clientinfo/QSchedule';
 import {createStackNavigator } from '@react-navigation/stack'
 import ShareLink from './component/profile/ShareLink';
 import GameDetails from './(tabs)/Games/GameDetails';
-import CreateGame from './(tabs)/Games/CreateGame';
 import FriendsList from './component/profile/profileTopInfo/FriendsList';
+import CreateGameComponent from './(tabs)/Games/CreateGame/CreateGameContainer';
 // ✅ Create JS Stack Navigator
 const Stack = createStackNavigator();
 
@@ -79,7 +79,7 @@ export default function App() {
             <Stack.Screen name="Activity" component={Activity} />
             <Stack.Screen name="ChatScreen" component={ChatScreen} />
             <Stack.Screen name="GameDetails" component={GameDetails} />
-            <Stack.Screen name='CreateGame' component={CreateGame} />
+            <Stack.Screen name='CreateGameComponent' component={CreateGameComponent} />
 
           </Stack.Navigator>
         </NavigationContainer>

@@ -39,7 +39,7 @@ const GameEvents = ({ gameEvents }) => {
                 <View style={styles.overlay} />
 
                 <View style={styles.content}>
-                  <Text style={styles.sport}>{game.sport}</Text>
+                  <Text style={styles.sport}>{t(game.sport)}</Text>
                   <Text style={styles.date}>{game.date}</Text>
 
                   <View style={styles.playersRow}>

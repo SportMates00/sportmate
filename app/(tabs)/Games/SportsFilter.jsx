@@ -10,16 +10,6 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';
 
-const SPORTS_LIST = [
-  { id: '1', name: 'Football', icon: 'football-outline' },
-  { id: '2', name: 'Basketball', icon: 'basketball-outline' },
-  { id: '3', name: 'Tennis', icon: 'tennisball-outline' },
-  { id: '4', name: 'Cricket', icon: 'baseball-outline' },
-  { id: '5', name: 'Volleyball', icon: 'barbell-outline' },
-  { id: '6', name: 'Baseball', icon: 'baseball-outline' },
-];
-
-
 
 const Sports = ({ selectedSports, setSelectedSports, onClose }) => {
   const { theme } = useTheme();

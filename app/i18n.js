@@ -31,7 +31,7 @@ i18n
   .use(initReactI18next) // Initialize react-i18next
   .init({
     resources,
-    lng: 'am', // Default language
+    lng: 'en', // Default language
     interpolation: {
       escapeValue: false, // Not needed for React
     },
