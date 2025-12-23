@@ -46,12 +46,35 @@ export default {
         NoGameEvents: 'There are currently no events',
         ViewDetails: 'View Details',
         AskToJoin: 'Ask to Join',
+        CourtBooked: "Court Booked",
+        VerifiedUsersOnly: "Verified Users Only",
 
         //All Games
         Sports: 'Sports',
         Sort: 'Sort',
         Filter: 'Filter',
         CreateGame: 'Create a Game',
+
+        //GameDetails
+        GameDetailsTitle: "User's tennis game",
+        GameDetailsDateTime: "Tomorrow · 09:00",
+        GameDetailsVerifiedOnly: "Verified users only",
+        GameDetailsCourtBooked: "Court booked",
+        GameDetailsPlayers: "Players",
+        GameDetailsSport: "Sport",
+        GameDetailsLevel: "Match level",
+        GameDetailsLevelValue: "Upper Intermediate, Advanced",
+        GameDetailsLocation: "Location",
+        GameDetailsClub: "DSQ Gym & Health Club",
+        GameDetailsAddress: "12 Komitas Ave, Yerevan, Armenia",
+        GameDetailsDate: "Date & Time",
+        GameDetailsDateRange: "Tomorrow · 09:00 – 11:00",
+        GameDetailsNotes: "Notes",
+        GameDetailsNotesText: "Friendly practice game. Bring your own racket and water.",
+        GameDetailsChat: "Chat",
+        GameDetailsAskToJoin: "Ask to join"
+
+
     },
 
     am: {
@@ -101,12 +124,33 @@ export default {
         NoGameEvents: 'Ներկայումս միջոցառումներ չկան',
         ViewDetails: 'Դիտել մանրամասները',
         AskToJoin: 'Խնդրել միանալ',
+        CourtBooked: "Դաշտը ամրագրված է",
+        VerifiedUsersOnly: "Միայն հաստատված օգտատերերի համար",
 
         //All Games
         Sports: 'Սպորտ',
         Sort: 'Դասակարգում',
         Filter: 'Ֆիլտր',
         CreateGame: 'Ստեղծել խաղ',
+
+        //GameDetails
+        GameDetailsTitle: 'Օգտատիրոջ թենիսի խաղը',
+        GameDetailsDateTime: 'Վաղը · 09:00',
+        GameDetailsVerifiedOnly: 'Միայն հաստատված օգտատերերի համար',
+        GameDetailsCourtBooked: 'Դաշտը ամրագրված է',
+        GameDetailsPlayers: 'Խաղացողներ',
+        GameDetailsSport: 'Սպորտ',
+        GameDetailsLevel: 'Խաղի մակարդակ',
+        GameDetailsLevelValue: 'Վերին միջին, առաջադեմ',
+        GameDetailsLocation: 'Տեղակայություն',
+        GameDetailsClub: 'DSQ Gym & Health Club',
+        GameDetailsAddress: 'Կոմիտասի պող. 12, Երևան, Հայաստան',
+        GameDetailsDate: 'Ամսաթիվ և ժամ',
+        GameDetailsDateRange: 'Վաղը · 09:00 – 11:00',
+        GameDetailsNotes: 'Նշումներ',
+        GameDetailsNotesText: 'Ընկերական մարզումային խաղ։ Բերեք ձեր սեփական ռակետը և ջուր։',
+        GameDetailsChat: 'Չատ',
+        GameDetailsAskToJoin: 'Դիմել միանալու համար',
 
   
   
@@ -159,12 +203,33 @@ ru: {
         NoGameEvents: 'В данный момент нет событий',
         ViewDetails: 'Подробнее',
         AskToJoin: 'Запросить участие',
+        CourtBooked: "Площадка забронирована",
+        VerifiedUsersOnly: "Только для подтверждённых пользователей",
 
         //ALL Games
         Sports: 'Виды спорта',
         Sort: 'Сортировать',
         Filter: 'Фильтр',
         CreateGame: 'Создать игру',
+
+        //Game Details
+        GameDetailsTitle: 'Теннисная игра пользователя',
+        GameDetailsDateTime: 'Завтра · 09:00',
+        GameDetailsVerifiedOnly: 'Только для подтверждённых пользователей',
+        GameDetailsCourtBooked: 'Площадка забронирована',
+        GameDetailsPlayers: 'Игроки',
+        GameDetailsSport: 'Спорт',
+        GameDetailsLevel: 'Уровень матча',
+        GameDetailsLevelValue: 'Выше среднего, продвинутый',
+        GameDetailsLocation: 'Местоположение',
+        GameDetailsClub: 'DSQ Gym & Health Club',
+        GameDetailsAddress: 'пр-т Комитаса 12, Ереван, Армения',
+        GameDetailsDate: 'Дата и время',
+        GameDetailsDateRange: 'Завтра · 09:00 – 11:00',
+        GameDetailsNotes: 'Заметки',
+        GameDetailsNotesText: 'Дружеская тренировочная игра. Возьмите свою ракетку и воду.',
+        GameDetailsChat: 'Чат',
+        GameDetailsAskToJoin: 'Запросить участие'
 }
 
 };
