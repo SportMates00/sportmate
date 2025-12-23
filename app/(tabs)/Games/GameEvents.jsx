@@ -1,198 +1,238 @@
 // GameEvents.jsx
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
-import {useNavigation } from "@react-navigation/native";
+import {View,Text,StyleSheet,Image,TouchableOpacity,ScrollView,} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';
-import GameDetails from './GameDetails';
+import { Ionicons } from '@expo/vector-icons';
 
-const GameEvents = ({ gameEvents }) => {
+const GameEvents = () => {
   const navigation = useNavigation();
   const { theme } = useTheme();
   const { t } = useTranslation();
   const styles = getStyles(theme);
 
   return (
-    <View style={styles.container}>
-      <ScrollView>
-        {gameEvents.length === 0 ? (
-          <Text style={styles.noEventsText}>
-            {t('NoGameEvents')}
-          </Text>
-        ) : (
-          gameEvents.map((game) => {
-            if (!game) return null;
+    <ScrollView contentContainerStyle={styles.container}>
+      
+      {/* CARD 1 */}
+      <View style={styles.card}>
+        <Image
+          source={require("../../../assets/images/football-field.webp")}
+          style={styles.image}
+        />
+        <View style={styles.overlay} />
 
-            return (
-              <View key={game.id} style={styles.card}>
-                <Image
-                  source={game.backgroundImage}
-                  style={styles.backgroundImage}
-                />
-                <View style={styles.overlay} />
+                {/* Top-right status */}
+        <View style={styles.topRightStatus}>
+          <View style={styles.courtBadge}>
+            <Text style={styles.courtBadgeText}>
+              {t('CourtBooked')}
+            </Text>
+          </View>
 
-                <View style={styles.content}>
-                  <Text style={styles.sport}>{t(game.sport)}</Text>
-                  <Text style={styles.date}>{game.date}</Text>
+          <View style={styles.verifiedBadge}>
+            <Text style={styles.verifiedBadgeText}>
+              {t('VerifiedUsersOnly')}
+            </Text>
+          </View>
+        </View>
 
-                  <View style={styles.playersRow}>
-                    {game.players?.map((p) => (
-                      <Image
-                        key={p.name}
-                        source={p.profilePhoto}
-                        style={styles.playerPic}
-                      />
-                    ))}
-                  </View>
+        <View style={styles.inner}>
+          {/* Header */}
+          <View>
+            <Text style={styles.sport}>{t('Football')}</Text>
+            <View style={styles.dateRow}>
+              <Text style={styles.date}>Jun 30, 2025</Text>
+              <Text style={styles.time}>• 8:00 PM</Text>
+            </View>
+          </View>
 
-                  <Text style={styles.level}>{game.level}</Text>
-                  <Text style={styles.location}>{game.location}</Text>
+          {/* Players */}
+          <View style={styles.playersRow}>
+            <Image
+              source={require("../../../assets/images/favicon.png")}
+              style={styles.player}
+            />
+            <Image
+              source={require("../../../assets/images/favicon.png")}
+              style={styles.player}
+            />
+            <Image
+              source={require("../../../assets/images/favicon.png")}
+              style={styles.player}
+            />
+          </View>
 
-                  <View style={styles.buttonsRow}>
-                    <TouchableOpacity style={styles.detailsButton} onPress={()=> navigation.navigate("GameDetails", {game})}>
-                      <Text style={styles.detailsText}>
-                        {t('ViewDetails')}
-                      </Text>
-                    </TouchableOpacity>
+          {/* Meta */}
+          <View style={styles.infoRow}>
+            <Ionicons name="stats-chart-outline" size={14} color="#fff" />
+            <Text style={styles.infoText}>{t('Intermediate')}</Text>
+          </View>
 
-                    <TouchableOpacity style={styles.joinButton}>
-                      <Text style={styles.joinText}>
-                        {t('AskToJoin')}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </View>
-            );
-          })
-        )}
-      </ScrollView>
-    </View>
+          <View style={styles.infoRow}>
+            <Ionicons name="location-outline" size={14} color="#fff" />
+            <Text style={styles.infoText}>Hrazdan Stadium</Text>
+          </View>
+
+          {/* Actions */}
+          <View style={styles.actions}>
+            <TouchableOpacity
+              style={styles.secondaryBtn}
+              onPress={() => navigation.navigate('GameDetails')}
+            >
+              <Text style={styles.secondaryText}>
+                {t('ViewDetails')}
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.primaryBtn}>
+              <Text style={styles.primaryText}>
+                {t('AskToJoin')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 
 const getStyles = (theme) =>
   StyleSheet.create({
     container: {
-      padding: 15,
-      paddingBottom: 60,
+      padding: 16,
+      paddingBottom: 80,
     },
-
-    noEventsText: {
-      textAlign: 'center',
-      marginTop: 20,
-      color: theme.colors.text,
-      fontFamily: theme.fonts.family,
-    },
-
     card: {
-      height: 180,
-      borderRadius: 12,
+      height: 200,
+      borderRadius: 14,
+      marginBottom: 16,
       overflow: 'hidden',
-      marginVertical: 10,
-      position: 'relative',
+      backgroundColor: '#000',
     },
-
-    backgroundImage: {
+    image: {
+      ...StyleSheet.absoluteFillObject,
       width: '100%',
       height: '100%',
-      position: 'absolute',
     },
-
     overlay: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'rgba(0,0,0,0.4)',
+      backgroundColor: 'rgba(0,0,0,0.45)',
     },
-
-    content: {
+    inner: {
       flex: 1,
-      padding: 10,
+      padding: 14,
       justifyContent: 'space-between',
     },
-
     sport: {
-      fontSize: 17,
-      fontWeight: 'bold',
+      fontSize: 18,
+      fontWeight: '700',
       color: theme.colors.buttonText,
       fontFamily: theme.fonts.family,
+    },
+    dateRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
     },
 
     date: {
       fontSize: 12,
-      color: theme.colors.buttonText,
-      marginBottom: 4,
+      color: '#fff',
       fontFamily: theme.fonts.family,
     },
 
+    time: {
+      fontSize: 12,
+      color: '#fff',
+      opacity: 0.9,
+      fontFamily: theme.fonts.family,
+    },
     playersRow: {
       flexDirection: 'row',
+      marginVertical: 6,
     },
-
-    playerPic: {
-      width: 26,
-      height: 26,
-      borderRadius: 999,
-      marginRight: 4,
-      borderWidth: 2,
-      borderColor: theme.colors.buttonText,
-    },
-
-    level: {
-      color: theme.colors.buttonText,
-      fontStyle: 'italic',
-      fontSize: 12,
-      fontFamily: theme.fonts.family,
-    },
-
-    location: {
-      color: theme.colors.buttonText,
-      fontSize: 12,
-      fontFamily: theme.fonts.family,
-    },
-
-    buttonsRow: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginTop: 6,
-    },
-
-    detailsButton: {
-      flex: 1,
-      backgroundColor: theme.colors.background,
-      paddingVertical: 6,
-      borderRadius: 6,
-      alignItems: 'center',
+    player: {
+      width: 28,
+      height: 28,
+      borderRadius: 20,
       marginRight: 6,
+      borderWidth: 2,
+      borderColor: '#fff',
+    },
+    infoRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 6,
     },
 
-    detailsText: {
-      color: theme.colors.text,
-      fontWeight: '600',
-      fontSize: 13,
+    infoText: {
+      fontSize: 12,
+      color: '#fff',
       fontFamily: theme.fonts.family,
     },
 
-    joinButton: {
+    actions: {
+      flexDirection: 'row',
+      gap: 8,
+      marginTop: 8,
+    },
+    secondaryBtn: {
+      flex: 1,
+      backgroundColor: '#fff',
+      paddingVertical: 8,
+      borderRadius: 8,
+      alignItems: 'center',
+    },
+    secondaryText: {
+      fontSize: 13,
+      fontWeight: '600',
+      color: theme.colors.text,
+      fontFamily: theme.fonts.family,
+    },
+    primaryBtn: {
       flex: 1,
       backgroundColor: theme.colors.primary,
-      paddingVertical: 6,
-      borderRadius: 6,
+      paddingVertical: 8,
+      borderRadius: 8,
       alignItems: 'center',
-      marginLeft: 6,
     },
-
-    joinText: {
-      color: theme.colors.buttonText,
-      fontWeight: '600',
+    primaryText: {
       fontSize: 13,
+      fontWeight: '600',
+      color: theme.colors.buttonText,
       fontFamily: theme.fonts.family,
+    },
+   topRightStatus: {
+      position: 'absolute',
+      top: 10,
+      right: 10,
+      alignItems: 'flex-end',
+      gap: 6,
+      zIndex: 10,
+    },
+    courtBadge: {
+      backgroundColor: theme.colors.primary,
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 12,
+    },
+    courtBadgeText: {
+      fontSize: 11,
+      fontWeight: '700',
+      color: theme.colors.buttonText,
+    },
+    verifiedBadge: {
+      backgroundColor: 'rgba(255,255,255,0.85)',
+      paddingHorizontal: 10,
+      paddingVertical: 4,
+      borderRadius: 12,
+    },
+    verifiedBadgeText: {
+      fontSize: 11,
+      fontWeight: '600',
+      color: '#000',
     },
   });
 
