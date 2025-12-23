@@ -2,17 +2,77 @@ import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { useTheme } from "@/src/theme/themeContext";
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { addGameEvent } from "@/src/store/gameEventsSlice";
 
 import CreateGame1 from "./CreateGame1";
 import CreateGame2 from "./CreateGame2";
 import CreateGame3 from "./CreateGame3";
 
+/* ---------- EMPTY GAME TEMPLATE ---------- */
+const createEmptyGame = (loggedUser) => ({
+  id: Date.now(),
+
+  sport: null,
+
+  venue: {
+    id: null,
+    stadiumName: null,
+    city: null,
+    location: null,
+    hours: null,
+    price: null,
+    latitude: null,
+    longitude: null,
+  },
+
+  level: [],
+  maxPlayers: null,
+
+  date: null,
+  time: null,
+  timezone: "GMT+4",
+  flexible: false,
+
+  verifiedOnly: false,
+  visibility: "public",
+
+  host: {
+    id: loggedUser?.id || null,
+    name: loggedUser?.profileInfo?.firstName || null,
+    profilePhoto: loggedUser?.profileInfo?.profilePhoto || null,
+    verified: loggedUser?.verified || false,
+  },
+
+  players: [
+    {
+      id: loggedUser?.id || null,
+      name: loggedUser?.profileInfo?.firstName || null,
+      profilePhoto: loggedUser?.profileInfo?.profilePhoto || null,
+    },
+  ],
+
+  pendingRequests: [],
+  invitedUsers: [],
+
+  status: "active",
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+});
+
 const CreateGameComponent = () => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
+  const loggedUser = useSelector((state) => state.user.user);
   const [step, setStep] = useState(1);
+
+  const [draftGame, setDraftGame] = useState(() =>
+    createEmptyGame(loggedUser)
+  );
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -31,7 +91,6 @@ const CreateGameComponent = () => {
     });
   }, [navigation, theme]);
 
-  /* ---------- HANDLERS ---------- */
   const handleNext = () => {
     if (step < 3) setStep(step + 1);
   };
@@ -41,21 +100,41 @@ const CreateGameComponent = () => {
   };
 
   const handleCreate = () => {
-    // Create logic will go here later
-    console.log("Create game");
+    dispatch(addGameEvent(draftGame));
+    navigation.goBack();
   };
 
-  /* ---------- RENDER STEP ---------- */
   const renderStep = () => {
-    if (step === 1) return <CreateGame1 step={step} setStep={setStep} />;
-    if (step === 2) return <CreateGame2 step={step} setStep={setStep} />;
-    if (step === 3) return <CreateGame3 step={step} setStep={setStep} />;
+    if (step === 1)
+      return (
+        <CreateGame1
+          loggedUser={loggedUser}
+          draftGame={draftGame}
+          setDraftGame={setDraftGame}
+        />
+      );
+
+    if (step === 2)
+      return (
+        <CreateGame2
+          draftGame={draftGame}
+          setDraftGame={setDraftGame}
+        />
+      );
+
+    if (step === 3)
+      return (
+        <CreateGame3
+          draftGame={draftGame}
+          setDraftGame={setDraftGame}
+        />
+      );
+
     return null;
   };
 
   return (
     <View style={styles.container}>
-      {/* ---------- STEP INDICATOR ---------- */}
       <View style={styles.lineIndicator}>
         {[1, 2, 3].map((i) => (
           <View
@@ -68,10 +147,8 @@ const CreateGameComponent = () => {
         ))}
       </View>
 
-      {/* ---------- PAGE CONTENT ---------- */}
       <View style={styles.content}>{renderStep()}</View>
 
-      {/* ---------- GLOBAL BOTTOM BAR ---------- */}
       <View style={styles.bottomBar}>
         {step > 1 && (
           <TouchableOpacity style={styles.backBtn} onPress={handleBack}>
@@ -96,6 +173,8 @@ const CreateGameComponent = () => {
 };
 
 export default CreateGameComponent;
+
+
 
 /* ======================= STYLES ======================= */
 
@@ -171,7 +250,7 @@ const getStyles = (theme) =>
       paddingVertical: 16,
       borderRadius: 12,
       alignItems: "center",
-      backgroundColor: "#22C55E",
+      backgroundColor: theme.colors.primary,
     },
 
     createText: {

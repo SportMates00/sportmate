@@ -6,23 +6,81 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  Platform,
+  Linking,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTheme } from "@/src/theme/themeContext";
 import { gamesTable } from "./GamesData";
 
-const CreateGame1 = () => {
+const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
 
-  /* ---------- SPORTS ---------- */
-  const SPORTS = Object.keys(gamesTable).map((key) => ({
-    key,
-    label: gamesTable[key].sportName,
-    icon: gamesTable[key].sportIcon,
-  }));
+  /* ---------- USER MAIN SPORT ---------- */
+  const userMainSport = loggedUser?.profileInfo?.mainSport?.toLowerCase();
 
-  const [sport, setSport] = useState(SPORTS[0]?.key || null);
+  /* ---------- SPORT STATE ---------- */
+  const [sport, setSport] = useState(() => {
+    if (userMainSport && gamesTable[userMainSport]) {
+      return userMainSport;
+    }
+    return Object.keys(gamesTable)[0] || null;
+  });
+
+  // Sync when user changes main sport later
+  useEffect(() => {
+    if (userMainSport && gamesTable[userMainSport]) {
+      setSport(userMainSport);
+    }
+  }, [userMainSport]);
+
+  // Sync sport into draftGame
+  useEffect(() => {
+    if (!sport) return;
+
+    setDraftGame((prev) => ({
+      ...prev,
+      sport,
+    }));
+  }, [sport, setDraftGame]);
+
+  /* ---------- MAPS ---------- */
+  const openMaps = ({ latitude, longitude, stadiumName }) => {
+    const label = encodeURIComponent(stadiumName);
+    const latLng = `${latitude},${longitude}`;
+
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${latLng}`;
+    const appleMapsUrl = `http://maps.apple.com/?ll=${latLng}&q=${label}`;
+
+    if (Platform.OS === "ios") {
+      Linking.openURL(appleMapsUrl);
+    } else {
+      Linking.openURL(googleMapsUrl);
+    }
+  };
+
+  /* ---------- SPORTS LIST (MAIN SPORT FIRST) ---------- */
+  const SPORTS = useMemo(() => {
+    const base = Object.keys(gamesTable).map((key) => ({
+      key,
+      label: gamesTable[key].sportName,
+      icon: gamesTable[key].sportIcon,
+    }));
+
+    if (!userMainSport) return base;
+
+    const mainIndex = base.findIndex(
+      (s) => s.key.toLowerCase() === userMainSport
+    );
+
+    if (mainIndex === -1) return base;
+
+    const mainSportItem = base[mainIndex];
+    const rest = base.filter((_, i) => i !== mainIndex);
+
+    return [mainSportItem, ...rest];
+  }, [userMainSport]);
 
   /* ---------- VENUES ---------- */
   const venues = useMemo(() => {
@@ -34,9 +92,31 @@ const CreateGame1 = () => {
 
   // Auto-select first venue when sport changes
   useEffect(() => {
-    if (venues.length) setSelectedVenue(venues[0]);
-    else setSelectedVenue(null);
+    if (venues.length) {
+      setSelectedVenue(venues[0]);
+    } else {
+      setSelectedVenue(null);
+    }
   }, [venues]);
+
+  // Sync venue into draftGame
+  useEffect(() => {
+    if (!selectedVenue) return;
+
+    setDraftGame((prev) => ({
+      ...prev,
+      venue: {
+        id: selectedVenue.id,
+        stadiumName: selectedVenue.stadiumName,
+        city: selectedVenue.city,
+        location: selectedVenue.location,
+        hours: selectedVenue.hours,
+        price: selectedVenue.price,
+        latitude: selectedVenue.latitude,
+        longitude: selectedVenue.longitude,
+      },
+    }));
+  }, [selectedVenue, setDraftGame]);
 
   return (
     <View style={styles.page}>
@@ -54,7 +134,16 @@ const CreateGame1 = () => {
             <TouchableOpacity
               key={s.key}
               onPress={() => setSport(s.key)}
-              style={[styles.choiceCard, active && styles.choiceCardActive, {flexDirection:'row',justifyContent: "flex=start",alignItems:'center',gap:5}]}
+              style={[
+                styles.choiceCard,
+                active && styles.choiceCardActive,
+                {
+                  flexDirection: "row",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: 5,
+                },
+              ]}
             >
               <Ionicons
                 name={s.icon}
@@ -99,10 +188,21 @@ const CreateGame1 = () => {
       {selectedVenue && (
         <View style={styles.venueCardWrap}>
           <View style={styles.venueImageWrap}>
-            <Image
-              source={require("@/assets/images/football-field.webp")}
-              style={styles.venueImage}
-            />
+            <TouchableOpacity
+              onPress={() =>
+                openMaps({
+                  latitude: selectedVenue.latitude,
+                  longitude: selectedVenue.longitude,
+                  stadiumName: selectedVenue.stadiumName,
+                })
+              }
+            >
+              <Image
+                source={require("@/assets/images/football-field.webp")}
+                style={styles.venueImage}
+              />
+            </TouchableOpacity>
+
             <View style={styles.venueNameOverlay}>
               <Text style={styles.venueName}>
                 {selectedVenue.stadiumName}
@@ -110,6 +210,13 @@ const CreateGame1 = () => {
               <Text style={styles.venueCity}>
                 {selectedVenue.city} · {selectedVenue.location}
               </Text>
+              <View style={styles.mapIcon}>
+                <Ionicons
+                  name="location-outline"
+                  size={22}
+                  color="#ffffffff"
+                />
+              </View>
             </View>
           </View>
 
@@ -134,7 +241,6 @@ const CreateGame1 = () => {
           </Text>
         </View>
       )}
-
     </View>
   );
 };
@@ -281,6 +387,13 @@ const getStyles = (theme) =>
       color: theme.colors.text,
       fontFamily: theme.fonts.family,
     },
-
+mapIcon: {
+  position: "absolute",
+  top: 12,
+  right: 12,
+  backgroundColor: "rgba(0,0,0,0.5)",
+  padding: 6,
+  borderRadius: 20,
+},
  
   });
