@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import { useTheme } from '@/src/theme/themeContext';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
-import { gamesEvents } from '@/src/js files/gamesEvents';
+
 
 const Games = () => {
   const { theme } = useTheme();
@@ -18,8 +18,9 @@ const Games = () => {
   const [activeTab, setActiveTab] = useState('AllGames');
   const loggedUser = useSelector(user => user.user);
 
-  const initialGames = Object.values(gamesEvents).flat();
-  const [games, setGames] = useState(initialGames);
+
+  const games = useSelector(state => state.gameEvents.events);
+
   const addGame = (newGame) => {
   setGames(prev => [newGame, ...prev]);
 };

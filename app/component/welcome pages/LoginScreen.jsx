@@ -45,7 +45,7 @@ const dispatch = useDispatch();
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [{ name: 'CreateGameComponent' }],
+        routes: [{ name: 'HomeTabs' }],
       })
     );
   };
