@@ -46,7 +46,7 @@ export default {
         NoGameEvents: 'There are currently no events',
         ViewDetails: 'View Details',
         AskToJoin: 'Ask to Join',
-        CourtBooked: "Court Booked",
+        CourtBooked: "Booked",
         VerifiedUsersOnly: "Verified Users Only",
 
         //All Games

@@ -20,7 +20,7 @@ const GameDetails = () => {
     <View style={styles.container}>
       {/* HEADER */}
       <ImageBackground
-        source={require("../../../assets/images/tennis-court.jpg")}
+        source={require("../../../assets/images/football-field.webp")}
         style={styles.header}
       >
         {/* BACK */}
@@ -32,7 +32,7 @@ const GameDetails = () => {
         </TouchableOpacity>
 
         {/* TITLE + DATE/TIME */}
-        <View style={styles.headerContent}>
+        <View style={styles.titleNameOverlay}>
           <Text style={styles.title}>User's tennis game</Text>
           <Text style={styles.subTitle}>Tomorrow · 09:00</Text>
         </View>
@@ -66,7 +66,7 @@ const GameDetails = () => {
 
         {/* SPORT */}
         <View style={styles.infoRow}>
-          <Ionicons name="football-outline" size={20} color="#555" />
+          <Ionicons name="football-outline" size={20} style={styles.infoLabel} />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Sport</Text>
             <Text style={styles.infoValue}>Tennis</Text>
@@ -75,7 +75,7 @@ const GameDetails = () => {
 
         {/* LEVEL */}
         <View style={styles.infoRow}>
-          <Ionicons name="stats-chart-outline" size={20} color="#555" />
+          <Ionicons name="stats-chart-outline" size={20} style={styles.infoLabel} />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Match level</Text>
             <Text style={styles.infoValue}>Upper Intermediate, Advanced</Text>
@@ -84,7 +84,7 @@ const GameDetails = () => {
 
         {/* LOCATION */}
         <View style={styles.infoRow}>
-          <Ionicons name="location-outline" size={20} color="#555" />
+          <Ionicons name="location-outline" size={20} style={styles.infoLabel} />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Location</Text>
             <Text style={styles.infoValue}>DSQ Gym & Health Club</Text>
@@ -93,10 +93,25 @@ const GameDetails = () => {
             </Text>
           </View>
         </View>
+        {/* Eligibilaty */}
+        <View style={styles.infoRow}>
+          <Ionicons name="people-outline" size={20} style={styles.infoLabel} />
+          <View style={styles.infoText}>
+            <Text style={styles.infoLabel}>Eligibility</Text>
+            <Text style={styles.infoValue}>Womens Only</Text>
+          </View>
+        </View>
+        {/* Court Booked */}
+        <View style={styles.infoRow}>
+          <Ionicons name="people-outline" size={20} style={styles.infoLabel} />
+          <View style={styles.infoText}>
+            <Text style={styles.infoLabel}>Booked</Text>
+          </View>
+        </View>
 
         {/* DATE & TIME */}
         <View style={styles.infoRow}>
-          <Ionicons name="calendar-outline" size={20} color="#555" />
+          <Ionicons name="calendar-outline" size={20} style={styles.infoLabel} />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Date & Time</Text>
             <Text style={styles.infoValue}>Tomorrow · 09:00 – 11:00</Text>
@@ -106,7 +121,7 @@ const GameDetails = () => {
         {/* NOTES */}
         <View style={styles.notesBox}>
           <View style={styles.notesHeader}>
-            <Ionicons name="document-text-outline" size={20} color="#555" />
+            <Ionicons name="document-text-outline" size={20} style={styles.infoLabel} />
             <Text style={styles.notesLabel}>Notes</Text>
           </View>
           <Text style={styles.notesText}>
@@ -137,8 +152,7 @@ const getStyles = theme =>
     },
 
     header: {
-      height: 260,
-      justifyContent: "space-between",
+      height: 220,
     },
 
     backBtn: {
@@ -147,22 +161,25 @@ const getStyles = theme =>
       left: 16,
       zIndex: 10,
     },
-
-    headerContent: {
+     titleNameOverlay: {
       position: "absolute",
-      bottom: 20,
-      left: 16,
+      left: 12,
+      right: 12,
+      bottom: 10,
+      backgroundColor: "rgba(0,0,0,0.35)",
+      borderRadius: 10,
+      padding: 10,
     },
-
     title: {
-      fontSize: 22,
-      fontWeight: "700",
       color: "#fff",
+      fontSize: 22,
+      fontWeight: "800",
+      fontFamily: theme.fonts.family,
     },
-
     subTitle: {
-      color: "#ddd",
+      color: theme.colors.text,
       marginTop: 6,
+      fontFamily: theme.fonts.family
     },
 
     headerBadges: {
@@ -188,7 +205,7 @@ const getStyles = theme =>
     },
 
     badgeText: {
-      color: "#fff",
+      color: theme.colors.text,
       fontSize: 12,
       fontWeight: "600",
     },
@@ -199,6 +216,7 @@ const getStyles = theme =>
     },
 
     sectionTitle: {
+      color: theme.colors.text,
       fontSize: 18,
       fontWeight: "600",
       marginBottom: 12,
@@ -230,6 +248,7 @@ const getStyles = theme =>
     },
 
     playerName: {
+      color: theme.colors.text,
       fontSize: 12,
     },
 
@@ -246,17 +265,21 @@ const getStyles = theme =>
     infoLabel: {
       fontSize: 14,
       color: "#777",
+      color: theme.colors.text,
+      fontWeight: "500"
     },
 
     infoValue: {
+      color: theme.colors.text,
       fontSize: 16,
-      fontWeight: "500",
+      fontWeight: "100",
     },
 
     infoSubValue: {
-      fontSize: 13,
-      color: "#777",
+      fontSize: 12,
+      color: theme.colors.text,
       marginTop: 2,
+      fontWeight: "100"
     },
 
     notesBox: {
@@ -273,11 +296,14 @@ const getStyles = theme =>
     notesLabel: {
       fontSize: 16,
       fontWeight: "600",
+      color: theme.colors.text,
     },
 
     notesText: {
       fontSize: 14,
       color: "#555",
+      color: theme.colors.text,
+      fontWeight: '100'
     },
 
     bottomBar: {
