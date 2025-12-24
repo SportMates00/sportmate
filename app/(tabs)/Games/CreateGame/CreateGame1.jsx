@@ -278,13 +278,13 @@ const getStyles = (theme) =>
       borderRadius: 12,
       padding: 14,
       marginRight: 12,
-      backgroundColor: "#fff",
+      backgroundColor: theme.colors.background,
       justifyContent: "space-between",
     },
 
     choiceCardActive: {
       borderColor: theme.colors.primary,
-      backgroundColor: "#EAF3FF",
+      backgroundColor: theme.colors.background,
     },
 
     choiceLabel: {
@@ -361,7 +361,7 @@ const getStyles = (theme) =>
       borderColor: "#e4e4e4",
       borderRadius: 12,
       padding: 12,
-      backgroundColor: "#fff",
+      backgroundColor: theme.colors.background,
     },
 
     venueMetaLabel: {

@@ -52,21 +52,10 @@ const dispatch = useDispatch();
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerShown: true,
-      headerTitle: "",                // ❗ fully removes title
-      headerShadowVisible: false, 
-      headerBackButtonDisplayMode: "minimal", // (new API)
-      headerBackTitleVisible: false,          // (for older versions, harmless if ignored)
-      headerBackTitle: "",
+
       headerRight: () => (
-        <LangChanger text={""} iconContainer={styles.iconContainer} />
+        <LangChanger text={""}  />
       ),
-      headerStyle: {
-      backgroundColor: "white",
-      borderBottomWidth: 0, // remove line
-      elevation: 0,         // Android
-      shadowOpacity: 0,     // iOS
-    },
     });
   }, [navigation]);
 

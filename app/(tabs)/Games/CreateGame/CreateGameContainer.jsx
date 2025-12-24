@@ -74,22 +74,6 @@ const CreateGameComponent = () => {
     createEmptyGame(loggedUser)
   );
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerTitle: "Set up a match",
-      headerShadowVisible: false,
-      headerBackButtonDisplayMode: "minimal",
-      headerBackTitleVisible: false,
-      headerBackTitle: "",
-      headerStyle: {
-        backgroundColor: theme.colors.background,
-        borderBottomWidth: 0,
-        elevation: 0,
-        shadowOpacity: 0,
-      },
-    });
-  }, [navigation, theme]);
 
   const handleNext = () => {
     if (step < 3) setStep(step + 1);
