@@ -24,7 +24,16 @@ const GameEvents = () => {
         <View style={styles.overlay} />
 
                 {/* Top-right status */}
+        
         <View style={styles.topRightStatus}>
+          <View style={[styles.badge]}>
+<Ionicons name="calendar-outline"  color="#fff"/>
+            <Text style={[styles.courtBadgeText, styles.courtBadge]}>{t('CourtBooked')}</Text>
+             <Ionicons name="checkmark-circle" size={14} color="#fff" />
+          </View>
+        </View>
+
+        {/* <View style={styles.topRightStatus}>
           <View style={styles.courtBadge}>
             <Text style={styles.courtBadgeText}>
               {t('CourtBooked')}
@@ -36,7 +45,7 @@ const GameEvents = () => {
               {t('VerifiedUsersOnly')}
             </Text>
           </View>
-        </View>
+        </View> */}
 
         <View style={styles.inner}>
           {/* Header */}
@@ -180,10 +189,10 @@ const getStyles = (theme) =>
     },
     secondaryBtn: {
       flex: 1,
-      backgroundColor: '#fff',
       paddingVertical: 8,
       borderRadius: 8,
       alignItems: 'center',
+      backgroundColor: theme.colors.background,
     },
     secondaryText: {
       fontSize: 13,
@@ -197,6 +206,7 @@ const getStyles = (theme) =>
       paddingVertical: 8,
       borderRadius: 8,
       alignItems: 'center',
+      fontFamily: theme.fonts.family,
     },
     primaryText: {
       fontSize: 13,
@@ -216,7 +226,7 @@ const getStyles = (theme) =>
       backgroundColor: theme.colors.primary,
       paddingHorizontal: 10,
       paddingVertical: 4,
-      borderRadius: 12,
+      borderRadius: 8,
     },
     courtBadgeText: {
       fontSize: 11,
@@ -234,6 +244,13 @@ const getStyles = (theme) =>
       fontWeight: '600',
       color: '#000',
     },
+
+    badge: {
+  flexDirection: "row",
+  alignItems: "center",
+  gap: 6,
+}
+
   });
 
 export default GameEvents;
