@@ -7,137 +7,214 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/src/theme/themeContext";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 const GameDetails = () => {
   const navigation = useNavigation();
+  const route = useRoute();
   const { theme } = useTheme();
   const styles = getStyles(theme);
 
-  useLayoutEffect(() => {
-  navigation.setOptions({
-    headerShown: true,
-    headerTransparent: true,
-    headerTitle: "",
+  const { gameId } = route.params;
 
-    headerBackground: () => (
-      <ImageBackground
-        source={require("../../../assets/images/football-field.webp")}
-        style={styles.header}
-      >
-        {/* OVERLAY */}
-        <View style={styles.overlay} />
+  const game = useSelector((state) =>
+    state.gameEvents?.events?.find((g) => g.id === gameId)
+  );
 
-        {/* TITLE */}
-        <View style={styles.titleNameOverlay}>
-          <Text style={styles.title}>User's tennis game</Text>
-          <Text style={styles.subTitle}>Tomorrow · 09:00</Text>
-        </View>
+  // Fallbacks (prevents crash if game missing)
+  if (!game) {
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        <Text>Game not found</Text>
+      </View>
+    );
+  }
 
-        {/* BADGES */}
-        <View style={styles.headerBadges}>
-          <View style={[styles.badge, styles.courtBadge]}>
-            <Ionicons name="calendar-clear-outline" size={14} color="#fff" />
-          </View>
-        </View>
-      </ImageBackground>
-    ),
-
-    headerTintColor: "#fff", // back arrow color
+  const formattedDate = new Date(game.date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
   });
-}, [navigation]);
 
+  const formattedTime = new Date(
+    `${game.date}T${game.time}`
+  ).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerTransparent: true,
+      headerTitle: "",
+
+      headerBackground: () => (
+        <ImageBackground
+          source={require("../../../assets/images/football-field.webp")}
+          style={styles.header}
+        >
+          <View style={styles.overlay} />
+
+          {/* TITLE */}
+          <View style={styles.titleNameOverlay}>
+            <Text style={styles.title}>
+              {game.host?.name}'s {game.sportName} game
+            </Text>
+
+            <Text style={styles.subTitle}>
+              {formattedDate} · {formattedTime}
+            </Text>
+          </View>
+
+        </ImageBackground>
+      ),
+
+      headerTintColor: "#fff",
+    });
+  }, [navigation, game]);
 
   return (
-    
     <View style={styles.container}>
-
       {/* CONTENT */}
       <ScrollView contentContainerStyle={styles.content}>
         {/* PLAYERS */}
         <Text style={styles.sectionTitle}>Players</Text>
-       <ScrollView horizontal>
-         <View style={styles.playersRow}>
-          <View style={styles.player}>
-            <View style={styles.avatar} />
-            <Text style={styles.playerName}>Huei</Text>
+        <ScrollView horizontal>
+          <View style={styles.playersRow}>
+            {game.players?.map((p) => (
+              <View key={p.id} style={styles.player}>
+                <View style={styles.avatar} />
+                <Text style={styles.playerName}>{p.name}</Text>
+              </View>
+            ))}
+
+            {/* empty slots */}
+            {Array.from({
+              length: game.maxPlayers - game.players.length,
+            }).map((_, i) => (
+              <View
+                key={`empty-${i}`}
+                style={[styles.avatar, styles.emptyAvatar]}
+              />
+            ))}
           </View>
-          <View style={[styles.avatar, styles.emptyAvatar]} />
-        </View>
-       </ScrollView>
+        </ScrollView>
 
         {/* SPORT */}
         <View style={styles.infoRow}>
-          <Ionicons name="football-outline" size={20} style={styles.infoLabel} />
+          <Ionicons
+            name="football-outline"
+            size={20}
+            style={styles.infoLabel}
+          />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Sport</Text>
-            <Text style={styles.infoValue}>Tennis</Text>
+            <Text style={styles.infoValue}>{game.sportName}</Text>
           </View>
         </View>
 
         {/* LEVEL */}
         <View style={styles.infoRow}>
-          <Ionicons name="stats-chart-outline" size={20} style={styles.infoLabel} />
+          <Ionicons
+            name="stats-chart-outline"
+            size={20}
+            style={styles.infoLabel}
+          />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Match level</Text>
-            <Text style={styles.infoValue}>Upper Intermediate, Advanced</Text>
+            <Text style={styles.infoValue}>
+              {Array.isArray(game.level) ? game.level.join(", ") : game.level}
+            </Text>
           </View>
         </View>
 
         {/* LOCATION */}
         <View style={styles.infoRow}>
-          <Ionicons name="location-outline" size={20} style={styles.infoLabel} />
+          <Ionicons
+            name="location-outline"
+            size={20}
+            style={styles.infoLabel}
+          />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Location</Text>
-            <Text style={styles.infoValue}>DSQ Gym & Health Club</Text>
+            <Text style={styles.infoValue}>
+              {game?.venue?.stadiumName || "—"}
+            </Text>
             <Text style={styles.infoSubValue}>
-              12 Komitas Ave, Yerevan, Armenia
+              {game?.venue?.city}, Armenia
             </Text>
           </View>
         </View>
-        {/* Eligibilaty */}
+
+        {/* ELIGIBILITY */}
         <View style={styles.infoRow}>
-          <Ionicons name="people-outline" size={20} style={styles.infoLabel} />
+          <Ionicons
+            name="people-outline"
+            size={20}
+            style={styles.infoLabel}
+          />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Eligibility</Text>
-            <Text style={styles.infoValue}>Verified users only</Text>
+            <Text style={styles.infoValue}>
+              {game.verifiedOnly ? "Verified users only" : "Open to everyone"}
+            </Text>
           </View>
         </View>
-        {/* Court Booked */}
+
+        {/* COURT BOOKED */}
         <View style={styles.infoRow}>
-          <FontAwesome5 name="calendar-check" size={20} style={styles.infoLabel} />
+          <FontAwesome5
+            name="calendar-check"
+            size={20}
+            style={styles.infoLabel}
+          />
           <View style={styles.infoText}>
-            <Text style={styles.infoLabel}>Booked</Text>
+            <Text style={styles.infoLabel}>
+              {game.courtBooked ? "Booked" : "Not booked"}
+            </Text>
           </View>
         </View>
 
         {/* DATE & TIME */}
         <View style={styles.infoRow}>
-          <Ionicons name="calendar-outline" size={20} style={styles.infoLabel} />
+          <Ionicons
+            name="calendar-outline"
+            size={20}
+            style={styles.infoLabel}
+          />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Date & Time</Text>
-            <Text style={styles.infoValue}>Tomorrow · 09:00 – 11:00</Text>
+            <Text style={styles.infoValue}>
+              {formattedDate} · {formattedTime}
+            </Text>
           </View>
         </View>
 
         {/* NOTES */}
         <View style={styles.notesBox}>
           <View style={styles.notesHeader}>
-            <Ionicons name="document-text-outline" size={20} style={styles.infoLabel} />
+            <Ionicons
+              name="document-text-outline"
+              size={20}
+              style={styles.infoLabel}
+            />
             <Text style={styles.notesLabel}>Notes</Text>
           </View>
+
           <Text style={styles.notesText}>
-            Friendly practice game. Bring your own racket and water.
+            {game.notes || "No additional notes provided."}
           </Text>
         </View>
       </ScrollView>
 
       {/* BOTTOM BAR */}
       <View style={styles.bottomBar}>
-        <TouchableOpacity style={styles.chatBtn}>
+        <TouchableOpacity
+          style={styles.chatBtn}
+          disabled={!game.chatEnabled}
+        >
           <Text style={styles.chatText}>Chat</Text>
         </TouchableOpacity>
 
@@ -148,6 +225,8 @@ const GameDetails = () => {
     </View>
   );
 };
+
+
 
 const getStyles = theme =>
   StyleSheet.create({
@@ -231,11 +310,12 @@ const getStyles = theme =>
     playersRow: {
       flexDirection: "row",
       marginBottom: 20,
+      gap:5
     },
 
     player: {
       alignItems: "center",
-      marginRight: 16,
+
     },
 
     avatar: {

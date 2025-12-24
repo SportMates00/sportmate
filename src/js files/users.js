@@ -48,7 +48,7 @@ let reviews = [
 
 
 const users = [
-    {firstName:'Lolig', lastName: 'Lion', email:'1', password:'1', profileInfo: {
+    {id: 'u1', firstName:'Lolig', lastName: 'Lion', email:'1', password:'1', profileInfo: {
       mainSport: 'Football',
       location:'Yerevan',
       age:'',
@@ -62,6 +62,7 @@ const users = [
       reviews:reviews,
       profileImageUrl:'',
       profileCompletePer:5,
+      userVerification:false,
       friendsList:[{firstName:'Mher', lastName:'Kevorkian',profilePicture:mher},{firstName:'Njteh', lastName:'Melkonian',profilePicture:njteh}],
       completedEvents:completedEvents,
       availability: {

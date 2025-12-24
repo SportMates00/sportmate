@@ -67,7 +67,7 @@ const CreateGameComponent = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const loggedUser = useSelector((state) => state.user.user);
+  const loggedUser = useSelector((state) => state.user);
   const [step, setStep] = useState(1);
 
   const [draftGame, setDraftGame] = useState(() =>

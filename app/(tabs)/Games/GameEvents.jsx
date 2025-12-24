@@ -1,11 +1,20 @@
-// GameEvents.jsx
-import React from 'react';
-import {View,Text,StyleSheet,Image,TouchableOpacity,ScrollView,} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useTheme } from '@/src/theme/themeContext';
-import { useTranslation } from 'react-i18next';
-import { Ionicons } from '@expo/vector-icons';
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import React from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Alert
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { useTheme } from "@/src/theme/themeContext";
+import { useTranslation } from "react-i18next";
+
 
 const GameEvents = () => {
   const navigation = useNavigation();
@@ -13,99 +22,150 @@ const GameEvents = () => {
   const { t } = useTranslation();
   const styles = getStyles(theme);
 
+  // ⛳️ Your slice returns { events:[...] }
+  const gameEvents = useSelector((state) => state.gameEvents?.events || []);
+  const loggedUser = useSelector((state) => state.user)
+
+  console.log(loggedUser.id);
+  
+  // format date like "Jun 30, 2025"
+  const formatDate = (dateStr) => {
+    try {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    } catch {
+      return dateStr;
+    }
+  };
+
+  // convert "09:00" → "9:00 AM"
+  const formatTime = (timeStr) => {
+    try {
+      const [h, m] = timeStr.split(":");
+      return new Date(0, 0, 0, h, m).toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+      });
+    } catch {
+      return timeStr;
+    }
+  };
+
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      
-      {/* CARD 1 */}
-      <View style={styles.card}>
-        <Image
-          source={require("../../../assets/images/football-field.webp")}
-          style={styles.image}
-        />
-        <View style={styles.overlay} />
+      {gameEvents.map((game) => {
+        if(game.host.id !== loggedUser.id){
+          return (
+            <View style={styles.card} key={game.id}>
+          <Image
+            source={require("../../../assets/images/football-field.webp")}
+            style={styles.image}
+          />
 
-                {/* Top-right status */}
-        
-        <View style={styles.topRightStatus}>
-          <View style={[styles.badge]}>
-             <FontAwesome5 name="calendar-check" size={20} color="#fff" />
-             <Ionicons name="checkmark-circle" size={22} color="#fff" />
-          </View>
-        </View>
+          <View style={styles.overlay} />
 
-        {/* <View style={styles.topRightStatus}>
-          <View style={styles.courtBadge}>
-            <Text style={styles.courtBadgeText}>
-              {t('CourtBooked')}
-            </Text>
-          </View>
-
-          <View style={styles.verifiedBadge}>
-            <Text style={styles.verifiedBadgeText}>
-              {t('VerifiedUsersOnly')}
-            </Text>
-          </View>
-        </View> */}
-
-        <View style={styles.inner}>
-          {/* Header */}
-          <View>
-            <Text style={styles.sport}>{t('Football')}</Text>
-            <View style={styles.dateRow}>
-              <Text style={styles.date}>Jun 30, 2025</Text>
-              <Text style={styles.time}>• 8:00 PM</Text>
+          {/* Top-right status */}
+          <View style={styles.topRightStatus}>
+            <View style={[styles.badge]}>
+             { game.courtBooked && <FontAwesome5 name="calendar-check" size={20} color="#fff" /> }
+              { game.verifiedOnly && <Ionicons name="checkmark-circle" size={22} color="#fff" /> }
             </View>
           </View>
 
-          {/* Players */}
-          <View style={styles.playersRow}>
-            <Image
-              source={require("../../../assets/images/favicon.png")}
-              style={styles.player}
-            />
-            <Image
-              source={require("../../../assets/images/favicon.png")}
-              style={styles.player}
-            />
-            <Image
-              source={require("../../../assets/images/favicon.png")}
-              style={styles.player}
-            />
-          </View>
-
-          {/* Meta */}
-          <View style={styles.infoRow}>
-            <Ionicons name="stats-chart-outline" size={14} color="#fff" />
-            <Text style={styles.infoText}>{t('Intermediate')}</Text>
-          </View>
-
-          <View style={styles.infoRow}>
-            <Ionicons name="location-outline" size={14} color="#fff" />
-            <Text style={styles.infoText}>Hrazdan Stadium</Text>
-          </View>
-
-          {/* Actions */}
-          <View style={styles.actions}>
-            <TouchableOpacity
-              style={styles.secondaryBtn}
-              onPress={() => navigation.navigate('GameDetails')}
-            >
-              <Text style={styles.secondaryText}>
-                {t('ViewDetails')}
+          <View style={styles.inner}>
+            {/* Header */}
+            <View>
+              <Text style={styles.sport}>
+                {t(game.sportName || game.sport)}
               </Text>
-            </TouchableOpacity>
 
-            <TouchableOpacity style={styles.primaryBtn}>
-              <Text style={styles.primaryText}>
-                {t('AskToJoin')}
+              <View style={styles.dateRow}>
+                <Text style={styles.date}>{formatDate(game.date)}</Text>
+                <Text style={styles.time}>• {formatTime(game.time)}</Text>
+              </View>
+            </View>
+
+            {/* Players */}
+            <View style={styles.playersRow}>
+              {/* keeping design — default icon */}
+              <Image
+                source={require("../../../assets/images/favicon.png")}
+                style={styles.player}
+              />
+              <Image
+                source={require("../../../assets/images/favicon.png")}
+                style={styles.player}
+              />
+              <Image
+                source={require("../../../assets/images/favicon.png")}
+                style={styles.player}
+              />
+            </View>
+
+            {/* Meta */}
+            <View style={styles.infoRow}>
+              <Ionicons name="stats-chart-outline" size={14} color="#fff" />
+              <Text style={styles.infoText}>
+                {game.level.length > 1 ? `${t(game.level[0]),t(game.level[1])}...` : t(game.level[0])}
               </Text>
-            </TouchableOpacity>
+            </View>
+
+            <View style={styles.infoRow}>
+              <Ionicons name="location-outline" size={14} color="#fff" />
+              <Text style={styles.infoText}>
+                {game?.venue?.stadiumName || "—"}
+              </Text>
+            </View>
+
+            {/* Actions */}
+            <View style={styles.actions}>
+              <TouchableOpacity
+                style={styles.secondaryBtn}
+                onPress={() => navigation.navigate('GameDetails',{gameId: game.id})}
+              >
+                <Text style={styles.secondaryText}>{t("ViewDetails")}</Text>
+              </TouchableOpacity>
+
+             {loggedUser.id !== game.host.id && (
+                <TouchableOpacity
+                  style={[
+                    styles.primaryBtn,
+                    game.verifiedOnly && !loggedUser.userVerification && styles.disabledJoinBtn
+                  ]}
+                  onPress={() => {
+                    if (game.verifiedOnly && !loggedUser.userVerification) {
+                      Alert.alert(
+                        "Verification required",
+                        "This event is only available to verified users."
+                      );
+                      return;
+                    }
+
+                    // 👉 normal join behavior here
+                    console.log("Ask to join pressed");
+                  }}
+                >
+                  <Text style={styles.primaryText}>{t("AskToJoin")}</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
         </View>
-      </View>
+          )
+        }else {
+          return ''
+        }
+      })}
     </ScrollView>
   );
 };
+
+
+
 
 const getStyles = (theme) =>
   StyleSheet.create({
@@ -120,6 +180,9 @@ const getStyles = (theme) =>
       overflow: 'hidden',
       backgroundColor: '#000',
     },
+    disabledJoinBtn: {
+  backgroundColor: "rgba(255,255,255,0.3)", // slightly lighter
+},
     image: {
       ...StyleSheet.absoluteFillObject,
       width: '100%',
