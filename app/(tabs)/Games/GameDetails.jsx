@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useLayoutEffect } from "react";
 import {
   View,
   Text,
@@ -10,28 +10,28 @@ import {
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/src/theme/themeContext";
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 const GameDetails = () => {
   const navigation = useNavigation();
   const { theme } = useTheme();
   const styles = getStyles(theme);
 
-  return (
-    <View style={styles.container}>
-      {/* HEADER */}
+  useLayoutEffect(() => {
+  navigation.setOptions({
+    headerShown: true,
+    headerTransparent: true,
+    headerTitle: "",
+
+    headerBackground: () => (
       <ImageBackground
         source={require("../../../assets/images/football-field.webp")}
         style={styles.header}
       >
-        {/* BACK */}
-        <TouchableOpacity
-          style={styles.backBtn}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={22} color="#fff" />
-        </TouchableOpacity>
+        {/* OVERLAY */}
+        <View style={styles.overlay} />
 
-        {/* TITLE + DATE/TIME */}
+        {/* TITLE */}
         <View style={styles.titleNameOverlay}>
           <Text style={styles.title}>User's tennis game</Text>
           <Text style={styles.subTitle}>Tomorrow · 09:00</Text>
@@ -39,30 +39,35 @@ const GameDetails = () => {
 
         {/* BADGES */}
         <View style={styles.headerBadges}>
-          <View style={styles.badge}>
-            <Ionicons name="checkmark-circle" size={14} color="#fff" />
-            <Text style={styles.badgeText}>Verified users only</Text>
-          </View>
-
           <View style={[styles.badge, styles.courtBadge]}>
-            <Ionicons name="grid-outline" size={14} color="#fff" />
-            <Text style={styles.badgeText}>Court booked</Text>
+            <Ionicons name="calendar-clear-outline" size={14} color="#fff" />
           </View>
         </View>
       </ImageBackground>
+    ),
+
+    headerTintColor: "#fff", // back arrow color
+  });
+}, [navigation]);
+
+
+  return (
+    
+    <View style={styles.container}>
 
       {/* CONTENT */}
       <ScrollView contentContainerStyle={styles.content}>
         {/* PLAYERS */}
         <Text style={styles.sectionTitle}>Players</Text>
-        <View style={styles.playersRow}>
+       <ScrollView horizontal>
+         <View style={styles.playersRow}>
           <View style={styles.player}>
             <View style={styles.avatar} />
             <Text style={styles.playerName}>Huei</Text>
           </View>
-
           <View style={[styles.avatar, styles.emptyAvatar]} />
         </View>
+       </ScrollView>
 
         {/* SPORT */}
         <View style={styles.infoRow}>
@@ -98,12 +103,12 @@ const GameDetails = () => {
           <Ionicons name="people-outline" size={20} style={styles.infoLabel} />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Eligibility</Text>
-            <Text style={styles.infoValue}>Womens Only</Text>
+            <Text style={styles.infoValue}>Verified users only</Text>
           </View>
         </View>
         {/* Court Booked */}
         <View style={styles.infoRow}>
-          <Ionicons name="people-outline" size={20} style={styles.infoLabel} />
+          <FontAwesome5 name="calendar-check" size={20} style={styles.infoLabel} />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>Booked</Text>
           </View>
@@ -213,6 +218,7 @@ const getStyles = theme =>
     content: {
       padding: 16,
       paddingBottom: 120,
+      paddingTop: 230
     },
 
     sectionTitle: {
@@ -314,8 +320,7 @@ const getStyles = theme =>
       flexDirection: "row",
       padding: 16,
       backgroundColor: theme.colors.background,
-      borderTopWidth: 1,
-      borderColor: "#eee",
+      
     },
 
     chatBtn: {

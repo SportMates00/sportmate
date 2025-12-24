@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
+import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 
 const GameEvents = () => {
   const navigation = useNavigation();
@@ -27,9 +28,8 @@ const GameEvents = () => {
         
         <View style={styles.topRightStatus}>
           <View style={[styles.badge]}>
-<Ionicons name="calendar-outline"  color="#fff"/>
-            <Text style={[styles.courtBadgeText, styles.courtBadge]}>{t('CourtBooked')}</Text>
-             <Ionicons name="checkmark-circle" size={14} color="#fff" />
+             <FontAwesome5 name="calendar-check" size={20} color="#fff" />
+             <Ionicons name="checkmark-circle" size={22} color="#fff" />
           </View>
         </View>
 
