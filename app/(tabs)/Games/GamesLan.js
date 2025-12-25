@@ -56,24 +56,35 @@ export default {
         CreateGame: 'Create a Game',
 
         //GameDetails
-        GameDetailsTitle: "User's tennis game",
-        GameDetailsDateTime: "Tomorrow · 09:00",
-        GameDetailsVerifiedOnly: "Verified users only",
-        GameDetailsCourtBooked: "Court booked",
         GameDetailsPlayers: "Players",
         GameDetailsSport: "Sport",
         GameDetailsLevel: "Match level",
-        GameDetailsLevelValue: "Upper Intermediate, Advanced",
         GameDetailsLocation: "Location",
-        GameDetailsClub: "DSQ Gym & Health Club",
-        GameDetailsAddress: "12 Komitas Ave, Yerevan, Armenia",
         GameDetailsDate: "Date & Time",
-        GameDetailsDateRange: "Tomorrow · 09:00 – 11:00",
-        GameDetailsNotes: "Notes",
-        GameDetailsNotesText: "Friendly practice game. Bring your own racket and water.",
         GameDetailsChat: "Chat",
-        GameDetailsAskToJoin: "Ask to join"
+        GameDetailsNotes: "Notes",
+        GameDetailsVerifiedOnly: "Verified users only",
+        GameDetailsCourtBooked: "Booked",
+        GameDetailsEligibility: 'Eligiblity',
+        GameDetailsCourtNotBooked: 'Not booked',
+        GameDetailsOpenEveryone: 'Open to Everyone',
+        GameDetailsNoNotes: 'No additional notes are provided',
+        GameHost: 'Game Host',
+        GameNotFound: "Game not found",
 
+        //Months
+        Jan: 'Jan',
+        Feb: 'Feb',
+        Mar: 'Mar',
+        Apr: 'Apr',
+        May: 'May',
+        Jun: 'Jun',
+        Jul: 'Jul',
+        Aug: 'Aug',
+        Sep: 'Sep',
+        Oct: 'Oct',
+        Nov: 'Nov',
+        Dec: 'Dec'
 
     },
 
@@ -137,7 +148,7 @@ export default {
         GameDetailsTitle: 'Օգտատիրոջ թենիսի խաղը',
         GameDetailsDateTime: 'Վաղը · 09:00',
         GameDetailsVerifiedOnly: 'Միայն հաստատված օգտատերերի համար',
-        GameDetailsCourtBooked: 'Դաշտը ամրագրված է',
+        GameDetailsCourtBooked: 'Ամրագրված է',
         GameDetailsPlayers: 'Խաղացողներ',
         GameDetailsSport: 'Սպորտ',
         GameDetailsLevel: 'Խաղի մակարդակ',
@@ -151,8 +162,25 @@ export default {
         GameDetailsNotesText: 'Ընկերական մարզումային խաղ։ Բերեք ձեր սեփական ռակետը և ջուր։',
         GameDetailsChat: 'Չատ',
         GameDetailsAskToJoin: 'Դիմել միանալու համար',
-
-  
+        GameDetailsEligibility: 'Մասնակցության պայմաններ',
+        GameDetailsCourtNotBooked: 'Ամրագրված չէ',
+        GameDetailsOpenEveryone: 'Բաց բոլորի համար',
+        GameDetailsNoNotes: 'Լրացուցիչ նշումներ չկան',
+        GameHost: 'Խաղի կազմակերպիչ',
+        GameNotFound: 'Խաղը չի գտնվել',
+        //Months
+        Jan: 'հնվ',
+        Feb: 'փտր',
+        Mar: 'մրտ',
+        Apr: 'ապր',
+        May: 'մայ',
+        Jun: 'հնս',
+        Jul: 'հլս',
+        Aug: 'օգս',
+        Sep: 'սեպ',
+        Oct: 'հոկ',
+        Nov: 'նոյ',
+        Dec: 'դեկ'
   
 },
 
@@ -216,7 +244,7 @@ ru: {
         GameDetailsTitle: 'Теннисная игра пользователя',
         GameDetailsDateTime: 'Завтра · 09:00',
         GameDetailsVerifiedOnly: 'Только для подтверждённых пользователей',
-        GameDetailsCourtBooked: 'Площадка забронирована',
+        GameDetailsCourtBooked: 'Забронировано',
         GameDetailsPlayers: 'Игроки',
         GameDetailsSport: 'Спорт',
         GameDetailsLevel: 'Уровень матча',
@@ -229,7 +257,26 @@ ru: {
         GameDetailsNotes: 'Заметки',
         GameDetailsNotesText: 'Дружеская тренировочная игра. Возьмите свою ракетку и воду.',
         GameDetailsChat: 'Чат',
-        GameDetailsAskToJoin: 'Запросить участие'
+        GameDetailsAskToJoin: 'Запросить участие',
+        GameDetailsEligibility: 'Условия участия',
+        GameDetailsCourtNotBooked: 'Не забронировано',
+        GameDetailsOpenEveryone: 'Открыто для всех',
+        GameDetailsNoNotes: 'Дополнительные заметки отсутствуют',
+        GameHost: 'Организатор игры',
+        GameNotFound: 'Игра не найдена',
+        //months
+        Jan: 'янв',
+        Feb: 'фев',
+        Mar: 'мар',
+        Apr: 'апр',
+        May: 'май',
+        Jun: 'июн',
+        Jul: 'июл',
+        Aug: 'авг',
+        Sep: 'сен',
+        Oct: 'окт',
+        Nov: 'ноя',
+        Dec: 'дек'
 }
 
 };

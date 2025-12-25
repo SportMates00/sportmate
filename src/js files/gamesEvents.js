@@ -73,7 +73,7 @@ export const gameEvents = [
     time: "21:00",
     timezone: "GMT+4",
     gameType: "Practice",
-    level: ["Lower Intermediate"],
+    level: ["Lower Intermediate","Beginner"],
     maxPlayers: 12,
     courtBooked: false,
     price: 0,

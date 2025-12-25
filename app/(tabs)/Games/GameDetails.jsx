@@ -12,13 +12,14 @@ import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/src/theme/themeContext";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
+import { useTranslation } from "react-i18next";
 
 const GameDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { theme } = useTheme();
   const styles = getStyles(theme);
-
+  const {t, i18n} = useTranslation();
   const { gameId } = route.params;
 
   const game = useSelector((state) =>
@@ -29,16 +30,15 @@ const GameDetails = () => {
   if (!game) {
     return (
       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>Game not found</Text>
+        <Text>{t("GameNotFound")}</Text>
       </View>
     );
   }
 
-  const formattedDate = new Date(game.date).toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+// Always safe month key
+const date = new Date(game.date);
+const monthKey = date.toLocaleString('en-US', { month: 'short' });
+const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
 
   const formattedTime = new Date(
     `${game.date}T${game.time}`
@@ -60,7 +60,7 @@ const GameDetails = () => {
           {/* TITLE */}
           <View style={styles.titleNameOverlay}>
             <Text style={styles.title}>
-              {game.host?.name}'s {game.sportName} game
+              {t('GameHost')}: {game.host?.name}
             </Text>
 
             <Text style={styles.subTitle}>
@@ -80,38 +80,62 @@ const GameDetails = () => {
       {/* CONTENT */}
       <ScrollView contentContainerStyle={styles.content}>
         {/* PLAYERS */}
-        <Text style={styles.sectionTitle}>Players</Text>
-        <ScrollView horizontal>
-          <View style={styles.playersRow}>
-            {game.players?.map((p) => (
-              <View key={p.id} style={styles.player}>
-                <View style={styles.avatar} />
-                <Text style={styles.playerName}>{p.name}</Text>
+        <View style={styles.infoRow}>
+          <Ionicons
+            name="people-outline"
+            size={26}
+            style={{color:theme.colors.text}}
+          />
+          <View style={styles.infoText}>
+            <Text style={[styles.infoLabel, {paddingBottom:10}]}>{t("GameDetailsPlayers")}</Text>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}  style={[styles.infoValue, {marginBottom:-20}]}>
+              <View style={styles.playersRow}>
+                {game.players.map(player => {
+                  const hasPhoto = !!player?.profilePhoto;
+                  const initial = player?.name?.trim()?.charAt(0)?.toUpperCase() || '';
+
+                  return (
+                    <TouchableOpacity key={player.id} style={{alignItems:'center'}}>
+                      {hasPhoto ? (
+                        <Image
+                          source={player.profilePhoto}
+                          style={styles.playerImage}
+                        />
+                      ) : (
+                        <TouchableOpacity style={styles.emptyPlayerImage}>
+                          <Text>{initial}</Text>
+                        </TouchableOpacity>
+                      )}
+                      <Text style={{color:theme.colors.text, marginTop:5, marginRight:5}}>{player.name}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
+
+                {/* empty slots */}
+                {Array.from({
+                  length: game.maxPlayers - game.players.length,
+                }).map((_, i) => (
+                  <TouchableOpacity
+                    key={`empty-${i}`}
+                    style={[styles.avatar, styles.emptyAvatar]}
+                  >
+                    <Text>+</Text>
+                  </TouchableOpacity>
+                ))}
               </View>
-            ))}
-
-            {/* empty slots */}
-            {Array.from({
-              length: game.maxPlayers - game.players.length,
-            }).map((_, i) => (
-              <View
-                key={`empty-${i}`}
-                style={[styles.avatar, styles.emptyAvatar]}
-              />
-            ))}
+            </ScrollView>
           </View>
-        </ScrollView>
-
+        </View>
         {/* SPORT */}
         <View style={styles.infoRow}>
           <Ionicons
             name="football-outline"
-            size={20}
-            style={styles.infoLabel}
+            size={26}
+            style={{color:theme.colors.text}}
           />
           <View style={styles.infoText}>
-            <Text style={styles.infoLabel}>Sport</Text>
-            <Text style={styles.infoValue}>{game.sportName}</Text>
+            <Text style={styles.infoLabel}>{t("GameDetailsSport")}</Text>
+            <Text style={styles.infoValue}>{t(game.sportName)}</Text>
           </View>
         </View>
 
@@ -119,13 +143,16 @@ const GameDetails = () => {
         <View style={styles.infoRow}>
           <Ionicons
             name="stats-chart-outline"
-            size={20}
-            style={styles.infoLabel}
+            size={26}
+            style={{color:theme.colors.text}}
           />
           <View style={styles.infoText}>
-            <Text style={styles.infoLabel}>Match level</Text>
+            <Text style={styles.infoLabel}>{t("GameDetailsLevel")}</Text>
             <Text style={styles.infoValue}>
-              {Array.isArray(game.level) ? game.level.join(", ") : game.level}
+              {Array.isArray(game.level)
+                ? game.level.map(l => t(l)).join(', ')
+                : t(game.level)
+              }
             </Text>
           </View>
         </View>
@@ -134,16 +161,16 @@ const GameDetails = () => {
         <View style={styles.infoRow}>
           <Ionicons
             name="location-outline"
-            size={20}
-            style={styles.infoLabel}
+            size={26}
+            style={{color:theme.colors.text}}
           />
           <View style={styles.infoText}>
-            <Text style={styles.infoLabel}>Location</Text>
+            <Text style={styles.infoLabel}>{t("GameDetailsLocation")}</Text>
             <Text style={styles.infoValue}>
-              {game?.venue?.stadiumName || "—"}
+              {t(game?.venue?.stadiumName) || "—"}
             </Text>
             <Text style={styles.infoSubValue}>
-              {game?.venue?.city}, Armenia
+              {t(game?.venue?.city)}, {t('Armenia')}
             </Text>
           </View>
         </View>
@@ -152,13 +179,13 @@ const GameDetails = () => {
         <View style={styles.infoRow}>
           <Ionicons
             name="people-outline"
-            size={20}
-            style={styles.infoLabel}
+            size={26}
+            style={{color:theme.colors.text}}
           />
           <View style={styles.infoText}>
-            <Text style={styles.infoLabel}>Eligibility</Text>
+            <Text style={styles.infoLabel}>{t("GameDetailsEligibility")}</Text>
             <Text style={styles.infoValue}>
-              {game.verifiedOnly ? "Verified users only" : "Open to everyone"}
+              {game.verifiedOnly ? t("GameDetailsVerifiedOnly") : t("GameDetailsOpenEveryone")}
             </Text>
           </View>
         </View>
@@ -167,12 +194,12 @@ const GameDetails = () => {
         <View style={styles.infoRow}>
           <FontAwesome5
             name="calendar-check"
-            size={20}
-            style={styles.infoLabel}
+            size={26}
+            style={{color:theme.colors.text}}
           />
           <View style={styles.infoText}>
             <Text style={styles.infoLabel}>
-              {game.courtBooked ? "Booked" : "Not booked"}
+              {game.courtBooked ? t("GameDetailsCourtBooked") : t("GameDetailsCourtNotBooked")}
             </Text>
           </View>
         </View>
@@ -181,11 +208,11 @@ const GameDetails = () => {
         <View style={styles.infoRow}>
           <Ionicons
             name="calendar-outline"
-            size={20}
-            style={styles.infoLabel}
+            size={26}
+            style={{color:theme.colors.text}}
           />
           <View style={styles.infoText}>
-            <Text style={styles.infoLabel}>Date & Time</Text>
+            <Text style={styles.infoLabel}>{t('GameDetailsDate')}</Text>
             <Text style={styles.infoValue}>
               {formattedDate} · {formattedTime}
             </Text>
@@ -193,19 +220,18 @@ const GameDetails = () => {
         </View>
 
         {/* NOTES */}
-        <View style={styles.notesBox}>
-          <View style={styles.notesHeader}>
+        <View style={styles.infoRow}>
             <Ionicons
               name="document-text-outline"
-              size={20}
-              style={styles.infoLabel}
+              size={26}
+              style={{color:theme.colors.text}}
             />
-            <Text style={styles.notesLabel}>Notes</Text>
+          <View style={styles.infoText}>
+            <Text style={styles.infoLabel}>{t("GameDetailsNotes")}</Text>
+            <Text style={styles.infoValue}>
+              {game.notes || t('GameDetailsNoNotes')}
+            </Text>
           </View>
-
-          <Text style={styles.notesText}>
-            {game.notes || "No additional notes provided."}
-          </Text>
         </View>
       </ScrollView>
 
@@ -215,11 +241,11 @@ const GameDetails = () => {
           style={styles.chatBtn}
           disabled={!game.chatEnabled}
         >
-          <Text style={styles.chatText}>Chat</Text>
+          <Text style={styles.chatText}>{t("GameDetailsChat")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.joinBtn}>
-          <Text style={styles.joinText}>Ask to join</Text>
+          <Text style={styles.joinText}>{t("AskToJoin")}</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -256,12 +282,12 @@ const getStyles = theme =>
     },
     title: {
       color: "#fff",
-      fontSize: 22,
+      fontSize: 18,
       fontWeight: "800",
       fontFamily: theme.fonts.family,
     },
     subTitle: {
-      color: theme.colors.text,
+      color: theme.colors.buttonText,
       marginTop: 6,
       fontFamily: theme.fonts.family
     },
@@ -297,7 +323,7 @@ const getStyles = theme =>
     content: {
       padding: 16,
       paddingBottom: 120,
-      paddingTop: 230
+      paddingTop: 240
     },
 
     sectionTitle: {
@@ -349,8 +375,7 @@ const getStyles = theme =>
     },
 
     infoLabel: {
-      fontSize: 14,
-      color: "#777",
+      fontSize: 18,
       color: theme.colors.text,
       fontWeight: "500"
     },
@@ -359,6 +384,7 @@ const getStyles = theme =>
       color: theme.colors.text,
       fontSize: 16,
       fontWeight: "100",
+      marginTop:5
     },
 
     infoSubValue: {
@@ -427,6 +453,25 @@ const getStyles = theme =>
     joinText: {
       color: "#fff",
       fontWeight: "600",
+    },
+    playerImage: {
+      width: 48,
+      height: 48,
+      borderRadius: 220,
+      marginRight: 6,
+      borderWidth: 1,
+      borderColor: 'white',
+    },
+    emptyPlayerImage: {
+      width: 48,
+      height: 48,
+      borderRadius: 220,
+      marginRight: 6,
+      borderWidth: 1,
+      borderColor: theme.colors.primary,
+      backgroundColor:'white',
+      justifyContent:'center',
+      alignItems:'center'
     },
   });
 

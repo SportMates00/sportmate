@@ -25,22 +25,14 @@ const GameEvents = () => {
   // ⛳️ Your slice returns { events:[...] }
   const gameEvents = useSelector((state) => state.gameEvents?.events || []);
   const loggedUser = useSelector((state) => state.user)
-
-  console.log(loggedUser.id);
   
   // format date like "Jun 30, 2025"
   const formatDate = (dateStr) => {
-    try {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-      });
-    } catch {
-      return dateStr;
-    }
+    const date = new Date(dateStr);
+    const monthKey = date.toLocaleString('en-US', { month: 'short' });  
+    return `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`
   };
+
 
   // convert "09:00" → "9:00 AM"
   const formatTime = (timeStr) => {
@@ -92,25 +84,34 @@ const GameEvents = () => {
             {/* Players */}
             <View style={styles.playersRow}>
               {/* keeping design — default icon */}
-              <Image
-                source={require("../../../assets/images/favicon.png")}
-                style={styles.player}
-              />
-              <Image
-                source={require("../../../assets/images/favicon.png")}
-                style={styles.player}
-              />
-              <Image
-                source={require("../../../assets/images/favicon.png")}
-                style={styles.player}
-              />
+              {game.players.map(player => {
+                const hasPhoto = !!player?.profilePhoto;
+                const initial = player?.name?.trim()?.charAt(0)?.toUpperCase() || '';
+
+                return (
+                  <View key={player.id}>
+                    {hasPhoto ? (
+                      <Image
+                        source={player.profilePhoto}
+                        style={styles.player}
+                      />
+                    ) : (
+                      <TouchableOpacity style={styles.emptyPlayer}>
+                        <Text>{initial}</Text>
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                );
+              })}
+
             </View>
 
             {/* Meta */}
             <View style={styles.infoRow}>
               <Ionicons name="stats-chart-outline" size={14} color="#fff" />
               <Text style={styles.infoText}>
-                {game.level.length > 1 ? `${t(game.level[0]),t(game.level[1])}...` : t(game.level[0])}
+                {game.level.length > 1 ? `${t(game.level[0]) + ',' + t(game.level[1])}...` : t(game.level[0])}
+                {console.log(game.level)}
               </Text>
             </View>
 
@@ -226,12 +227,23 @@ const getStyles = (theme) =>
       marginVertical: 6,
     },
     player: {
-      width: 28,
-      height: 28,
+      width: 30,
+      height: 30,
       borderRadius: 20,
       marginRight: 6,
-      borderWidth: 2,
+      borderWidth: 1,
       borderColor: '#fff',
+    },
+    emptyPlayer: {
+      width: 30,
+      height: 30,
+      borderRadius: 220,
+      marginRight: 6,
+      borderWidth: 1,
+      borderColor: theme.colors.primary,
+      backgroundColor:'white',
+      justifyContent:'center',
+      alignItems:'center'
     },
     infoRow: {
       flexDirection: 'row',
