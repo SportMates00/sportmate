@@ -74,7 +74,36 @@ const users = [
           Sat: { Mor: false, Aft: false, Eve: false },
           Sun: { Mor: false, Aft: false, Eve: false },
       },
-    },}
+    },
+  },
+      {id: 'u2', firstName:'Mher', lastName: 'Kevorkian', email:'q', password:'q', profileInfo: {
+      mainSport: 'Football',
+      location:'Yerevan',
+      age:'24',
+      gender:'',
+      aboutMe:'Hello my name is Mherball matches. From time to time I am also available for hiking.',
+      sportsList:[
+          { id: 'basketball', sportName: 'Basketball', sportLevel: 'Beginner',sportIcon:basketballSportIcon },
+          { id: 'tennis', sportName: 'Tennis', sportLevel: 'Professional', sportIcon:tennisSportIcon },
+          { id: 'football', sportName: 'Football', sportLevel: 'Professional', sportIcon:footballSportIcon },
+      ],
+      reviews:reviews,
+      profileImageUrl:'',
+      profileCompletePer:6,
+      userVerification:false,
+      friendsList:[{firstName:'Mher', lastName:'Kevorkian',profilePicture:mher},{firstName:'Njteh', lastName:'Melkonian',profilePicture:njteh}],
+      completedEvents:completedEvents,
+      availability: {
+          Mon: { Mor: false, Aft: true, Eve: false },
+          Tue: { Mor: false, Aft: false, Eve: false },
+          Wed: { Mor: false, Aft: false, Eve: false },
+          Thu: { Mor: true, Aft: false, Eve: false },
+          Fri: { Mor: true, Aft: true, Eve: false },
+          Sat: { Mor: false, Aft: false, Eve: false },
+          Sun: { Mor: false, Aft: false, Eve: false },
+      },
+    },
+  }
 ]
 
 
