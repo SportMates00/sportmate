@@ -1,5 +1,43 @@
 export default {
     en: {
+
+        // Stadiums, Cities, Locations
+        "Hrazdan Stadium": "Hrazdan Stadium",
+        "Avan Academy Field": "Avan Academy Field",
+        "Pyunik Training Ground": "Pyunik Training Ground",
+        "Banants Field": "Banants Field",
+        "Shengavit Stadium": "Shengavit Stadium",
+        "Kanaker Field": "Kanaker Field",
+
+        "Dinamo Indoor Court": "Dinamo Indoor Court",
+        "Arabkir Sports Hall": "Arabkir Sports Hall",
+        "Olympic Reserve Court": "Olympic Reserve Court",
+
+        "DSQ Tennis Club": "DSQ Tennis Club",
+        "Orange Tennis Center": "Orange Tennis Center",
+        "Ararat Tennis Courts": "Ararat Tennis Courts",
+
+        "Spin Club": "Spin Club",
+        "Ace Ping Pong Hall": "Ace Ping Pong Hall",
+
+        "8 Ball Club": "8 Ball Club",
+        "Royal Billiards": "Royal Billiards",
+        "Classic Snooker Hall": "Classic Snooker Hall",
+
+        Yerevan: "Yerevan",
+        Arabkir: "Arabkir",
+        Avan: "Avan",
+        Malatia: "Malatia",
+        "Nor Nork": "Nor Nork",
+        Shengavit: "Shengavit",
+        Kanaker: "Kanaker",
+        Kentron: "Kentron",
+        Ajapnyak: "Ajapnyak",
+        Komitas: "Komitas",
+        Erebuni: "Erebuni",
+
+
+
         //Container
         Back: "Back",
         Next: "Next",
@@ -42,6 +80,41 @@ export default {
     },
 
     am: {
+         // Stadiums, Cities, Locations
+        "Hrazdan Stadium": "Հրազդան մարզադաշտ",
+        "Avan Academy Field": "Ավանի ակադեմիայի մարզադաշտ",
+        "Pyunik Training Ground": "Փյունիկի մարզաբազա",
+        "Banants Field": "Բանանցի մարզադաշտ",
+        "Shengavit Stadium": "Շենգավիթի մարզադաշտ",
+        "Kanaker Field": "Կանաքեռի մարզադաշտ",
+
+        "Dinamo Indoor Court": "Դինամո փակ մարզադահլիճ",
+        "Arabkir Sports Hall": "Արաբկիրի մարզադահլիճ",
+        "Olympic Reserve Court": "Օլիմպիական պահեստի մարզադահլիճ",
+
+        "DSQ Tennis Club": "DSQ թենիսի ակումբ",
+        "Orange Tennis Center": "Օրանժ թենիսի կենտրոն",
+        "Ararat Tennis Courts": "Արարատ թենիսի կորտեր",
+
+        "Spin Club": "Սփին ակումբ",
+        "Ace Ping Pong Hall": "Ace սեղանի թենիսի դահլիճ",
+
+        "8 Ball Club": "8 Ball բիլիարդի ակումբ",
+        "Royal Billiards": "Royal բիլիարդ",
+        "Classic Snooker Hall": "Classic սնկերի դահլիճ",
+
+        Yerevan: "Երևան",
+        Arabkir: "Արաբկիր",
+        Avan: "Ավան",
+        Malatia: "Մալաթիա",
+        "Nor Nork": "Նոր Նորք",
+        Shengavit: "Շենգավիթ",
+        Kanaker: "Կանաքեռ",
+        Kentron: "Կենտրոն",
+        Ajapnyak: "Աջափնյակ",
+        Komitas: "Կոմիտաս",
+        Erebuni: "Էրեբունի",
+        
         //Container
         Back: 'Հետ',
         Next: 'Հաջորդ',
@@ -84,6 +157,41 @@ export default {
     },
 
     ru: {
+         // Stadiums, Cities, Locations
+        "Hrazdan Stadium": "Стадион Раздан",
+        "Avan Academy Field": "Поле Академии Аван",
+        "Pyunik Training Ground": "Тренировочная база Пюник",
+        "Banants Field": "Поле Бананц",
+        "Shengavit Stadium": "Стадион Шенгавит",
+        "Kanaker Field": "Поле Канакер",
+
+        "Dinamo Indoor Court": "Крытый зал Динамо",
+        "Arabkir Sports Hall": "Спортивный зал Арабкир",
+        "Olympic Reserve Court": "Зал Олимпийского резерва",
+
+        "DSQ Tennis Club": "Теннисный клуб DSQ",
+        "Orange Tennis Center": "Теннисный центр Orange",
+        "Ararat Tennis Courts": "Теннисные корты Арарат",
+
+        "Spin Club": "Клуб Spin",
+        "Ace Ping Pong Hall": "Зал настольного тенниса Ace",
+
+        "8 Ball Club": "Бильярдный клуб 8 Ball",
+        "Royal Billiards": "Royal Бильярд",
+        "Classic Snooker Hall": "Снукерный зал Classic",
+
+        Yerevan: "Ереван",
+        Arabkir: "Арабкир",
+        Avan: "Аван",
+        Malatia: "Малатия",
+        "Nor Nork": "Нор Норк",
+        Shengavit: "Шенгавит",
+        Kanaker: "Канакер",
+        Kentron: "Центр",
+        Ajapnyak: "Ачапняк",
+        Komitas: "Комитас",
+        Erebuni: "Эребуни",
+
         //Container
         Back: 'Назад',
         Next: 'Далее',

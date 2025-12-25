@@ -154,7 +154,7 @@ const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
                 size={22}
                 color={active ? theme.colors.primary : theme.colors.text}
               />
-              <Text style={styles.choiceLabel}>{s.label}</Text>
+              <Text style={styles.choiceLabel}>{t(s.label)}</Text>
             </TouchableOpacity>
           );
         })}
@@ -179,11 +179,11 @@ const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
               style={[styles.choiceCard, active && styles.choiceCardActive]}
             >
               <Text style={styles.venueCardTitle} numberOfLines={2}>
-                {v.stadiumName}
+                {t(v.stadiumName)}
               </Text>
 
               <Text style={styles.venueCardSub}>
-                {v.city} · {v.location}
+                {t(v.city)} · {t(v.location)}
               </Text>
             </TouchableOpacity>
           );
@@ -211,10 +211,10 @@ const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
 
             <View style={styles.venueNameOverlay}>
               <Text style={styles.venueName}>
-                {selectedVenue.stadiumName}
+                {t(selectedVenue.stadiumName)}
               </Text>
               <Text style={styles.venueCity}>
-                {selectedVenue.city} · {selectedVenue.location}
+                {t(selectedVenue.city)} · {t(selectedVenue.location)}
               </Text>
               <View style={styles.mapIcon}>
                 <Ionicons
