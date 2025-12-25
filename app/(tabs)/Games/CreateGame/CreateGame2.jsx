@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,268 +6,296 @@ import {
   TouchableOpacity,
   Switch,
   StyleSheet,
-  Platform,
 } from "react-native";
 import { useTheme } from "@/src/theme/themeContext";
+import { useTranslation } from "react-i18next";
 
-/* ---------------- CONSTANTS ---------------- */
-
-const LEVELS = ["Beginner", "Intermediate", "Advanced", "Professional"];
-
-const TIME_SLOTS = [
-  "06:00", "07:00", "08:00", "09:00", "10:00",
-  "11:00", "12:00", "13:00", "14:00", "15:00",
-  "16:00", "17:00", "18:00", "19:00", "20:00",
-  "21:00", "22:00",
-];
-
-const TIME_RANGES = [
-  { key: "morning", label: "Morning", range: "06:00 – 12:00" },
-  { key: "afternoon", label: "Afternoon", range: "12:00 – 18:00" },
-  { key: "evening", label: "Evening", range: "18:00 – 23:00" },
-];
-
-const DURATIONS = [
-  { key: 60, label: "1 hour" },
-  { key: 90, label: "1.5 hours" },
-  { key: 120, label: "2 hours" },
-];
-
-/* ---------------- COMPONENT ---------------- */
-
-const CreateGame2 = ({ draftGame, setDraftGame }) => {
+const CreateGame2 = () => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
+  const { t } = useTranslation();
 
-  /* ---------- LOCAL STATE ---------- */
-  const [levels, setLevels] = useState(draftGame.level || []);
-  const [maxPlayers, setMaxPlayers] = useState(draftGame.maxPlayers || null);
-  const [verifiedOnly, setVerifiedOnly] = useState(draftGame.verifiedOnly || false);
-  const [courtBooked, setCourtBooked] = useState(draftGame.courtBooked || false);
+  const [maxPlayers, setMaxPlayers] = useState(null);
 
-  const [isFlexible, setIsFlexible] = useState(draftGame.isFlexible || false);
-  const [selectedDay, setSelectedDay] = useState(draftGame.date ? new Date(draftGame.date) : null);
+  /* ---------- STATE ---------- */
+  const [isFlexible, setIsFlexible] = useState(false);
+  const [selectedDay, setSelectedDay] = useState(null);
 
-  const [timeMode, setTimeMode] = useState(draftGame.timeMode || "exact");
-  const [selectedTime, setSelectedTime] = useState(draftGame.time || null);
-  const [duration, setDuration] = useState(draftGame.duration || null);
-  const [ranges, setRanges] = useState(draftGame.timeRanges || []);
+  const [timeMode, setTimeMode] = useState("exact");
+  const [startTime, setStartTime] = useState(null);
+  const [endTime, setEndTime] = useState(null);
 
-  /* ---------- DAYS ---------- */
-  const dayOptions = useMemo(() => {
+  /* ---------- HELPERS ---------- */
+  const generateDays = () => {
     const days = [];
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 10; i++) {
       const d = new Date();
       d.setDate(d.getDate() + i);
       days.push(d);
     }
     return days;
-  }, []);
-
-  const sameDay = (a, b) =>
-    a && b && a.toDateString() === b.toDateString();
-
-  /* ---------- HELPERS ---------- */
-  const toggleLevel = (lvl) => {
-    setLevels((prev) =>
-      prev.includes(lvl) ? prev.filter((l) => l !== lvl) : [lvl]
-    );
   };
 
-  const toggleRange = (key) => {
-    setRanges((prev) =>
-      prev.includes(key) ? prev.filter((r) => r !== key) : [key]
-    );
+  const formatDay = (date, index) => {
+    if (index === 0) return t("Today");
+    if (index === 1) return t("Tomorrow");
+
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
   };
 
-  /* ---------- SYNC TO DRAFT ---------- */
-  useEffect(() => {
-    setDraftGame((prev) => ({
-      ...prev,
-      level: levels,
-      maxPlayers,
-      verifiedOnly,
-      courtBooked,
-      isFlexible,
-      date: selectedDay ? selectedDay.toISOString() : null,
-      timeMode,
-      time: selectedTime,
-      duration,
-      timeRanges: ranges,
-    }));
-  }, [
-    levels,
-    maxPlayers,
-    verifiedOnly,
-    courtBooked,
-    isFlexible,
-    selectedDay,
-    timeMode,
-    selectedTime,
-    duration,
-    ranges,
-  ]);
+  const generateTimes = (from = 0) => {
+    const times = [];
+    for (let i = from; i <= 47; i++) {
+      const h = String(Math.floor(i / 2)).padStart(2, "0");
+      const m = i % 2 === 0 ? "00" : "30";
+      times.push(`${h}:${m}`);
+    }
+    return times;
+  };
+
+  const getIndexFromTime = (time) => {
+    const [h, m] = time.split(":").map(Number);
+    return h * 2 + (m === 30 ? 1 : 0);
+  };
 
   return (
     <View style={styles.page}>
-      {/* ================= MATCH LEVEL ================= */}
-      <Text style={styles.sectionTitle}>Match level</Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {LEVELS.map((lvl) => {
-          const active = levels.includes(lvl);
-          return (
-            <TouchableOpacity
-              key={lvl}
-              onPress={() => toggleLevel(lvl)}
-              style={[styles.levelCard, active && styles.levelCardActive]}
-            >
-              <Text style={styles.levelCardText}>{lvl}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+      {/* MATCH LEVEL */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, styles.section]}>
+          {t("MatchLevel")}
+        </Text>
 
-      {/* ================= MAX PLAYERS ================= */}
-      <Text style={[styles.sectionTitle, { marginTop: 16 }]}>
-        Maximum players
-      </Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {Array.from({ length: 20 }, (_, i) => i + 2).map((n) => {
-          const active = maxPlayers === n;
-          return (
-            <TouchableOpacity
-              key={n}
-              onPress={() => setMaxPlayers(n)}
-              style={[styles.numBox, active && styles.numBoxActive]}
-            >
-              <Text style={styles.numText}>{n}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <TouchableOpacity style={styles.levelCard}>
+            <Text style={styles.levelCardText}>{t("Beginner")}</Text>
+          </TouchableOpacity>
 
-      {/* ================= SWITCHES ================= */}
-      <View style={styles.switchRow}>
-        <Text style={styles.switchLabel}>Verified users only</Text>
-        <Switch value={verifiedOnly} onValueChange={setVerifiedOnly} />
+          <TouchableOpacity style={[styles.levelCard, styles.levelCardActive]}>
+            <Text style={styles.levelCardText}>{t("Intermediate")}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.levelCard}>
+            <Text style={styles.levelCardText}>{t("Advanced")}</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.levelCard}>
+            <Text style={styles.levelCardText}>{t("Professional")}</Text>
+          </TouchableOpacity>
+        </ScrollView>
       </View>
 
-      <View style={styles.switchRow}>
-        <Text style={styles.switchLabel}>Court booked</Text>
-        <Switch value={courtBooked} onValueChange={setCourtBooked} />
+      {/* MAX PLAYERS */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, styles.section]}>
+          {t("MaximumPlayers")}
+        </Text>
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {Array.from({ length: 29 }, (_, i) => i + 2).map((num) => (
+           <TouchableOpacity
+              key={num}
+              onPress={() => setMaxPlayers(num)}
+              style={[
+                styles.numBox,
+                maxPlayers === num && styles.numBoxActive,
+              ]}
+            ><Text style={styles.numText}>{num}</Text></TouchableOpacity>
+
+          ))}
+        </ScrollView>
       </View>
 
-      {/* ================= DAY PICKER ================= */}
-      <Text style={styles.sectionTitle}>When</Text>
+      {/* SWITCHES */}
+      <View style={styles.section}>
+        <View style={styles.switchRow}>
+          <Text style={styles.switchLabel}>
+            {t("VerifiedUsersOnly")}
+          </Text>
+          <Switch value={true} />
+        </View>
 
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View style={styles.switchRow}>
+          <Text style={styles.switchLabel}>
+            {t("CourtBooked")}
+          </Text>
+          <Switch value={false} />
+        </View>
+      </View>
+
+      {/* WHEN */}
+      <View style={styles.section}>
+        <Text style={styles.sectionTitle}>{t("When")}</Text>
+
+        {/* PICK A DAY */}
+        <Text style={styles.subLabel}>{t("PickADay")}</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {/* I'M FLEXIBLE — FIRST */}
         <TouchableOpacity
-          onPress={() => setIsFlexible(!isFlexible)}
-          style={[styles.dayPill, isFlexible && styles.dayPillActive]}
+          onPress={() => {
+            setIsFlexible(true);
+            setSelectedDay(null);
+          }}
+          style={[
+            styles.dayPill,
+            isFlexible && styles.dayPillActive,
+          ]}
         >
-          <Text style={styles.dayPillText}>I’m flexible</Text>
+          <Text style={styles.dayPillText}>{t('ImFlexible')}</Text>
         </TouchableOpacity>
+          {generateDays().map((day, index) => {
+            const active =
+              selectedDay &&
+              selectedDay.toDateString() === day.toDateString();
 
-        {dayOptions.map((d) => {
-          const active = sameDay(selectedDay, d);
-          const label =
-            d.toDateString() === new Date().toDateString()
-              ? "Today"
-              : d.toLocaleDateString([], { weekday: "short", day: "numeric" });
+            return (
+              <TouchableOpacity
+                key={index}
+                disabled={isFlexible}
+                onPress={() => setSelectedDay(day)}
+                style={[
+                  styles.dayPill,
+                  active && styles.dayPillActive,
+                  isFlexible && styles.disabledPill,
+                ]}
+              >
+                <Text style={styles.dayPillText}>
+                  {formatDay(day, index)}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
+        </ScrollView>
+      </View>
 
-          return (
-            <TouchableOpacity
-              key={d.toISOString()}
-              disabled={isFlexible}
-              onPress={() => setSelectedDay(d)}
-              style={[
-                styles.dayPill,
-                active && styles.dayPillActive,
-                isFlexible && styles.disabledPill,
-              ]}
-            >
-              <Text style={styles.dayPillText}>{label}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </ScrollView>
+      {/* TIME */}
+      <View style={styles.section}>
+        <Text style={[styles.sectionTitle, { marginTop: 14 }]}>
+          {t("Time")}
+        </Text>
 
-      {/* ================= TIME MODE ================= */}
-      {!isFlexible && (
-        <>
-          <View style={styles.timeModeRow}>
-            <TouchableOpacity
-              onPress={() => setTimeMode("exact")}
-              style={[
-                styles.timeModeBtn,
-                timeMode === "exact" && styles.timeModeBtnActive,
-              ]}
-            >
-              <Text style={styles.timeModeText}>Exact hours</Text>
-            </TouchableOpacity>
+        {/* TIME MODE */}
+        <View style={styles.timeModeRow}>
+          <TouchableOpacity
+            onPress={() => {
+              setTimeMode("exact");
+              setStartTime(null);
+              setEndTime(null);
+            }}
+            style={[
+              styles.timeModeBtn,
+              timeMode === "exact" && styles.timeModeBtnActive,
+            ]}
+          >
+            <Text style={styles.timeModeText}>
+              {t("ExactHours")}
+            </Text>
+          </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={() => setTimeMode("range")}
-              style={[
-                styles.timeModeBtn,
-                timeMode === "range" && styles.timeModeBtnActive,
-              ]}
-            >
-              <Text style={styles.timeModeText}>Time ranges</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            onPress={() => setTimeMode("range")}
+            style={[
+              styles.timeModeBtn,
+              timeMode === "range" && styles.timeModeBtnActive,
+            ]}
+          >
+            <Text style={styles.timeModeText}>
+              {t("TimeRanges")}
+            </Text>
+          </TouchableOpacity>
+        </View>
 
-          {timeMode === "exact" ? (
-            <>
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {TIME_SLOTS.map((t) => {
-                  const active = selectedTime === t;
-                  return (
-                    <TouchableOpacity
-                      key={t}
-                      onPress={() => setSelectedTime(t)}
-                      style={[styles.timeSlot, active && styles.timeSlotActive]}
-                    >
-                      <Text style={styles.timeSlotText}>{t}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-
-              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                {DURATIONS.map((d) => {
-                  const active = duration === d.key;
-                  return (
-                    <TouchableOpacity
-                      key={d.key}
-                      onPress={() => setDuration(d.key)}
-                      style={[styles.pill, active && styles.pillActive]}
-                    >
-                      <Text style={styles.pillText}>{d.label}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
-              </ScrollView>
-            </>
-          ) : (
+        {timeMode === "exact" && (
+          <>
+            {/* START TIME */}
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              {TIME_RANGES.map((r) => {
-                const active = ranges.includes(r.key);
-                return (
-                  <TouchableOpacity
-                    key={r.key}
-                    onPress={() => toggleRange(r.key)}
-                    style={[styles.rangeCard, active && styles.rangeCardActive]}
-                  >
-                    <Text style={styles.rangeTitle}>{r.label}</Text>
-                    <Text style={styles.rangeSub}>{r.range}</Text>
-                  </TouchableOpacity>
-                );
-              })}
+              {generateTimes().map((tme) => (
+                <TouchableOpacity
+                  key={tme}
+                  onPress={() => {
+                    setStartTime(tme);
+                    setEndTime(null);
+                  }}
+                  style={[
+                    styles.timeSlot,
+                    startTime === tme && styles.timeSlotActive,
+                  ]}
+                >
+                  <Text style={styles.timeSlotText}>{tme}</Text>
+                </TouchableOpacity>
+              ))}
             </ScrollView>
-          )}
-        </>
-      )}
+
+            {/* END TIME LABEL */}
+            {startTime && (
+              <Text style={styles.subLabel}>
+                {t("SelectEndTime")}
+              </Text>
+            )}
+
+            {/* END TIME */}
+            {startTime && (
+              <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                {generateTimes(getIndexFromTime(startTime) + 1).map(
+                  (tme) => (
+                    <TouchableOpacity
+                      key={tme}
+                      onPress={() => setEndTime(tme)}
+                      style={[
+                        styles.timeSlot,
+                        endTime === tme && styles.timeSlotActive,
+                      ]}
+                    >
+                      <Text style={styles.timeSlotText}>{tme}</Text>
+                    </TouchableOpacity>
+                  )
+                )}
+              </ScrollView>
+            )}
+          </>
+        )}
+
+        {timeMode === "range" && (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            <View style={styles.rangeCard}>
+              <Text style={styles.rangeTitle}>{t("AnyTime")}</Text>
+              <Text style={styles.rangeSub}>{t("Any")}</Text>
+            </View>
+
+            <View style={styles.rangeCard}>
+              <Text style={styles.rangeTitle}>{t("FilterTimeMorning")}</Text>
+              <Text style={styles.rangeSub}>
+                6AM – 12PM
+              </Text>
+            </View>
+
+            <View style={styles.rangeCard}>
+              <Text style={styles.rangeTitle}>{t("FilterTimeAfternoon")}</Text>
+              <Text style={styles.rangeSub}>
+                12PM – 6PM
+              </Text>
+            </View>
+
+            <View style={styles.rangeCard}>
+              <Text style={styles.rangeTitle}>{t("FilterTimeEvening")}</Text>
+              <Text style={styles.rangeSub}>
+                6PM – 10PM
+              </Text>
+            </View>
+
+            <View style={styles.rangeCard}>
+              <Text style={styles.rangeTitle}>{t("FilterTimeLateNight")}</Text>
+              <Text style={styles.rangeSub}>
+                10PM – 6AM
+              </Text>
+            </View>
+          </ScrollView>
+        )}
+      </View>
     </View>
   );
 };
@@ -277,6 +305,9 @@ export default CreateGame2;
 
 const getStyles = (theme) =>
   StyleSheet.create({
+    section: {
+      marginBottom: 18,
+    },
     page: {
       paddingHorizontal: 16,
       paddingTop: 12,
@@ -284,161 +315,209 @@ const getStyles = (theme) =>
     },
 
     sectionTitle: {
+      color: theme.colors.text,
+      fontFamily: theme.fonts.family,
       fontSize: 18,
       fontWeight: "700",
-      color: theme.colors.text,
-      marginBottom: 12,
     },
 
-    /* LEVEL */
     levelCard: {
-      padding: 14,
+      width: 110,
+      minHeight: 50,
       borderWidth: 1,
       borderColor: "#ddd",
       borderRadius: 10,
-      marginRight: 10,
-      backgroundColor: "#fff",
-    },
-    levelCardActive: {
-      borderColor: theme.colors.primary,
-      backgroundColor: "#EAF3FF",
-    },
-    levelCardText: {
-      fontWeight: "800",
-      color: theme.colors.text,
-    },
-
-    /* NUMBERS */
-    numBox: {
-      width: 46,
-      height: 46,
-      borderRadius: 10,
-      borderWidth: 1,
-      borderColor: "#ddd",
+      padding: 10,
+      backgroundColor: theme.colors.background,
       justifyContent: "center",
       alignItems: "center",
       marginRight: 10,
     },
-    numBoxActive: {
+
+    levelCardActive: {
       borderColor: theme.colors.primary,
-      backgroundColor: "#EAF3FF",
-    },
-    numText: {
-      fontWeight: "800",
-      color: theme.colors.text,
+      backgroundColor: theme.colors.background,
     },
 
-    /* SWITCH */
+    levelCardText: {
+      color: theme.colors.text,
+      fontFamily: theme.fonts.family,
+      fontWeight: "600",
+      fontSize: 12,
+      textAlign: "center",
+    },
+
+    numBox: {
+      width: 45,
+      height: 45,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: "#ddd",
+      backgroundColor: theme.colors.background,
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: 10,
+    },
+
+    numBoxActive: {
+      borderColor: theme.colors.primary,
+      backgroundColor: theme.colors.background,
+    },
+
+    numText: {
+      color: theme.colors.text,
+      fontFamily: theme.fonts.family,
+      fontWeight: "600",
+    },
+
     switchRow: {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      marginVertical: 10,
-    },
-    switchLabel: {
-      fontWeight: "700",
-      color: theme.colors.text,
+      paddingVertical: 10,
     },
 
-    /* DAY */
+    switchLabel: {
+      color: theme.colors.text,
+      fontFamily: theme.fonts.family,
+      fontWeight: "600",
+      fontSize: 14,
+    },
+
     dayPill: {
       paddingVertical: 10,
       paddingHorizontal: 14,
-      borderRadius: 18,
-      borderWidth: 1,
-      borderColor: "#ddd",
-      backgroundColor: "#fff",
-      marginRight: 10,
-    },
-    dayPillActive: {
-      borderColor: theme.colors.primary,
-      backgroundColor: "#EAF3FF",
-    },
-    dayPillText: {
-      fontWeight: "700",
-      color: theme.colors.text,
-    },
-
-    /* TIME */
-    timeModeRow: {
-      flexDirection: "row",
-      gap: 10,
-      marginVertical: 10,
-    },
-    timeModeBtn: {
-      flex: 1,
-      paddingVertical: 12,
       borderRadius: 10,
       borderWidth: 1,
       borderColor: "#ddd",
+      backgroundColor: theme.colors.background,
+      marginRight: 10,
+    },
+
+    dayPillActive: {
+      borderColor: theme.colors.primary,
+      backgroundColor: theme.colors.background,
+    },
+
+    dayPillText: {
+      color: theme.colors.text,
+      fontFamily: theme.fonts.family,
+      fontWeight: "700",
+      fontSize: 12,
+    },
+
+    timeModeRow: {
+      flexDirection: "row",
+      gap: 10,
+      marginBottom: 6,
+      marginTop: 10,
+    },
+
+    timeModeBtn: {
+      flex: 1,
+      borderWidth: 1,
+      borderColor: "#ddd",
+      backgroundColor: theme.colors.background,
+      borderRadius: 10,
+      paddingVertical: 12,
       alignItems: "center",
     },
+
     timeModeBtnActive: {
       borderColor: theme.colors.primary,
-      backgroundColor: "#EAF3FF",
+      backgroundColor: theme.colors.background,
     },
+
     timeModeText: {
-      fontWeight: "800",
       color: theme.colors.text,
+      fontFamily: theme.fonts.family,
+      fontWeight: "800",
+      fontSize: 12,
     },
 
     timeSlot: {
-      padding: 10,
-      borderRadius: 14,
+      marginTop: 8,
+      marginBottom: 8,
+      paddingVertical: 10,
+      paddingHorizontal: 12,
+      borderRadius: 10,
       borderWidth: 1,
       borderColor: "#ddd",
+      backgroundColor: theme.colors.background,
       marginRight: 10,
     },
+
     timeSlotActive: {
       borderColor: theme.colors.primary,
-      backgroundColor: "#EAF3FF",
+      backgroundColor: theme.colors.background,
     },
+
     timeSlotText: {
-      fontWeight: "800",
+      fontFamily: theme.fonts.family,
+      fontWeight: "600",
       color: theme.colors.text,
+      fontSize: 12,
     },
 
     pill: {
       paddingVertical: 10,
       paddingHorizontal: 14,
-      borderRadius: 18,
+      borderRadius: 10,
       borderWidth: 1,
       borderColor: "#ddd",
-      backgroundColor: "#fff",
+      backgroundColor: theme.colors.background,
       marginRight: 10,
     },
+
     pillActive: {
       borderColor: theme.colors.primary,
-      backgroundColor: "#EAF3FF",
-    },
-    pillText: {
-      fontWeight: "700",
-      color: theme.colors.text,
+      backgroundColor: theme.colors.background,
     },
 
+    pillText: {
+      color: theme.colors.text,
+      fontFamily: theme.fonts.family,
+      fontWeight: "600",
+      fontSize: 13,
+    },
+    subLabel: {
+      marginBottom: 8,
+      marginTop: 8,
+      fontFamily: theme.fonts.family,
+      fontSize: 13,
+      fontWeight: "600",
+      color: theme.colors.text,
+      opacity: 0.7,
+    },
     rangeCard: {
+      marginTop: 8,
       width: 150,
       borderWidth: 1,
       borderColor: "#ddd",
-      borderRadius: 12,
-      padding: 12,
-      marginRight: 10,
-    },
-    rangeCardActive: {
-      borderColor: theme.colors.primary,
-      backgroundColor: "#EAF3FF",
-    },
-    rangeTitle: {
-      fontWeight: "900",
-      color: theme.colors.text,
-    },
-    rangeSub: {
-      opacity: 0.7,
-      fontWeight: "700",
-      marginTop: 6,
+      borderRadius: 10,
+      padding: 14,
+      backgroundColor: theme.colors.background,
+      marginRight: 12,
     },
 
-    disabledPill: {
-      opacity: 0.4,
+    rangeCardActive: {
+      borderColor: theme.colors.primary,
+      backgroundColor: theme.colors.background,
+    },
+
+    rangeTitle: {
+      fontFamily: theme.fonts.family,
+      fontWeight: "700",
+      fontSize: 14,
+      color: theme.colors.text,
+    },
+
+    rangeSub: {
+      marginTop: 6,
+      fontFamily: theme.fonts.family,
+      fontSize: 12,
+      fontWeight: "600",
+      color: theme.colors.text,
+      opacity: 0.7,
     },
   });

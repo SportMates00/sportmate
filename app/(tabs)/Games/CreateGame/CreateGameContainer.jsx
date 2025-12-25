@@ -3,7 +3,7 @@ import { useTheme } from "@/src/theme/themeContext";
 import { useNavigation } from "@react-navigation/native";
 import { useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
+import { useTranslation } from "react-i18next"
 import { addGameEvent } from "@/src/store/gameEventsSlice";
 
 import CreateGame1 from "./CreateGame1";
@@ -12,6 +12,7 @@ import CreateGame3 from "./CreateGame3";
 
 /* ---------- EMPTY GAME TEMPLATE ---------- */
 const createEmptyGame = (loggedUser) => ({
+  
   id: Date.now(),
 
   sport: null,
@@ -62,6 +63,7 @@ const createEmptyGame = (loggedUser) => ({
 });
 
 const CreateGameComponent = () => {
+  const { t } = useTranslation();
   const { theme } = useTheme();
   const styles = getStyles(theme);
   const navigation = useNavigation();
@@ -136,19 +138,19 @@ const CreateGameComponent = () => {
       <View style={styles.bottomBar}>
         {step > 1 && (
           <TouchableOpacity style={styles.backBtn} onPress={handleBack}>
-            <Text style={styles.backText}>Back</Text>
+            <Text style={styles.backText}>{t('Back')}</Text>
           </TouchableOpacity>
         )}
 
         {step < 3 && (
           <TouchableOpacity style={styles.nextBtn} onPress={handleNext}>
-            <Text style={styles.nextText}>Next</Text>
+            <Text style={styles.nextText}>{t('Next')}</Text>
           </TouchableOpacity>
         )}
 
         {step === 3 && (
           <TouchableOpacity style={styles.createBtn} onPress={handleCreate}>
-            <Text style={styles.createText}>Create</Text>
+            <Text style={styles.createText}>{t('Create')}</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -204,7 +206,7 @@ const getStyles = (theme) =>
       paddingVertical: 16,
       borderRadius: 12,
       alignItems: "center",
-      backgroundColor: "#fff",
+      backgroundColor: theme.colors.background,
     },
 
     backText: {

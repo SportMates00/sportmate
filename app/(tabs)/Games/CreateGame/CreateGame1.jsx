@@ -11,11 +11,13 @@ import {
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useTheme } from "@/src/theme/themeContext";
+import { useTranslation } from "react-i18next";
 import { gamesTable } from "./GamesData";
 
 const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
+  const { t } = useTranslation();
 
   /* ---------- USER MAIN SPORT ---------- */
   const userMainSport = loggedUser?.profileInfo?.mainSport?.toLowerCase();
@@ -121,7 +123,9 @@ const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
   return (
     <View style={styles.page}>
       {/* ================= SPORT ================= */}
-      <Text style={styles.sectionTitle}>Select a sport</Text>
+      <Text style={styles.sectionTitle}>
+        {t("SelectSport")}
+      </Text>
 
       <ScrollView
         horizontal
@@ -157,7 +161,9 @@ const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
       </ScrollView>
 
       {/* ================= LOCATION ================= */}
-      <Text style={styles.sectionTitle}>Location</Text>
+      <Text style={styles.sectionTitle}>
+        {t("Location")}
+      </Text>
 
       <ScrollView
         horizontal
@@ -222,14 +228,18 @@ const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
 
           <View style={styles.venueMetaRow}>
             <View style={styles.venueMetaBox}>
-              <Text style={styles.venueMetaLabel}>Hours</Text>
+              <Text style={styles.venueMetaLabel}>
+                {t("Hours")}
+              </Text>
               <Text style={styles.venueMetaValue}>
                 {selectedVenue.hours}
               </Text>
             </View>
 
             <View style={styles.venueMetaBox}>
-              <Text style={styles.venueMetaLabel}>Price / hour</Text>
+              <Text style={styles.venueMetaLabel}>
+                {t("PricePerHour")}
+              </Text>
               <Text style={styles.venueMetaValue}>
                 {selectedVenue.price}
               </Text>
@@ -237,7 +247,7 @@ const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
           </View>
 
           <Text style={styles.disclaimer}>
-            Prices may vary depending on venue availability.
+            {t("VenuePriceDisclaimer")}
           </Text>
         </View>
       )}
@@ -387,13 +397,13 @@ const getStyles = (theme) =>
       color: theme.colors.text,
       fontFamily: theme.fonts.family,
     },
-mapIcon: {
-  position: "absolute",
-  top: 12,
-  right: 12,
-  backgroundColor: "rgba(0,0,0,0.5)",
-  padding: 6,
-  borderRadius: 20,
-},
- 
+
+    mapIcon: {
+      position: "absolute",
+      top: 12,
+      right: 12,
+      backgroundColor: "rgba(0,0,0,0.5)",
+      padding: 6,
+      borderRadius: 20,
+    },
   });
