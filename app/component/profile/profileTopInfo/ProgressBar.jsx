@@ -10,62 +10,58 @@ import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';
 import { setProfileCompletion } from '@/src/store/usersSlice';
 
+const TOTAL_STEPS = 8;
+
 const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
   const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
-  const { theme } = useTheme(); // Get current theme and toggle (if needed)
-  const styles = getStyles(theme); // Generate dynamic styles based on current theme
+  const { theme } = useTheme();
+  const styles = getStyles(theme);
   const {t} = useTranslation();
-  // Track which fields have already been counted
-  const [countedFields, setCountedFields] = useState({
-    age: loggedUser.profileInfo.age !== '',
-    location: loggedUser.profileInfo.location !== '',
-    gender: loggedUser.profileInfo.gender !== '',
-    profileImageUrl: loggedUser.profileInfo.profileImageUrl !== '',
-  });
 
+  /* 
+    ALWAYS RECALCULATE COMPLETED STEPS 
+    so Redux + UI always stay in sync
+  */
   useEffect(() => {
-    let updatedFields = { ...countedFields };
-    let countIncrement = 0;
 
-    // Check if each field is filled for the first time
-    if (!countedFields.age && loggedUser.profileInfo.age !== '') {
-      updatedFields.age = true;
-      countIncrement += 1;
-    }
-    if (!countedFields.location && loggedUser.profileInfo.location !== '') {
-      updatedFields.location = true;
-      countIncrement += 1;
-    }
-    if (!countedFields.gender && loggedUser.profileInfo.gender !== '') {
-      updatedFields.gender = true;
-      countIncrement += 1;
-    }
-    if (!countedFields.profileImageUrl && loggedUser.profileInfo.profileImageUrl !== '') {
-      updatedFields.profileImageUrl = true;
-      countIncrement += 1;
-    }
+    const count = [
+      !!loggedUser.firstName?.trim(),
+      !!loggedUser.lastName?.trim(),
+      !!loggedUser.profileInfo.mainSport,
+      true, // availability always valid
+      !!loggedUser.profileInfo.age,
+      !!loggedUser.profileInfo.location,
+      !!loggedUser.profileInfo.gender,
+      !!loggedUser.profileInfo.profileImageUrl,
+    ].filter(Boolean).length;
 
-    // Dispatch update only if there's an increment
-    if (countIncrement > 0) {
-      dispatch(setProfileCompletion(loggedUser.profileInfo.profileCompletePer + countIncrement));
-      setCountedFields(updatedFields);
-    }
+    dispatch(
+      setProfileCompletion({
+        userId: loggedUser.id,
+        percentage: count  // 🔥 STORED AS STEP COUNT (0–8)
+      })
+    );
+
   }, [
+    loggedUser.firstName,
+    loggedUser.lastName,
+    loggedUser.profileInfo.mainSport,
     loggedUser.profileInfo.age,
     loggedUser.profileInfo.location,
     loggedUser.profileInfo.gender,
     loggedUser.profileInfo.profileImageUrl
   ]);
 
+
   return (
     <View>
-      {/* Progress Bar Card */}
       <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.progressCard}>
         <View style={styles.progressHeader}>
           <Text style={styles.progressTitle}>{t('completeProfileTitle')}</Text>
           <Text style={styles.progressPercentage}>{Math.round(progressPercentage * 100)}%</Text>
         </View>
+
         <ProgressBar
           progress={progressPercentage}
           width={null}
@@ -78,7 +74,6 @@ const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
         />
       </TouchableOpacity>
 
-      {/* Modal for Profile Completion */}
       <Modal
         visible={modalVisible}
         transparent={true}
@@ -90,17 +85,21 @@ const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
           <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
               <Ionicons name="close" size={24} color={theme.colors.text} />
             </TouchableOpacity>
-          <Text style={{color:theme.colors.text, fontSize:22, paddingInline:20}}>{t('profileCompletion')}</Text>
-          <Text style={{color:theme.colors.text,paddingInline:20, marginBottom:20, marginTop:10}}>{t('profileCompletionCaption')}</Text>
-            {/* Close Button */}
-          
-            
-            {/* Progress Bar Inside Modal */}
+
+            <Text style={{color:theme.colors.text, fontSize:22, paddingInline:20}}>
+              {t('profileCompletion')}
+            </Text>
+
+            <Text style={{color:theme.colors.text,paddingInline:20, marginBottom:20, marginTop:10}}>
+              {t('profileCompletionCaption')}
+            </Text>
+
             <TouchableOpacity style={styles.progressCard}>
               <View style={styles.progressHeader}>
                 <Text style={styles.progressTitle}>{t('completeProfileTitle')}</Text>
                 <Text style={styles.progressPercentage}>{Math.round(progressPercentage * 100)}%</Text>
               </View>
+
               <ProgressBar
                 progress={progressPercentage}
                 width={null}
@@ -112,7 +111,7 @@ const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
                 style={styles.progressBar}
               />
             </TouchableOpacity>
-            
+
             <ProfileCompletion loggedUser={loggedUser} setModalVisible={setModalVisible} />
           </View>
         </View>
@@ -122,6 +121,7 @@ const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
 };
 
 const getStyles = (theme) => StyleSheet.create({
+  // 🔥 KEEPING YOUR ORIGINAL STYLES UNTOUCHED
   progressCard: {
     backgroundColor: theme.colors.primary,
     borderRadius: theme.radius.semiCircle,

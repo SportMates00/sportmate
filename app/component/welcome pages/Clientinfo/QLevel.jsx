@@ -1,6 +1,5 @@
-import { setUserInfo } from '@/src/store/authSlice';
 import { useNavigation } from '@react-navigation/native';
-import React, { useLayoutEffect, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   View,
@@ -13,6 +12,8 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import StepBar from './StepBar';
+import { updateUserProfile } from '@/src/store/usersSlice';
+import { selectCurrentUser } from '@/src/store/selectors';
 
 const { width } = Dimensions.get('window');
 const BUTTON_WIDTH = width * 0.42;
@@ -21,40 +22,45 @@ const QLevel = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const userInfo = useSelector(state => state.user);
 
-  const { mainSport, sportsList } = userInfo.profileInfo;
+  // 👤 logged-in onboarding user
+  const loggedUser = useSelector(selectCurrentUser);
 
-  const [selectedLevel, setSelectedLevel] = useState('');
+  const [selectedLevel, setSelectedLevel] = useState("");
+
+  // 🛡 safety — if somehow reached without user (rare)
+  if (!loggedUser) return null;
+
+  const { mainSport, sportsList } = loggedUser.profileInfo;
 
   /* ================= FIND MAIN SPORT ================= */
   const mainSportObject = useMemo(() => {
-    return sportsList.find(
-      item => item.sportName === mainSport
-    );
+    return sportsList.find(item => item.sportName === mainSport);
   }, [sportsList, mainSport]);
 
   /* ================= LEVELS ================= */
   const levels = [
-    { id: 'Starter', label: t('Starter') },
-    { id: 'Beginner', label: t('Beginner') },
-    { id: 'LowerIntermediate', label: t('LowerIntermediate') },
-    { id: 'Intermediate', label: t('Intermediate') },
-    { id: 'Advanced', label: t('Advanced') },
-    { id: 'Professional', label: t('Professional') },
+    { id: "Starter", label: t("Starter") },
+    { id: "Beginner", label: t("Beginner") },
+    { id: "LowerIntermediate", label: t("LowerIntermediate") },
+    { id: "Intermediate", label: t("Intermediate") },
+    { id: "Advanced", label: t("Advanced") },
+    { id: "Professional", label: t("Professional") },
   ];
 
   const levelDescription = {
-    Starter: t('StarterDescription'),
-    Beginner: t('BeginnerDescription'),
-    LowerIntermediate: t('LowerIntermediateDescription'),
-    Intermediate: t('IntermediateDescription'),
-    Advanced: t('AdvancedDescription'),
-    Professional: t('ProfessionalDescription'),
+    Starter: t("StarterDescription"),
+    Beginner: t("BeginnerDescription"),
+    LowerIntermediate: t("LowerIntermediateDescription"),
+    Intermediate: t("IntermediateDescription"),
+    Advanced: t("AdvancedDescription"),
+    Professional: t("ProfessionalDescription"),
   };
 
   /* ================= HANDLE SELECTION ================= */
   const handleSelect = (item) => {
+    if (!loggedUser) return;
+
     setSelectedLevel(item.id);
 
     const updatedSportsList = sportsList.map(sport =>
@@ -63,35 +69,18 @@ const QLevel = () => {
         : sport
     );
 
+    // ✅ update usersSlice (NOT auth)
     dispatch(
-      setUserInfo({
-        profileInfo: {
-          ...userInfo.profileInfo,
+      updateUserProfile({
+        userId: loggedUser.id,
+        changes: {
           sportsList: updatedSportsList,
         },
       })
     );
   };
 
-  const isNextEnabled = selectedLevel !== '';
-
-  /* ================= HEADER ================= */
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerTitle: '',
-      headerShadowVisible: false,
-      headerBackButtonDisplayMode: 'minimal',
-      headerBackTitleVisible: false,
-      headerBackTitle: '',
-      headerStyle: {
-        backgroundColor: 'white',
-        borderBottomWidth: 0,
-        elevation: 0,
-        shadowOpacity: 0,
-      },
-    });
-  }, [navigation]);
+  const isNextEnabled = !!selectedLevel;
 
   return (
     <View style={styles.container}>

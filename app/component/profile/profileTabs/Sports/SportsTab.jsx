@@ -6,7 +6,7 @@ import { useTheme } from '@/src/theme/themeContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTranslation } from 'react-i18next';
 
-const SportsTab = ({ loggedUser }) => {
+const SportsTab = ({ loggedUser ,isOwnProfile}) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
   const { t } = useTranslation();
@@ -62,7 +62,7 @@ const SportsTab = ({ loggedUser }) => {
                 <Text style={styles.level}>
                   {t(item.sportLevel)}
                 </Text>
-                <Ionicons name="chevron-forward" size={22} color="#fff" />
+                {isOwnProfile && <Ionicons name="chevron-forward" size={22} color="#fff" /> }
               </View>
             </ImageBackground>
           </TouchableOpacity>
@@ -70,20 +70,20 @@ const SportsTab = ({ loggedUser }) => {
       })}
 
       {/* Add Sport */}
-      <AddSport
+      {isOwnProfile && <AddSport
         loggedUser={loggedUser}
         setUserInfo={setUserInfo}
         userInfo={userInfo}
       />
-
+      }
       {/* Edit Sport */}
-      <EditSports
+      {isOwnProfile && <EditSports
         sport={selectedSport}
         openEditSport={openEditSport}
         setOpenEditSport={setOpenEditSport}
         setUserInfo={setUserInfo}
         userInfo={userInfo}
-      />
+      />}
     </View>
   );
 };

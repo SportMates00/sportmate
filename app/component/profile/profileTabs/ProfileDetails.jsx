@@ -7,7 +7,7 @@ import Reviews from './Reviews';
 import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';
 
-export default function ProfileDetails({ loggedUser }) {
+export default function ProfileDetails({ loggedUser, isOwnProfile }) {
   const [activeTab, setActiveTab] = useState('profileAboutTab');
   const [tabLayouts, setTabLayouts] = useState({});
   const { theme } = useTheme();
@@ -35,7 +35,12 @@ export default function ProfileDetails({ loggedUser }) {
     <View style={styles.container}>
       {/* Tabs */}
       <View style={styles.tabRow}>
-        {tabs.map(tab => (
+        {tabs.map(tab => {
+        if(!isOwnProfile && tab.key == 'profileActivity'){
+          return ''
+        }else {
+       
+          return (
           <TouchableOpacity
             key={tab.key}
             onLayout={(e) => onTabLayout(tab.key, e)}
@@ -51,7 +56,11 @@ export default function ProfileDetails({ loggedUser }) {
               {tab.label}
             </Text>
           </TouchableOpacity>
-        ))}
+        )
+      }
+})
+
+      }
       </View>
 
       {/* Indicator */}
@@ -75,12 +84,12 @@ export default function ProfileDetails({ loggedUser }) {
           {activeTab === 'profileAboutTab' ? (
             <About loggedUser={loggedUser} />
           ) : activeTab === 'profileSports' ? (
-            <Sports loggedUser={loggedUser} />
+            <Sports loggedUser={loggedUser} isOwnProfile={isOwnProfile} />
           ) : activeTab === 'profileReviews' ? (
             <Reviews loggedUser={loggedUser} />
-          ) : (
-            <Activity loggedUser={loggedUser} />
-          )}
+          ) :  (
+            <Activity loggedUser={loggedUser}/>
+          ) }
         </View>
       </ScrollView>
     </View>

@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 const TOTAL_STEPS = 8;
 const ABOUT_LIMIT = 70;
 
-const ProfileTopInfo = ({ loggedUser = {} }) => {
+const ProfileTopInfo = ({ loggedUser = {}, isOwnProfile }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [isAboutExpanded, setIsAboutExpanded] = useState(false);
   const navigation = useNavigation();
@@ -55,7 +55,7 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
 
           <View style={{ flexDirection: "row", gap: 10 }}>
             <View style={styles.sportInfo}>
-              <TouchableOpacity onPress={() => navigation.navigate('FriendsList')}>
+              <TouchableOpacity onPress={() => navigation.navigate('FriendsList',isOwnProfile)}>
                 <Image source={friendsB} />
               </TouchableOpacity>
               <Text style={styles.sportText}>
@@ -94,7 +94,7 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
         </View>
       )}
 
-      {!isCompleted && (
+      {!isOwnProfile || !isCompleted && (
         <ProgressBarbar
           loggedUser={loggedUser}
           progressPercentage={progressPercentage}

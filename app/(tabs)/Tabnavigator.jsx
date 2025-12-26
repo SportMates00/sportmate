@@ -6,7 +6,6 @@ import InboxScreen from './Inbox/Inbox';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ProfileIcon from '../component/profile/ProfileIcon';
 import { useNavigation } from '@react-navigation/native';
-import { Platform } from 'react-native';
 import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';
 

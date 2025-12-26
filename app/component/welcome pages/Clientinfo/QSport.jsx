@@ -5,9 +5,8 @@ import {
   pingPongSportIcon,
   tennisSportIcon,
 } from '@/assets/sportIcons/sportIcons';
-import { setUserInfo } from '@/src/store/authSlice';
 import { useNavigation } from '@react-navigation/native';
-import React, { useLayoutEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   View,
@@ -19,53 +18,44 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import StepBar from './StepBar';
+import { updateUserProfile } from '@/src/store/usersSlice';
+import { selectCurrentUser } from '@/src/store/selectors';
 
 const QSport = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const userInfo = useSelector(state => state.user);
+
+  // 👤 logged-in user object
+  const loggedUser = useSelector(selectCurrentUser);
 
   const [selectedSportId, setSelectedSportId] = useState(null);
 
   const sports = [
-    { id: 'football', sportName: 'Football', label: t('Football'), sportIcon: footballSportIcon },
-    { id: 'basketball', sportName: 'Basketball', label: t('Basketball'), sportIcon: basketballSportIcon },
-    { id: 'tennis', sportName: 'Tennis', label: t('Tennis'), sportIcon: tennisSportIcon },
-    { id: 'pingpong', sportName: 'PingPong', label: t('PingPong'), sportIcon: pingPongSportIcon },
-    { id: 'hiking', sportName: 'Hiking', label: t('Hiking'), sportIcon: hikingSportIcon },
+    { id: "football", sportName: "Football", label: t("Football"), sportIcon: footballSportIcon },
+    { id: "basketball", sportName: "Basketball", label: t("Basketball"), sportIcon: basketballSportIcon },
+    { id: "tennis", sportName: "Tennis", label: t("Tennis"), sportIcon: tennisSportIcon },
+    { id: "pingpong", sportName: "PingPong", label: t("PingPong"), sportIcon: pingPongSportIcon },
+    { id: "hiking", sportName: "Hiking", label: t("Hiking"), sportIcon: hikingSportIcon },
   ];
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerTitle: '',
-      headerShadowVisible: false,
-      headerBackButtonDisplayMode: 'minimal',
-      headerBackTitleVisible: false,
-      headerBackTitle: '',
-      headerStyle: {
-        backgroundColor: 'white',
-        borderBottomWidth: 0,
-        elevation: 0,
-        shadowOpacity: 0,
-      },
-    });
-  }, [navigation]);
 
   const handleSelect = (sport) => {
+    if (!loggedUser) return; // safety
+
     setSelectedSportId(sport.id);
 
+    // 🟢 update THIS user's profile in usersSlice
     dispatch(
-      setUserInfo({
-        profileInfo: {
-          ...userInfo.profileInfo,
+      updateUserProfile({
+        userId: loggedUser.id,
+        changes: {
           mainSport: sport.sportName,
           sportsList: [
             {
               id: sport.id,
               sportName: sport.sportName,
-              sportLevel: '',
+              sportLevel: "",
               sportIcon: sport.sportIcon,
             },
           ],

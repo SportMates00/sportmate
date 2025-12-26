@@ -3,10 +3,10 @@ import { Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { useTheme } from '@/src/theme/themeContext';
 
 const AgeGenderSelector = ({ editUser, setEditUser }) => {
-  const [selectedAge, setSelectedAge] = useState(editUser.profileInfo.age);
+
+  const selectedAge = editUser.profileInfo.age;   // <-- single source of truth
   const ages = Array.from({ length: 86 }, (_, i) => i + 14);
 
-  // ✅ THEME
   const { theme } = useTheme();
   const styles = getStyles(theme);
 
@@ -23,13 +23,12 @@ const AgeGenderSelector = ({ editUser, setEditUser }) => {
             styles.ageItem,
             selectedAge == age && styles.selectedAgeItem,
           ]}
-          onPress={() => {
-            setSelectedAge(age);
-            setEditUser((prev) => ({
+          onPress={() =>
+            setEditUser(prev => ({
               ...prev,
-              profileInfo: { ...prev.profileInfo, age: age },
-            }));
-          }}
+              profileInfo: { ...prev.profileInfo, age },
+            }))
+          }
         >
           <Text
             style={[

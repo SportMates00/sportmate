@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 import { selectCurrentUser } from '@/src/store/selectors';
 
 
-const FriendsList = () => {
+const FriendsList = ({isOwnProfile}) => {
   const [searchText, setSearchText] = useState('');
   const loggedUser = useSelector(selectCurrentUser);
   const friendsList = loggedUser.profileInfo.friendsList;
@@ -24,26 +24,7 @@ const FriendsList = () => {
   navigation.setOptions({
     headerShown: true,
     headerTitle: `${filteredFriends.length} friend${filteredFriends.length !== 1 ? 's' : ''}`,
-    headerShadowVisible: false,
-    headerBackButtonDisplayMode: 'minimal',
-    headerBackTitleVisible: false,
-    headerBackTitle: '',
 
-    headerStyle: {
-      backgroundColor: theme.colors.background,
-      borderBottomWidth: 0,
-      elevation: 0,
-      shadowOpacity: 0,
-    },
-
-    headerTitleStyle: {
-      color: theme.colors.text,
-    },
-
-    headerTintColor: theme.colors.text,
-
-    headerLeftContainerStyle: { paddingLeft: 16 },
-    headerRightContainerStyle: { paddingRight: 16 },
   });
 }, [navigation, theme]);
 
@@ -73,9 +54,9 @@ const FriendsList = () => {
                     <Image style={{ width: 44, height: 44, borderRadius: 1000 }} source={friend.profilePicture} />
                     <Text style={{color:theme.colors.text}}>{friend.firstName + ' ' + friend.lastName}</Text>
                   </View>
-                  <TouchableOpacity>
+                  {isOwnProfile && <TouchableOpacity>
                     <Text style={{ color:theme.colors.text}}>Remove friend</Text>
-                  </TouchableOpacity>
+                  </TouchableOpacity>}
                 </View>
               )) : <View style={{alignItems:'center', marginTop:20}}><Text style={{ color:theme.colors.text}}>No results for <Text style={{fontWeight:'bold',color:theme.colors.text}}>'{searchText}'</Text></Text></View>}
             </View>

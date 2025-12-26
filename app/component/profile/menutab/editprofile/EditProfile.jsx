@@ -1,89 +1,64 @@
-import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, ScrollView } from 'react-native';
-import React, { useLayoutEffect, useRef, useState } from 'react';
-import LocationSelector from './LocationSelector';
-import AgeGenderSelector from './AgeGenderSelector';
-import { useNavigation } from '@react-navigation/native';
-import { useDispatch, useSelector } from 'react-redux';
-import { editUserInfo } from '@/src/store/authSlice';
-import AboutMeInput from './AboutMeInput';
-import EditAvailabilityTable from './EditAvailability';
-import * as ImagePicker from 'expo-image-picker';
-import _ from 'lodash';
-import { useTranslation } from 'react-i18next';
-import { useTheme } from '@/src/theme/themeContext';
-import { selectCurrentUser } from '@/src/store/selectors';
+import React, { useLayoutEffect, useState, useRef } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Image,
+  StyleSheet,
+  TextInput
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import _ from "lodash";
+
+import { selectCurrentUser } from "@/src/store/selectors";
+import { setProfileCompletion, updateUserProfile } from "@/src/store/usersSlice";
+import { useTheme } from "@/src/theme/themeContext";
+import LocationSelector from "./LocationSelector";
+import AgeGenderSelector from "./AgeGenderSelector";
+import EditAvailabilityTable from "./EditAvailability";
+import AboutMeInput from "./AboutMeInput";
 
 const EditProfile = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const loggedUser = useSelector(selectCurrentUser);
-  const [editUser, setEditUser] = useState(loggedUser);
-  const [firstNameError, setFirstNameError] = useState('');
-  const [lastNameError, setLastNameError] = useState('');
-  const [availabilityError, setAvailabilityError] = useState('');
   const { t } = useTranslation();
 
-  // ✅ THEME
   const { theme } = useTheme();
   const styles = getStyles(theme);
 
+  const scrollViewRef = useRef(null);
+
+  // 🛡 deep-clone to avoid accidental mutation
+  const [editUser, setEditUser] = useState(() =>
+    JSON.parse(JSON.stringify(loggedUser))
+  );
+
+  const [firstNameError, setFirstNameError] = useState("");
+  const [lastNameError, setLastNameError] = useState("");
+  const [availabilityError, setAvailabilityError] = useState("");
+
   const genders = [
-    { key: 'Male', label: t('Male') },
-    { key: 'Female', label: t('Female') },
-    { key: 'Other', label: t('Other') }
+    { key: "Male", label: t("Male") },
+    { key: "Female", label: t("Female") },
+    { key: "Other", label: t("Other") },
   ];
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerTitle: t('editProfile'),
-      headerShadowVisible: false,
-      headerBackButtonDisplayMode: "minimal",
-      headerBackTitleVisible: false,
-      headerBackTitle: "",
-
-      headerLeft: () => (
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Text style={styles.buttonText}>{t('cancelEditProfile')}</Text>
-        </TouchableOpacity>
-      ),
-
-      headerRight: () => (
-        <TouchableOpacity onPress={saveUserInfo} disabled={!hasChanges}>
-          <Text style={[styles.buttonText, !hasChanges && styles.disabledButton]}>
-            {t('saveEditProfile')}
-          </Text>
-        </TouchableOpacity>
-      ),
-
-      headerStyle: {
-        backgroundColor: theme.colors.background,
-        borderBottomWidth: 0,
-        elevation: 0,
-        shadowOpacity: 0,
-      },
-          headerTitleStyle: {
-      color: theme.colors.text,
-    },
-
-    // ✅ Back arrow & icons color
-    headerTintColor: theme.colors.text,
-    });
-  }, [navigation, editUser, theme]);
-
+  // detect real changes
   const hasChanges = !_.isEqual(loggedUser, editUser);
 
-  const isAvailabilityValid = (availability) => {
-    return Object.values(availability).some((day) =>
+  const isAvailabilityValid = (availability) =>
+    Object.values(availability).some((day) =>
       Object.values(day).some((time) => time === true)
     );
-  };
-
-  const scrollViewRef = useRef(null);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ['images'],
+      mediaTypes: ["images"],
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
@@ -91,40 +66,105 @@ const EditProfile = () => {
 
     if (!result.canceled) {
       const uri = result.assets[0].uri;
-      if (uri.endsWith('.png') || uri.endsWith('.jpeg') || uri.endsWith('.jpg')) {
-        setEditUser({ ...editUser, profileInfo: { ...editUser.profileInfo, profileImageUrl: uri } });
+      if (uri.endsWith(".png") || uri.endsWith(".jpeg") || uri.endsWith(".jpg")) {
+        setEditUser({
+          ...editUser,
+          profileInfo: {
+            ...editUser.profileInfo,
+            profileImageUrl: uri,
+          },
+        });
       } else {
-        alert(t('imageError'));
+        alert(t("imageError"));
       }
     }
   };
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: true,
+      headerTitle: t("editProfile"),
+
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Text style={styles.buttonText}>{t("cancelEditProfile")}</Text>
+        </TouchableOpacity>
+      ),
+
+      headerRight: () => (
+        <TouchableOpacity onPress={saveUserInfo} disabled={!hasChanges}>
+          <Text
+            style={[
+              styles.buttonText,
+              !hasChanges && styles.disabledButton,
+            ]}
+          >
+            {t("saveEditProfile")}
+          </Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation, editUser, theme, hasChanges]);
+
   function saveUserInfo() {
-    let isValid = true;
+  let valid = true;
 
-    if (editUser.firstName.trim() === '') {
-      setFirstNameError(t('firstNameError'));
-      isValid = false;
-    } else setFirstNameError('');
+  if (!editUser.firstName?.trim()) {
+    setFirstNameError(t("firstNameError"));
+    valid = false;
+  } else setFirstNameError("");
 
-    if (editUser.lastName.trim() === '') {
-      setLastNameError(t('lastNameError'));
-      isValid = false;
-    } else setLastNameError('');
+  if (!editUser.lastName?.trim()) {
+    setLastNameError(t("lastNameError"));
+    valid = false;
+  } else setLastNameError("");
 
-    if (!isAvailabilityValid(editUser.profileInfo.availability)) {
-      setAvailabilityError();
-      isValid = false;
-      scrollViewRef.current?.scrollToEnd({ animated: true });
-    } else {
-      setAvailabilityError(t('oneTimeSlotError'));
-    }
+  if (!isAvailabilityValid(editUser.profileInfo.availability)) {
+    setAvailabilityError(t("oneTimeSlotError"));
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+    valid = false;
+  } else setAvailabilityError("");
 
-    if (isValid && hasChanges) {
-      dispatch(editUserInfo(editUser));
-      navigation.navigate('Profile');
-    }
-  }
+  if (!valid || !hasChanges) return;
+
+
+  // 1️⃣ update profile
+  dispatch(
+    updateUserProfile({
+      id: loggedUser.id,
+      changes: {
+        firstName: editUser.firstName,
+        lastName: editUser.lastName,
+        profileInfo: {
+          ...loggedUser.profileInfo,
+          ...editUser.profileInfo,
+        },
+      },
+    })
+  );
+
+  // 2️⃣ calculate COMPLETED STEP COUNT (0–8)
+  const completed = [
+    !!editUser.firstName?.trim(),
+    !!editUser.lastName?.trim(),
+    !!editUser.profileInfo.mainSport,
+    true,
+    !!editUser.profileInfo.age,
+    !!editUser.profileInfo.location,
+    !!editUser.profileInfo.gender,
+    !!editUser.profileInfo.profileImageUrl,
+  ].filter(Boolean).length;
+
+  // 3️⃣ store completed count in Redux
+  dispatch(
+    setProfileCompletion({
+      userId: loggedUser.id,
+      percentage: completed
+    })
+  );
+
+  navigation.goBack();
+}
 
   return (
     <ScrollView

@@ -67,14 +67,18 @@ const usersSlice = createSlice({
        e.g. changes:{ location:'Miami' }
     */
     updateUserProfile: (state, action) => {
-      const { userId, changes } = action.payload;
-      const user = state.entities[userId];
+      const { id, changes } = action.payload;
+      const user = state.entities[id];
       if (!user) return;
 
-      user.profileInfo = {
-        ...user.profileInfo,
-        ...changes,
-      };
+      Object.assign(user, changes);
+
+      if (changes.profileInfo) {
+        user.profileInfo = {
+          ...user.profileInfo,
+          ...changes.profileInfo,
+        };
+      }
     },
 
     /* -------- UPDATE PROFILE COMPLETION % -------- */

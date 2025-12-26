@@ -96,17 +96,21 @@ const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
                   const initial = player?.name?.trim()?.charAt(0)?.toUpperCase() || '';
 
                   return (
-                    <TouchableOpacity key={player.id} style={{alignItems:'center'}}>
-                      {hasPhoto ? (
-                        <Image
-                          source={player.profilePhoto}
-                          style={styles.playerImage}
-                        />
-                      ) : (
-                        <TouchableOpacity style={styles.emptyPlayerImage}>
-                          <Text>{initial}</Text>
+                    <TouchableOpacity key={player.id} style={{alignItems:'center'}} 
+                      >
+                      
+                        <TouchableOpacity 
+                        style={hasPhoto ? styles.playerImage : styles.emptyPlayerImage}
+                        onPress={() => navigation.navigate('Profile',{playerId: player.id})}>
+                          { 
+                            hasPhoto ? <Image source={player.profilePhoto}/> 
+                              : 
+                            <Text>{initial}</Text>  
+                          }
+                        
                         </TouchableOpacity>
-                      )}
+                   
+                      
                       <Text style={{color:theme.colors.text, marginTop:5, marginRight:5}}>{player.name}</Text>
                     </TouchableOpacity>
                   );

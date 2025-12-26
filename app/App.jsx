@@ -72,6 +72,8 @@ const ThemedNavigator = () => {
         fontWeight: "600",
         textAlign: 'center'
       },
+            headerLeftContainerStyle: { paddingLeft: 16 },
+            headerRightContainerStyle: { paddingRight: 16 },
 
       headerTintColor: theme.colors.text,
     }),

@@ -1,4 +1,4 @@
-import { View, StyleSheet, ScrollView, Platform, Text } from 'react-native';
+import { View, StyleSheet, Text } from 'react-native';
 import React, { useLayoutEffect } from 'react';
 import ProfileHeader from './ProfileHeader';
 import ProfileDetails from './profileTabs/ProfileDetails';
@@ -8,6 +8,7 @@ import { useTheme } from '@/src/theme/themeContext';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { selectCurrentUser } from '@/src/store/selectors';
 import { usersSelectors } from '@/src/store/usersSlice';
+import ProfileOthersHeader from './ProfileOthersHeader';
 
 const Profile = () => {
 
@@ -29,12 +30,15 @@ const Profile = () => {
   const userToShow = useSelector(state =>
     playerId ? selectUserById(state, playerId) : loggedUser
   );
+// true when viewing your own profile
+  const isOwnProfile = !playerId || playerId === loggedUser?.id;
 
   // 🛡 safety guard
   if (!userToShow) {
     return (
-      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-        <Text>User not found</Text>
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center",    flex: 1,
+    backgroundColor: theme.colors.background, }}>
+        <Text style={{color:theme.colors.text}}>User not found</Text>
       </View>
     );
   }
@@ -42,36 +46,15 @@ const Profile = () => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: true,
-      headerTitle: 'Profile',
-      headerShadowVisible: false,
-      headerBackButtonDisplayMode: 'minimal',
-      headerBackTitleVisible: false,
-      headerBackTitle: '',
-
-      headerRight: () => <ProfileHeader />,
-
-      headerStyle: {
-        backgroundColor: theme.colors.background,
-        borderBottomWidth: 0,
-        elevation: 0,
-        shadowOpacity: 0,
-      },
-
-      headerTitleStyle: {
-        color: theme.colors.text,
-      },
-
-      headerTintColor: theme.colors.text,
-
-      headerLeftContainerStyle: { paddingLeft: 16 },
-      headerRightContainerStyle: { paddingRight: 16 },
+      headerTitle: '',
+      headerRight: () => isOwnProfile ? <ProfileHeader /> : <ProfileOthersHeader/>
     });
   }, [navigation, theme]);
 
   return (
     <View style={styles.container}>
-      <ProfileTopInfo loggedUser={userToShow} />
-      <ProfileDetails loggedUser={userToShow} />
+      <ProfileTopInfo loggedUser={userToShow} isOwnProfile={isOwnProfile}/>
+      <ProfileDetails loggedUser={userToShow} isOwnProfile={isOwnProfile}/>
     </View>
   );
 };

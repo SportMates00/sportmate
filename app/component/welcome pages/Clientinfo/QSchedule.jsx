@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -8,45 +8,34 @@ import {
 } from "react-native";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
-import { users_list } from "@/src/js files/users";
-import { setUserInfo } from "@/src/store/authSlice";
 import { useTranslation } from "react-i18next";
+
 import StepBar from "./StepBar";
+
+import { selectCurrentUser } from "@/src/store/selectors";
+import { updateUserProfile } from "@/src/store/usersSlice";
 
 const QSchedule = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const userInfo = useSelector((state) => state.user);
   const navigation = useNavigation();
 
-  // ------------------------------------------------------------
-  // FIXED VERSION: universal keys + translated labels
-  // ------------------------------------------------------------
+  // 👤 logged-in user created during signup
+  const loggedUser = useSelector(selectCurrentUser);
 
+  // 🛡 protect route if no logged user (rare)
+  if (!loggedUser) return null;
+
+  // ------------------------------------------------------------
+  // fixed universal keys
+  // ------------------------------------------------------------
   const dayKeys = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
   const timeKeys = ["Mor", "Aft", "Eve"];
 
-  const dayLabels = dayKeys.map((key) => ({ key, label: t(key) }));
-  const timeLabels = timeKeys.map((key) => ({ key, label: t(key) }));
+  const dayLabels = dayKeys.map(key => ({ key, label: t(key) }));
+  const timeLabels = timeKeys.map(key => ({ key, label: t(key) }));
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerTitle: "",
-      headerShadowVisible: false,
-      headerBackButtonDisplayMode: "minimal",
-      headerBackTitleVisible: false,
-      headerBackTitle: "",
-      headerStyle: {
-      backgroundColor: "white",
-      borderBottomWidth: 0, // remove line
-      elevation: 0,         // Android
-      shadowOpacity: 0,     // iOS
-    },
-    });
-  }, [navigation]);
-
-  // Availability is stored using universal KEYS only
+  // local UI state
   const [availability, setAvailability] = useState(
     dayKeys.reduce((acc, day) => {
       acc[day] = timeKeys.reduce((timeAcc, time) => {
@@ -56,15 +45,6 @@ const QSchedule = () => {
       return acc;
     }, {})
   );
-
-  function handleClientInfoCompletion() {
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "HomeTabs" }],
-      })
-    );
-  }
 
   const toggleCell = (dayKey, timeKey) => {
     const updatedAvailability = {
@@ -77,22 +57,31 @@ const QSchedule = () => {
 
     setAvailability(updatedAvailability);
 
+    // 💾 save to usersSlice
     dispatch(
-      setUserInfo({
-        ...userInfo,
-        profileInfo: {
-          ...userInfo.profileInfo,
-          availability: updatedAvailability, // STORES KEYS, NOT LABELS
+      updateUserProfile({
+        userId: loggedUser.id,
+        changes: {
+          availability: updatedAvailability,
         },
       })
     );
   };
 
   const isAtLeastOneSelected = () => {
-    return Object.values(availability).some((day) =>
-      Object.values(day).some((time) => time)
+    return Object.values(availability).some(day =>
+      Object.values(day).some(time => time)
     );
   };
+
+  function gotoHomeTabs() {
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "HomeTabs" }],
+      })
+    );
+  }
 
   const handleGetStarted = () => {
     if (!isAtLeastOneSelected()) {
@@ -100,14 +89,8 @@ const QSchedule = () => {
       return;
     }
 
-    try {
-      users_list.push(userInfo);
-      dispatch(setUserInfo(userInfo));
-      handleClientInfoCompletion();
-      console.log("USER INFO NEW I", userInfo);
-    } catch (error) {
-      console.error("Error saving user data:", error);
-    }
+    // 🎉 onboarding complete — user already exists in Redux
+    gotoHomeTabs();
   };
 
   return (

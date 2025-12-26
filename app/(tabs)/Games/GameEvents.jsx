@@ -92,10 +92,12 @@ const GameEvents = () => {
                 return (
                   <View key={player.id}>
                     {hasPhoto ? (
-                      <Image
+                      <TouchableOpacity onPress={() => navigation.navigate('Profile',{playerId: player.id})}>
+                        <Image
                         source={player.profilePhoto}
                         style={styles.player}
-                      />
+                        />
+                      </TouchableOpacity>
                     ) : (
                       <TouchableOpacity style={styles.emptyPlayer}
                         onPress={() => navigation.navigate('Profile',{playerId: player.id})}
