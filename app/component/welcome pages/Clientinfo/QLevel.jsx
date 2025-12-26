@@ -1,4 +1,4 @@
-import { setUserInfo } from '@/src/store/userSlice';
+import { setUserInfo } from '@/src/store/authSlice';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';

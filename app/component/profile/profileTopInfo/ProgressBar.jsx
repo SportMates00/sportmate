@@ -4,11 +4,11 @@ import {
 } from 'react-native';
 import ProgressBar from "react-native-progress/Bar";
 import { useDispatch } from "react-redux";
-import { profileCompletePer } from "@/src/store/userSlice";
 import ProfileCompletion from './ProfileCompletion';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';
+import { setProfileCompletion } from '@/src/store/usersSlice';
 
 const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const ProgressBarbar = ({ loggedUser, progressPercentage }) => {
 
     // Dispatch update only if there's an increment
     if (countIncrement > 0) {
-      dispatch(profileCompletePer(loggedUser.profileInfo.profileCompletePer + countIncrement));
+      dispatch(setProfileCompletion(loggedUser.profileInfo.profileCompletePer + countIncrement));
       setCountedFields(updatedFields);
     }
   }, [

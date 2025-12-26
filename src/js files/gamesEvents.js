@@ -1,3 +1,5 @@
+import { basketballSportIcon, footballSportIcon } from "@/assets/sportIcons/sportIcons";
+
 export const gameEvents = [
   {
     id: "game_001",
@@ -48,8 +50,8 @@ export const gameEvents = [
     price: 5000,
     host: { id: "u5", name: "David", verified: false, profilePhoto: null },
     players: [
-      { id: "u5", name: "David", profilePhoto: null },
-      { id: "u6", name: "Ani", profilePhoto: null }
+      { id: "u2", name: "David", profilePhoto: null },
+      { id: "u6", name: "Ani", profilePhoto: footballSportIcon }
     ],
     pendingRequests: [{ id: "u7", name: "Sara" }],
     invitedPlayers: [{ id: "u8", name: "Mark" }],
@@ -79,7 +81,7 @@ export const gameEvents = [
     price: 0,
     host: { id: "u9", name: "Karen", verified: true, profilePhoto: null },
     players: [
-      { id: "u9", name: "Karen", profilePhoto: null },
+      { id: "u9", name: "Karen", profilePhoto: basketballSportIcon },
       { id: "u10", name: "Levon", profilePhoto: null },
       { id: "u11", name: "Aram", profilePhoto: null }
     ],

@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Platform } from '
 import QSport from './QSport';
 import QLevel from './QLevel';
 import QSchedule from './QSchedule';
-import { setUserInfo } from '@/src/store/userSlice';
+import { setUserInfo } from '@/src/store/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';

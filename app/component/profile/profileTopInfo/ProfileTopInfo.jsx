@@ -2,7 +2,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Modal } from "react-na
 import ProgressBarbar from "./ProgressBar";
 import { useState } from "react";
 import reviewStar from "../../../../assets/images/reviewStar.png";
-import FriendsList from "./FriendsList";
 import { useTheme } from "@/src/theme/themeContext";
 import { useTranslation } from "react-i18next";
 import { friendsB } from "@/assets/images/images";
@@ -18,11 +17,8 @@ const ProfileTopInfo = ({ loggedUser = {} }) => {
   const profileInfo = loggedUser.profileInfo || {};
   const aboutText = profileInfo.aboutMe || "";
   const isLongAbout = aboutText.length > ABOUT_LIMIT;
-
   const progressPercentage = (profileInfo.profileCompletePer || 0) / TOTAL_STEPS;
   const isCompleted = progressPercentage === 1;
-  const [friendListModalVisible, setFriendListModalVisible] = useState(false);
-
   const { theme } = useTheme();
   const styles = getStyles(theme);
   const { t } = useTranslation();

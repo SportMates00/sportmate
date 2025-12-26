@@ -1,24 +1,21 @@
 // app/LoginScreen.js
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, {  useLayoutEffect, useMemo, useState } from 'react';
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
   ActivityIndicator,
   Alert,
-  Platform,
   Keyboard,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useNavigation, CommonActions } from '@react-navigation/native';
-import { users_list } from '@/src/js files/users';
 import LangChanger from '../LangChanger';
-import { useDispatch } from 'react-redux';
-import { setUserInfo } from '@/src/store/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setCurrentUser } from '@/src/store/authSlice';
+import { upsertUser, usersSelectors } from '@/src/store/usersSlice';
 const LoginScreen = () => {
   const { t } = useTranslation();
   const navigation = useNavigation();
@@ -33,13 +30,14 @@ const dispatch = useDispatch();
     general: '',
   });
   const [loading, setLoading] = useState(false);
-  const [userMap, setUserMap] = useState(new Map());
 
-  useEffect(() => {
+  const users = useSelector(usersSelectors.selectAll);
+
+  const userMap = useMemo(() => {
     const map = new Map();
-    users_list.forEach((u) => map.set(u.email.toLowerCase(), u));
-    setUserMap(map);
-  }, []);
+    users.forEach(u => map.set(u.email.toLowerCase(), u));
+    return map;
+  }, [users]);
 
   const handleLoginSuccess = () => {
     navigation.dispatch(
@@ -82,7 +80,8 @@ const dispatch = useDispatch();
         setError((prev) => ({ ...prev, general: t('incorrectPassword') }));
       } else {
         handleLoginSuccess();
-        dispatch(setUserInfo(foundUser));
+        dispatch(upsertUser(foundUser));
+        dispatch(setCurrentUser(foundUser.id));
       }
     } catch (e) {
       console.error('Login error:', e);

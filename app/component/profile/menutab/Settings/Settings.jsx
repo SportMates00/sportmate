@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView, Platform, 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { useDispatch } from 'react-redux';
-import { resetUserInfo } from '@/src/store/userSlice';
+import { resetUserInfo } from '@/src/store/authSlice';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../../../../src/theme/themeContext';
 import TopSettings from './top settings/TopSettings';

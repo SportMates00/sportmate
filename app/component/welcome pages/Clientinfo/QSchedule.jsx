@@ -9,7 +9,7 @@ import {
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useSelector, useDispatch } from "react-redux";
 import { users_list } from "@/src/js files/users";
-import { setUserInfo } from "@/src/store/userSlice";
+import { setUserInfo } from "@/src/store/authSlice";
 import { useTranslation } from "react-i18next";
 import StepBar from "./StepBar";
 

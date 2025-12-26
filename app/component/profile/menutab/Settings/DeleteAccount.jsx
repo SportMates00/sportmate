@@ -1,4 +1,4 @@
-import { deleteAccount } from '@/src/store/userSlice';
+import { deleteAccount } from '@/src/store/authSlice';
 import { useTheme } from '@/src/theme/themeContext';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect, useState } from 'react';
@@ -13,13 +13,14 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { selectCurrentUser } from '@/src/store/selectors';
 
 const DeleteAccount = () => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const loggedUser = useSelector((state) => state.user);
+  const loggedUser = useSelector(selectCurrentUser);
   const { t } = useTranslation();
 
   const [confirmText, setConfirmText] = useState('');

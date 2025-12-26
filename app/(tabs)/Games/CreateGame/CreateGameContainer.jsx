@@ -9,6 +9,7 @@ import { addGameEvent } from "@/src/store/gameEventsSlice";
 import CreateGame1 from "./CreateGame1";
 import CreateGame2 from "./CreateGame2";
 import CreateGame3 from "./CreateGame3";
+import { selectCurrentUser } from "@/src/store/selectors";
 
 /* ---------- EMPTY GAME TEMPLATE ---------- */
 const createEmptyGame = (loggedUser) => ({
@@ -69,7 +70,7 @@ const CreateGameComponent = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
 
-  const loggedUser = useSelector((state) => state.user);
+  const loggedUser = useSelector(selectCurrentUser);
   const [step, setStep] = useState(1);
 
   const [draftGame, setDraftGame] = useState(() =>

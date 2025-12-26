@@ -7,7 +7,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import LangChanger from '../LangChanger';
 import { users_list } from '@/src/js files/users';
 import { useSelector, useDispatch } from 'react-redux';
-import { setUserInfo } from '@/src/store/userSlice';
+import { setUserInfo } from '@/src/store/authSlice';
 
 const SignUpScreen = () => {
   const { t } = useTranslation();

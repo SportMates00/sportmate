@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
-import { editUserInfo } from '@/src/store/userSlice';
+import { editUserInfo } from '@/src/store/authSlice';
 import { useDispatch } from 'react-redux';
 import { useTheme } from '@/src/theme/themeContext';
 import { useTranslation } from 'react-i18next';

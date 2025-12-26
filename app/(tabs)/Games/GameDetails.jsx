@@ -6,6 +6,7 @@ import {
   ImageBackground,
   TouchableOpacity,
   ScrollView,
+  Image,
 } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useSelector } from "react-redux";
@@ -119,7 +120,7 @@ const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
                     key={`empty-${i}`}
                     style={[styles.avatar, styles.emptyAvatar]}
                   >
-                    <Text>+</Text>
+                    <Text style={{color:theme.colors.text, fontSize:20}}>+</Text>
                   </TouchableOpacity>
                 ))}
               </View>
@@ -357,6 +358,8 @@ const getStyles = theme =>
       borderStyle: "dashed",
       borderColor: "#ccc",
       backgroundColor: "transparent",
+      justifyContent:'center',
+      alignItems:'center'
     },
 
     playerName: {

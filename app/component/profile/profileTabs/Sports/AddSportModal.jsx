@@ -19,7 +19,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/src/theme/themeContext';
 import { useDispatch } from 'react-redux';
-import { editUserInfo } from '@/src/store/userSlice';
+import { editUserInfo } from '@/src/store/authSlice';
 
 const MODAL_HEIGHT = Dimensions.get('window').height * 0.5;
 

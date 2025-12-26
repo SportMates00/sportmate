@@ -5,7 +5,7 @@ import {
   pingPongSportIcon,
   tennisSportIcon,
 } from '@/assets/sportIcons/sportIcons';
-import { setUserInfo } from '@/src/store/userSlice';
+import { setUserInfo } from '@/src/store/authSlice';
 import { useNavigation } from '@react-navigation/native';
 import React, { useLayoutEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';

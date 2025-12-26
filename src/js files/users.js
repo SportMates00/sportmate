@@ -76,7 +76,7 @@ const users = [
       },
     },
   },
-      {id: 'u2', firstName:'Mher', lastName: 'Kevorkian', email:'q', password:'q', profileInfo: {
+      {id: 'u2', firstName:'David', lastName: 'Kevorkian', email:'q', password:'q', profileInfo: {
       mainSport: 'Football',
       location:'Yerevan',
       age:'24',

@@ -4,11 +4,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useTheme } from '@/src/theme/themeContext';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import { selectCurrentUser } from '@/src/store/selectors';
 
 
 const FriendsList = () => {
   const [searchText, setSearchText] = useState('');
-  const loggedUser = useSelector((state) => state.user);
+  const loggedUser = useSelector(selectCurrentUser);
   const friendsList = loggedUser.profileInfo.friendsList;
   const { theme } = useTheme(); // Get current theme and toggle (if needed)
   const styles = getStyles(theme); // Generate dynamic styles based on current theme

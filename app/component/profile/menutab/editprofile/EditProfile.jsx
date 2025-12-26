@@ -4,18 +4,19 @@ import LocationSelector from './LocationSelector';
 import AgeGenderSelector from './AgeGenderSelector';
 import { useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
-import { editUserInfo } from '@/src/store/userSlice';
+import { editUserInfo } from '@/src/store/authSlice';
 import AboutMeInput from './AboutMeInput';
 import EditAvailabilityTable from './EditAvailability';
 import * as ImagePicker from 'expo-image-picker';
 import _ from 'lodash';
 import { useTranslation } from 'react-i18next';
 import { useTheme } from '@/src/theme/themeContext';
+import { selectCurrentUser } from '@/src/store/selectors';
 
 const EditProfile = () => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const loggedUser = useSelector((state) => state.user);
+  const loggedUser = useSelector(selectCurrentUser);
   const [editUser, setEditUser] = useState(loggedUser);
   const [firstNameError, setFirstNameError] = useState('');
   const [lastNameError, setLastNameError] = useState('');

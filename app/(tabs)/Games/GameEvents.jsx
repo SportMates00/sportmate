@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useTheme } from "@/src/theme/themeContext";
 import { useTranslation } from "react-i18next";
+import { selectCurrentUser } from "@/src/store/selectors";
 
 
 const GameEvents = () => {
@@ -24,8 +25,8 @@ const GameEvents = () => {
 
   // ⛳️ Your slice returns { events:[...] }
   const gameEvents = useSelector((state) => state.gameEvents?.events || []);
-  const loggedUser = useSelector((state) => state.user)
-  
+  const loggedUser = useSelector(selectCurrentUser)
+  console.log(loggedUser)
   // format date like "Jun 30, 2025"
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -50,7 +51,7 @@ const GameEvents = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {gameEvents.map((game) => {
-        if(game.host.id !== loggedUser.id){
+        if(game.host.id !== loggedUser?.id){
           return (
             <View style={styles.card} key={game.id}>
           <Image
@@ -96,7 +97,9 @@ const GameEvents = () => {
                         style={styles.player}
                       />
                     ) : (
-                      <TouchableOpacity style={styles.emptyPlayer}>
+                      <TouchableOpacity style={styles.emptyPlayer}
+                        onPress={() => navigation.navigate('Profile',{playerId: player.id})}
+                      >
                         <Text>{initial}</Text>
                       </TouchableOpacity>
                     )}
@@ -111,7 +114,7 @@ const GameEvents = () => {
               <Ionicons name="stats-chart-outline" size={14} color="#fff" />
               <Text style={styles.infoText}>
                 {game.level.length > 1 ? `${t(game.level[0]) + ',' + t(game.level[1])}...` : t(game.level[0])}
-                {console.log(game.level)}
+           
               </Text>
             </View>
 
@@ -131,23 +134,20 @@ const GameEvents = () => {
                 <Text style={styles.secondaryText}>{t("ViewDetails")}</Text>
               </TouchableOpacity>
 
-             {loggedUser.id !== game.host.id && (
+             {loggedUser?.id !== game.host.id && (
                 <TouchableOpacity
                   style={[
                     styles.primaryBtn,
-                    game.verifiedOnly && !loggedUser.userVerification && styles.disabledJoinBtn
+                    game.verifiedOnly && !loggedUser?.userVerification && styles.disabledJoinBtn
                   ]}
                   onPress={() => {
-                    if (game.verifiedOnly && !loggedUser.userVerification) {
+                    if (game.verifiedOnly && !loggedUser?.userVerification) {
                       Alert.alert(
                         "Verification required",
                         "This event is only available to verified users."
                       );
                       return;
                     }
-
-                    // 👉 normal join behavior here
-                    console.log("Ask to join pressed");
                   }}
                 >
                   <Text style={styles.primaryText}>{t("AskToJoin")}</Text>
