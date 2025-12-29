@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -14,7 +14,8 @@ import { useTranslation } from 'react-i18next';
 const Sports = ({ selectedSports, setSelectedSports, onClose }) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
- const { t } = useTranslation();
+  const { t } = useTranslation();
+  const [selectSports, setSelectSports] = useState(selectedSports);
 
   const sports = [
   { key: "Football", label: t("Football"), icon: 'football-outline' },
@@ -27,13 +28,6 @@ const Sports = ({ selectedSports, setSelectedSports, onClose }) => {
   { key: "Hiking1", label: t("Hiking1"), icon: 'baseball-outline' },
 ];
 
-  const toggleSport = (sportName) => {
-    setSelectedSports((prev) =>
-      prev.includes(sportName)
-        ? prev.filter((s) => s !== sportName)
-        : [...prev, sportName]
-    );
-  };
 
   return (
     <View style={styles.container}>
@@ -49,13 +43,20 @@ const Sports = ({ selectedSports, setSelectedSports, onClose }) => {
       {/* SCROLLABLE LIST */}
       <ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 20 }}>
         {sports.map((item) => {
-          const isSelected = selectedSports.includes(item.key);
-
+          const isSelected = selectSports.includes(item.key);
+            
           return (
             <TouchableOpacity
               key={item.key}
               style={styles.row}
-              onPress={() => toggleSport(item.key)}
+              onPress={() => setSelectSports(() => {
+                     return selectSports.includes(item.key)
+                        ? selectSports.filter((s) => s !== item.key)
+                        : [...selectSports, item.key]
+              })
+              }
+
+            
             >
               <View style={styles.rowLeft}>
                 <Ionicons name={item.icon} size={24} color={theme.colors.primary} />
@@ -78,7 +79,11 @@ const Sports = ({ selectedSports, setSelectedSports, onClose }) => {
 
         <TouchableOpacity
           style={styles.applyBtn}
-           onPress={onClose}
+           onPress={() => {
+            onClose()
+            setSelectedSports(selectSports)
+           }
+          }
         >
           <Text style={styles.applyText}>Apply</Text>
         </TouchableOpacity>

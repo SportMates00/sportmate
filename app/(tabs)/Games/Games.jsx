@@ -1,56 +1,29 @@
 // Games.jsx
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import AllGames from './AllGames';
 import MyGames from './MyGames';
 import { useSelector } from 'react-redux';
 import { useTheme } from '@/src/theme/themeContext';
-import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { selectCurrentUser } from '@/src/store/selectors';
+import { selectPublicGames } from '@/src/store/gameEventsSelector';
 
 
 const Games = () => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
-  const navigation = useNavigation();
   const { t } = useTranslation();
 
   const [activeTab, setActiveTab] = useState('AllGames');
   const loggedUser = useSelector(selectCurrentUser);
 
 
-  const games = useSelector(state => state.gameEvents.events);
+  const games = useSelector(selectPublicGames);
 
   const addGame = (newGame) => {
   setGames(prev => [newGame, ...prev]);
 };
-
-
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: true,
-      headerShadowVisible: false,
-      headerBackButtonDisplayMode: 'minimal',
-      headerBackTitleVisible: false,
-      headerBackTitle: '',
-
-      headerStyle: {
-        backgroundColor: theme.colors.background,
-        borderBottomWidth: 0,
-        elevation: 0,
-        shadowOpacity: 0,
-      },
-
-      headerTitleStyle: {
-        color: theme.colors.text,
-        fontFamily: theme.fonts.family,
-      },
-
-      headerTintColor: theme.colors.text,
-    });
-  }, [navigation, theme]);
 
   return (
     <View style={styles.container}>

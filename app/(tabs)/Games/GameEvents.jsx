@@ -17,16 +17,16 @@ import { useTranslation } from "react-i18next";
 import { selectCurrentUser } from "@/src/store/selectors";
 
 
-const GameEvents = () => {
+const GameEvents = ({gameEvents}) => {
   const navigation = useNavigation();
   const { theme } = useTheme();
   const { t } = useTranslation();
   const styles = getStyles(theme);
 
   // ⛳️ Your slice returns { events:[...] }
-  const gameEvents = useSelector((state) => state.gameEvents?.events || []);
+  //const gameEvents = useSelector((state) => state.gameEvents?.events || []);
   const loggedUser = useSelector(selectCurrentUser)
-  console.log(loggedUser)
+
   // format date like "Jun 30, 2025"
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -51,9 +51,8 @@ const GameEvents = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {gameEvents.map((game) => {
-        if(game.host.id !== loggedUser?.id){
-          return (
-            <View style={styles.card} key={game.id}>
+         return (
+        <View style={styles.card} key={game.id}>
           <Image
             source={require("../../../assets/images/football-field.webp")}
             style={styles.image}
@@ -158,11 +157,9 @@ const GameEvents = () => {
             </View>
           </View>
         </View>
-          )
-        }else {
-          return ''
+          )})
         }
-      })}
+      
     </ScrollView>
   );
 };

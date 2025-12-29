@@ -25,6 +25,7 @@ const AllGames = ({ loggedUser, games }) => {
   const { t } = useTranslation();
   const navigation = useNavigation();
 
+  
   /* ---------------- UI STATE ---------------- */
   const [showSports, setShowSports] = useState(false);
   const [showSort, setShowSort] = useState(false);
@@ -32,7 +33,7 @@ const AllGames = ({ loggedUser, games }) => {
 
   const [selectedSports, setSelectedSports] = useState(() =>
     loggedUser?.profileInfo?.mainSport
-      ? [loggedUser.profileInfo.mainSport.toLowerCase()]
+      ? [loggedUser.profileInfo.mainSport]
       : []
   );
 
@@ -51,10 +52,11 @@ const AllGames = ({ loggedUser, games }) => {
 
     let events = [...games];
 
+    
     // SPORT FILTER
     if (selectedSports.length > 0) {
       events = events.filter((g) =>
-        selectedSports.includes(g.sport?.toLowerCase())
+        selectedSports.includes(g.sportName)
       );
     }
 

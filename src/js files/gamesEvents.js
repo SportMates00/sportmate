@@ -24,6 +24,7 @@ export const gameEvents = [
     ],
     pendingRequests: [{ id: "u3", name: "Mike" }],
     invitedPlayers: [],
+    rejectedPlayers: [],
     verifiedOnly: false,
     visibility: "public",
     chatEnabled: true,
@@ -51,10 +52,12 @@ export const gameEvents = [
     host: { id: "u5", name: "David", verified: false, profilePhoto: null },
     players: [
       { id: "u2", name: "David", profilePhoto: null },
-      { id: "u6", name: "Ani", profilePhoto: footballSportIcon }
+      { id: "u6", name: "Ani", profilePhoto: footballSportIcon },
+     
     ],
     pendingRequests: [{ id: "u7", name: "Sara" }],
     invitedPlayers: [{ id: "u8", name: "Mark" }],
+    rejectedPlayers: [ { id: "u1", name: "John", profilePhoto: null },],
     verifiedOnly: true,
     visibility: "public",
     chatEnabled: true,
@@ -85,8 +88,9 @@ export const gameEvents = [
       { id: "u10", name: "Levon", profilePhoto: null },
       { id: "u11", name: "Aram", profilePhoto: null }
     ],
-    pendingRequests: [],
+    pendingRequests: [{ id: "u1", name: "John", profilePhoto: null },],
     invitedPlayers: [{ id: "u12", name: "Narek" }],
+    rejectedPlayers: [],
     verifiedOnly: false,
     visibility: "private",
     chatEnabled: false,
