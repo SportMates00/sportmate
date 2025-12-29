@@ -41,7 +41,7 @@ import DeleteAccount from "./component/profile/menutab/Settings/DeleteAccount";
 import Reviews from "./component/profile/profileTabs/Reviews";
 import ProfileViewers from "./component/profile/menutab/ProfileViewers";
 import LangChanger from "./component/LangChanger";
-import Activity from "./(tabs)/Activity";
+import Explore from "./(tabs)/Explore/Explore";
 import ChatScreen from "./(tabs)/Inbox/ChatScreen";
 import GameDetails from "./(tabs)/Games/GameDetails";
 import CreateGameComponent from "./(tabs)/Games/CreateGame/CreateGameContainer";
@@ -154,7 +154,7 @@ const ThemedNavigator = () => {
       <Stack.Screen name="PrivacyPolicy" component={PrivacyPolicy} />
       <Stack.Screen name="TermsConditions" component={TermConditions} />
       <Stack.Screen name="DeleteAccount" component={DeleteAccount} />
-      <Stack.Screen name="Activity" component={Activity} />
+      <Stack.Screen name="Explore" component={Explore} />
       <Stack.Screen name="ChatScreen" component={ChatScreen} />
       <Stack.Screen
         name="GameDetails"
