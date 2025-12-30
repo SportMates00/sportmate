@@ -97,5 +97,37 @@ export const gameEvents = [
     chatId: "chat_game_003",
     status: "active",
     createdAt: "2025-06-15T08:45:00Z"
+  },
+    {
+    id: "game_004",
+    sport: "basketball",
+    sportName: "Basketball",
+    venue: {
+      id: 3, stadiumName: "Yerablur Sports Hall", city: "Yerevan", location: "Malatia-Sebastia",
+      hours: "07:00 - 00:00", price: "20,000 AMD", latitude: 40.1596, longitude: 44.4572
+    },
+    date: "2025-08-12",
+    time: "21:00",
+    timezone: "GMT+4",
+    gameType: "Practice",
+    level: ["Lower Intermediate","Beginner"],
+    maxPlayers: 12,
+    courtBooked: false,
+    price: 0,
+    host: { id: "u9", name: "Karen", verified: true, profilePhoto: null },
+    players: [
+      { id: "u9", name: "Karen", profilePhoto: basketballSportIcon },
+      { id: "u10", name: "Levon", profilePhoto: null },
+      { id: "u11", name: "Aram", profilePhoto: null }
+    ],
+    pendingRequests: [],
+    invitedPlayers: [{ id: "u1", name: "John", profilePhoto: null },],
+    rejectedPlayers: [],
+    verifiedOnly: false,
+    visibility: "private",
+    chatEnabled: false,
+    chatId: "chat_game_003",
+    status: "active",
+    createdAt: "2025-06-15T08:45:00Z"
   }
 ];

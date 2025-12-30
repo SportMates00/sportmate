@@ -138,15 +138,25 @@ const MyGames = ({ loggedUser }) => {
             </View>
 
             {/* Actions */}
-            <View style={styles.actions}>
+         {   
+          !game?.invitedPlayers?.some((p) => p.id === loggedUser?.id) &&
+          <View style={styles.actions}>
+              {game?.rejectedPlayers?.some((p) => p.id === loggedUser?.id) ?
               <TouchableOpacity
+                style={styles.secondaryBtn}
+               
+              >
+                <Text style={styles.secondaryText}>{t("ViewReason")}</Text>
+
+              </TouchableOpacity>
+              
+              : <TouchableOpacity
                 style={styles.secondaryBtn}
                 onPress={() => navigation.navigate('GameDetails',{gameId: game.id})}
               >
                 <Text style={styles.secondaryText}>{t("ViewDetails")}</Text>
-                {console.log(game?.pendingRequests?.some((p) => p.id === loggedUser?.id))
-                }
-              </TouchableOpacity>
+              </TouchableOpacity> 
+              }
 
              { (loggedUser?.id !== game.host.id && game.players.some((p) => p.id == loggedUser?.id) ) ? (
                 <TouchableOpacity
@@ -186,6 +196,22 @@ const MyGames = ({ loggedUser }) => {
                 </TouchableOpacity>
               }
             </View>
+      }
+              { game?.invitedPlayers?.some((p) => p.id === loggedUser?.id) && 
+                <View style={styles.actions}>
+                  <TouchableOpacity  style={[
+                          styles.primaryBtn, 
+                        ]}>
+                    <Text style={{height:20, color:theme.colors.buttonText}}>Accept</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity  style={[
+                          styles.primaryBtn, {backgroundColor:'red'}
+
+                        ]}>
+                    <Text style={{height:20, color:theme.colors.buttonText}}>Reject</Text>
+                  </TouchableOpacity>
+                </View>
+              }
           </View>
         </View>
           )

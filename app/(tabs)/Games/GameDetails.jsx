@@ -15,8 +15,8 @@ import { useTheme } from "@/src/theme/themeContext";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useTranslation } from "react-i18next";
 
-const GameDetails = () => {
-  const navigation = useNavigation();
+const GameDetails = ({navigation}) => {
+  //
   const route = useRoute();
   const { theme } = useTheme();
   const styles = getStyles(theme);
@@ -35,7 +35,6 @@ const GameDetails = () => {
       </View>
     );
   }
-
 // Always safe month key
 const date = new Date(game.date);
 const monthKey = date.toLocaleString('en-US', { month: 'short' });
