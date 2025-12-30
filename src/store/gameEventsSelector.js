@@ -3,6 +3,9 @@ import { createSelector } from '@reduxjs/toolkit';
 export const selectGameEvents = (state) => state.gameEvents.events;
 export const selectCurrentUserId = (state) => state.auth.currentUserId;
 
+const getEventDateTime = (game) =>
+  new Date(`${game.date}T${game.time}:00`);
+
 export const selectMyGameEvents = createSelector(
   [selectGameEvents, selectCurrentUserId],
   (events, userId) => {
@@ -41,6 +44,40 @@ export const selectPublicGames = createSelector(
       if (game?.rejectedPlayers?.some(p => p.id === userId)) return false;
 
       return true; // otherwise keep it
+    });
+  }
+);
+
+export const selectMyCurrentGames = createSelector(
+  [selectMyGameEvents, selectCurrentUserId],
+  (games, userId) => {
+    const now = new Date();
+
+    return games.filter(game => {
+      const isRejected =
+        game?.rejectedPlayers?.some(u => u.id === userId);
+
+      if (isRejected) return false;
+
+      const eventAt = getEventDateTime(game);
+      return eventAt >= now;
+    });
+  }
+);
+
+export const selectMyPastGames = createSelector(
+  [selectMyGameEvents, selectCurrentUserId],
+  (games, userId) => {
+    const now = new Date();
+
+    return games.filter(game => {
+      const isRejected =
+        game?.rejectedPlayers?.some(u => u.id === userId);
+
+      if (isRejected) return true;   // always past UI-wise
+
+      const eventAt = getEventDateTime(game);
+      return eventAt < now;
     });
   }
 );

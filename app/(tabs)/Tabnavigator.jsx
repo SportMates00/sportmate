@@ -35,11 +35,14 @@ function TabNavigator() {
 
         headerStyle: {
           backgroundColor: theme.colors.background,
+          elevation: 0,
+          shadowColor: 'transparent',
         },
 
         headerTitleStyle: {
           color: theme.colors.text,
           fontFamily: theme.fonts.family,
+
         },
 
         headerTintColor: theme.colors.text,

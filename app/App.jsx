@@ -64,6 +64,8 @@ const ThemedNavigator = () => {
 
       headerStyle: {
         backgroundColor: theme.colors.background,
+        elevation: 0,
+        shadowColor: 'transparent',
       },
 
       headerTitleStyle: {

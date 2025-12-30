@@ -9,8 +9,8 @@ export const gameEvents = [
       id: 1, stadiumName: "Hrazdan Stadium", city: "Yerevan", location: "Arabkir",
       hours: "08:00 - 23:00", price: "15,000 AMD", latitude: 40.2058, longitude: 44.5286
     },
-    date: "2025-06-30",
-    time: "09:00",
+    date: "2025-12-30",
+    time: "23:22",
     timezone: "GMT+4",
     gameType: "Practice",
     level: ["Intermediate"],

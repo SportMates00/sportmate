@@ -11,7 +11,7 @@ import {
 import { useTheme } from "@/src/theme/themeContext";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
-import { selectMyGameEvents } from "@/src/store/gameEventsSelector";
+import { selectMyCurrentGames, selectMyGameEvents, selectMyPastGames } from "@/src/store/gameEventsSelector";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 
@@ -20,7 +20,12 @@ const MyGames = ({ loggedUser }) => {
   const styles = getStyles(theme);
   const navigation = useNavigation();
   const { t } = useTranslation();
-  const myGames = useSelector(selectMyGameEvents);
+  const [tab, setTab] = useState("current");
+
+  const currentGames = useSelector(selectMyCurrentGames);
+  const pastGames = useSelector(selectMyPastGames);
+
+  const myGames = tab === "current" ? currentGames : pastGames;
 
   const formatDate = (dateStr) => {
     const date = new Date(dateStr);
@@ -45,6 +50,14 @@ const MyGames = ({ loggedUser }) => {
   
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <View style={{flexDirection:'row'}}>
+        <TouchableOpacity onPress={() => setTab("current")}>
+          <Text>{t('Current')}</Text>
+        </TouchableOpacity>
+         <TouchableOpacity onPress={() => setTab("past")}>
+          <Text>{t('Past')}</Text>
+        </TouchableOpacity>     
+      </View>
       {myGames.map((game) => {
        
           return (
