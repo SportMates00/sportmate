@@ -52,7 +52,7 @@ const GameEvents = ({gameEvents}) => {
     <ScrollView contentContainerStyle={styles.container}>
       {gameEvents.map((game) => {
          return (
-        <View style={styles.card} key={game.id}>
+        <TouchableOpacity onPress={() => navigation.navigate('GameDetails',{gameId: game.id, tab: "public"} )} style={styles.card} key={game.id}>
           <Image
             source={require("../../../assets/images/football-field.webp")}
             style={styles.image}
@@ -156,7 +156,7 @@ const GameEvents = ({gameEvents}) => {
               )}
             </View>
           </View>
-        </View>
+        </TouchableOpacity>
           )})
         }
       

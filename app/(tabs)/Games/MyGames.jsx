@@ -6,14 +6,14 @@ import {
   TouchableOpacity,
   ScrollView,
   Image,
-  Alert,
 } from "react-native";
 import { useTheme } from "@/src/theme/themeContext";
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
-import { selectMyCurrentGames, selectMyGameEvents, selectMyPastGames } from "@/src/store/gameEventsSelector";
+import { selectMyCurrentGames, selectMyPastGames } from "@/src/store/gameEventsSelector";
 import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
+import GameCardButtons from "./GameCardButtons";
 
 const MyGames = ({ loggedUser }) => {
   const { theme } = useTheme();
@@ -50,18 +50,18 @@ const MyGames = ({ loggedUser }) => {
   
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <View style={{flexDirection:'row'}}>
-        <TouchableOpacity onPress={() => setTab("current")}>
-          <Text>{t('Current')}</Text>
+      <View style={{flexDirection:'row',justifyContent:'space-evenly',marginBottom:30, marginTop:10}}>
+        <TouchableOpacity style={[styles.currentButton,tab == 'current' && { borderBottomWidth:1,}]} onPress={() => setTab("current")}>
+          <Text style={[{color:theme.colors.text}, tab == 'current' && {fontWeight:800}]}>{t('Current')}</Text>
         </TouchableOpacity>
-         <TouchableOpacity onPress={() => setTab("past")}>
-          <Text>{t('Past')}</Text>
+         <TouchableOpacity style={[styles.currentButton,tab !== 'current' && { borderBottomWidth:1,}]} onPress={() => setTab("past")}>
+          <Text style={[{color:theme.colors.text}, tab !== 'current' && {fontWeight:800}]}>{t('Past')}</Text>
         </TouchableOpacity>     
       </View>
       {myGames.map((game) => {
        
           return (
-            <View style={styles.card} key={game.id}>
+        <TouchableOpacity onPress={() => !game?.rejectedPlayers?.some((p) => p.id ===  loggedUser?.id) && navigation.navigate('GameDetails', {gameId: game.id, tab})} style={styles.card} key={game.id}>
           <Image
             source={require("../../../assets/images/football-field.webp")}
             style={styles.image}
@@ -151,82 +151,9 @@ const MyGames = ({ loggedUser }) => {
             </View>
 
             {/* Actions */}
-         {   
-          !game?.invitedPlayers?.some((p) => p.id === loggedUser?.id) &&
-          <View style={styles.actions}>
-              {game?.rejectedPlayers?.some((p) => p.id === loggedUser?.id) ?
-              <TouchableOpacity
-                style={styles.secondaryBtn}
-               
-              >
-                <Text style={styles.secondaryText}>{t("ViewReason")}</Text>
-
-              </TouchableOpacity>
-              
-              : <TouchableOpacity
-                style={styles.secondaryBtn}
-                onPress={() => navigation.navigate('GameDetails',{gameId: game.id})}
-              >
-                <Text style={styles.secondaryText}>{t("ViewDetails")}</Text>
-              </TouchableOpacity> 
-              }
-
-             { (loggedUser?.id !== game.host.id && game.players.some((p) => p.id == loggedUser?.id) ) ? (
-                <TouchableOpacity
-                  style={[
-                    styles.primaryBtn,
-                    game.verifiedOnly && !loggedUser?.userVerification && styles.disabledJoinBtn
-                  ]}
-                  onPress={() => {
-                    if (game.verifiedOnly && !loggedUser?.userVerification) {
-                      Alert.alert(
-                        "Verification required",
-                        "This event is only available to verified users."
-                      );
-                      return;
-                    }
-                  }}
-                >
-                  <Text style={styles.primaryText}>{t("AskToJoin")}</Text>
-                </TouchableOpacity>
-              ): game?.pendingRequests?.some((p) => p.id === loggedUser?.id) ?
-              <TouchableOpacity
-                  style={[
-                    styles.primaryBtn,
-                    game.verifiedOnly && !loggedUser?.userVerification && styles.disabledJoinBtn
-                  ]}
-                >
-                  <Text style={styles.primaryText}>{t("Pending")}</Text>
-              </TouchableOpacity>
-              : game?.rejectedPlayers?.some((p) => p.id === loggedUser?.id) &&
-                <TouchableOpacity
-                    style={[
-                      styles.primaryBtn,
-                      game.verifiedOnly && !loggedUser?.userVerification && styles.disabledJoinBtn
-                    ]}
-                  >
-                    <Text style={styles.primaryText}>{t("Rejected")}</Text>
-                </TouchableOpacity>
-              }
-            </View>
-      }
-              { game?.invitedPlayers?.some((p) => p.id === loggedUser?.id) && 
-                <View style={styles.actions}>
-                  <TouchableOpacity  style={[
-                          styles.primaryBtn, 
-                        ]}>
-                    <Text style={{height:20, color:theme.colors.buttonText}}>Accept</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity  style={[
-                          styles.primaryBtn, {backgroundColor:'red'}
-
-                        ]}>
-                    <Text style={{height:20, color:theme.colors.buttonText}}>Reject</Text>
-                  </TouchableOpacity>
-                </View>
-              }
+              <GameCardButtons game={game} loggedUser={loggedUser} tab={tab}/>
           </View>
-        </View>
+        </TouchableOpacity>
           )
         }
       )}
@@ -246,9 +173,6 @@ const getStyles = (theme) =>
       overflow: 'hidden',
       backgroundColor: '#000',
     },
-    disabledJoinBtn: {
-  backgroundColor: "rgba(255,255,255,0.3)", // slightly lighter
-},
     image: {
       ...StyleSheet.absoluteFillObject,
       width: '100%',
@@ -322,38 +246,9 @@ const getStyles = (theme) =>
       fontFamily: theme.fonts.family,
     },
 
-    actions: {
-      flexDirection: 'row',
-      gap: 8,
-      marginTop: 8,
-    },
-    secondaryBtn: {
-      flex: 1,
-      paddingVertical: 8,
-      borderRadius: 8,
-      alignItems: 'center',
-      backgroundColor: theme.colors.background,
-    },
-    secondaryText: {
-      fontSize: 13,
-      fontWeight: '600',
-      color: theme.colors.text,
-      fontFamily: theme.fonts.family,
-    },
-    primaryBtn: {
-      flex: 1,
-      backgroundColor: theme.colors.primary,
-      paddingVertical: 8,
-      borderRadius: 8,
-      alignItems: 'center',
-      fontFamily: theme.fonts.family,
-    },
-    primaryText: {
-      fontSize: 13,
-      fontWeight: '600',
-      color: theme.colors.buttonText,
-      fontFamily: theme.fonts.family,
-    },
+
+
+
    topRightStatus: {
       position: 'absolute',
       top: 10,
@@ -390,6 +285,16 @@ const getStyles = (theme) =>
   alignItems: "center",
   gap: 6,
 },
+
+currentButton: {
+  height:28,
+ 
+  borderColor:theme.colors.primary,
+  width:120,
+  borderRadius:10,
+  justifyContent:'center',
+  alignItems:'center'
+}
 
   });
 

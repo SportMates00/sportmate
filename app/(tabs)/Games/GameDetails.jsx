@@ -8,12 +8,14 @@ import {
   ScrollView,
   Image,
 } from "react-native";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/src/theme/themeContext";
 import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useTranslation } from "react-i18next";
+import { selectCurrentUserId } from "@/src/store/selectors";
+import GameDetailsButtons from "./GameDetailsButtons";
 
 const GameDetails = ({navigation}) => {
   //
@@ -21,12 +23,17 @@ const GameDetails = ({navigation}) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
   const {t, i18n} = useTranslation();
-  const { gameId } = route.params;
+  const { gameId, tab } = route.params;
 
   const game = useSelector((state) =>
     state.gameEvents?.events?.find((g) => g.id === gameId)
   );
-
+  const userId = useSelector(selectCurrentUserId)
+  const isHost = game?.host?.id === userId;
+  const isPlayer = !!game?.players?.some(p => p.id === userId);
+  const canChat = isHost || isPlayer;
+  console.log(isPlayer, userId);
+  
   // Fallbacks (prevents crash if game missing)
   if (!game) {
     return (
@@ -86,9 +93,9 @@ const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
             size={26}
             style={{color:theme.colors.text}}
           />
-          <View style={styles.infoText}>
+          <View style={[styles.infoText, {paddingRight:20}]}>
             <Text style={[styles.infoLabel, {paddingBottom:10}]}>{t("GameDetailsPlayers")}</Text>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}  style={[styles.infoValue, {marginBottom:-20}]}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false}  style={[styles.infoValue, {marginBottom:-20,}]}>
               <View style={styles.playersRow}>
                 {game.players.map(player => {
                   const hasPhoto = !!player?.profilePhoto;
@@ -240,18 +247,9 @@ const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
       </ScrollView>
 
       {/* BOTTOM BAR */}
-      <View style={styles.bottomBar}>
-        <TouchableOpacity
-          style={styles.chatBtn}
-          disabled={!game.chatEnabled}
-        >
-          <Text style={styles.chatText}>{t("GameDetailsChat")}</Text>
-        </TouchableOpacity>
 
-        <TouchableOpacity style={styles.joinBtn}>
-          <Text style={styles.joinText}>{t("AskToJoin")}</Text>
-        </TouchableOpacity>
-      </View>
+      <GameDetailsButtons game={game} loggedUser={userId} tab={tab}/>
+    
     </View>
   );
 };
@@ -263,6 +261,7 @@ const getStyles = theme =>
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
+            paddingTop: 240
     },
 
     header: {
@@ -327,7 +326,6 @@ const getStyles = theme =>
     content: {
       padding: 16,
       paddingBottom: 120,
-      paddingTop: 240
     },
 
     sectionTitle: {
