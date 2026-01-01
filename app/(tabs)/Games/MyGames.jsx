@@ -114,7 +114,7 @@ const MyGames = ({ loggedUser }) => {
                 return (
                   <View key={player.id}>
                     {hasPhoto ? (
-                      <TouchableOpacity onPress={() => navigation.navigate('Profile',{playerId: player.id})}>
+                      <TouchableOpacity onPress={() => !game?.rejectedPlayers?.some((p) => p.id ===  loggedUser?.id) && navigation.navigate('Profile',{playerId: player.id})}>
                         <Image
                         source={player.profilePhoto}
                         style={[styles.player, {position:'relative'}]}
@@ -122,7 +122,7 @@ const MyGames = ({ loggedUser }) => {
                       </TouchableOpacity>
                     ) : (
                       <TouchableOpacity style={[styles.emptyPlayer,{position:'relative'}]}
-                        onPress={() => navigation.navigate('Profile',{playerId: player.id})}
+                        onPress={() => !game?.rejectedPlayers?.some((p) => p.id ===  loggedUser?.id) && navigation.navigate('Profile',{playerId: player.id})}
                       >
                       
                         <Text>{initial}</Text>

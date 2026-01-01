@@ -44,9 +44,6 @@ const ChatScreen = ({ route, navigation }) => {
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Ionicons name="arrow-back" size={24} color="black" />
-        </TouchableOpacity>
         <Image source={{ uri: profilePic }} style={styles.profilePic} />
         <Text style={styles.headerTitle}>{name}</Text>
       </View>

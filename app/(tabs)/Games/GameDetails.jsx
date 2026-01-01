@@ -46,6 +46,7 @@ const GameDetails = ({navigation}) => {
 const date = new Date(game.date);
 const monthKey = date.toLocaleString('en-US', { month: 'short' });
 const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
+console.log('gamedetails', tab);
 
   const formattedTime = new Date(
     `${game.date}T${game.time}`
@@ -123,7 +124,7 @@ const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
                 })}
 
                 {/* empty slots */}
-                {Array.from({
+                {tab == 'public' || canChat && Array.from({
                   length: game.maxPlayers - game.players.length,
                 }).map((_, i) => (
                   <TouchableOpacity
