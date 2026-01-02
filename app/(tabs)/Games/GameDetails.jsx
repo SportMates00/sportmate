@@ -16,6 +16,7 @@ import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { useTranslation } from "react-i18next";
 import { selectCurrentUserId } from "@/src/store/selectors";
 import GameDetailsButtons from "./GameDetailsButtons";
+import GameDetailsHeaderRight from "./GameDetailsHeaderRight";
 
 const GameDetails = ({navigation}) => {
   //
@@ -32,7 +33,7 @@ const GameDetails = ({navigation}) => {
   const isHost = game?.host?.id === userId;
   const isPlayer = !!game?.players?.some(p => p.id === userId);
   const canChat = isHost || isPlayer;
-  console.log(isPlayer, userId);
+
   
   // Fallbacks (prevents crash if game missing)
   if (!game) {
@@ -46,7 +47,7 @@ const GameDetails = ({navigation}) => {
 const date = new Date(game.date);
 const monthKey = date.toLocaleString('en-US', { month: 'short' });
 const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
-console.log('gamedetails', tab);
+
 
   const formattedTime = new Date(
     `${game.date}T${game.time}`
@@ -78,6 +79,11 @@ console.log('gamedetails', tab);
 
         </ImageBackground>
       ),
+
+      headerRight: () => (
+        <GameDetailsHeaderRight tab={tab} isHost={isHost} isPlayer={isPlayer} />
+      ),
+
 
       headerTintColor: "#fff",
     });
@@ -124,14 +130,14 @@ console.log('gamedetails', tab);
                 })}
 
                 {/* empty slots */}
-                {tab == 'public' || canChat && Array.from({
+                {tab !== 'past' && Array.from({
                   length: game.maxPlayers - game.players.length,
                 }).map((_, i) => (
                   <TouchableOpacity
                     key={`empty-${i}`}
                     style={[styles.avatar, styles.emptyAvatar]}
                   >
-                    <Text style={{color:theme.colors.text, fontSize:20}}>+</Text>
+                    {isHost && <Text style={{color:theme.colors.text, fontSize:20}}>+</Text> }
                   </TouchableOpacity>
                 ))}
               </View>

@@ -218,5 +218,35 @@ export const gameEvents = [
        chatId: "chat_game_003",
     status: "active",
     createdAt: "2025-06-15T08:45:00Z"
+  },
+        {
+    id: "game_008",
+    sport: "Football",
+    sportName: "Football",
+    venue: {
+      id: 3, stadiumName: "Yerablur Sports Hall", city: "Yerevan", location: "Malatia-Sebastia",
+      hours: "07:00 - 00:00", price: "20,000 AMD", latitude: 40.1596, longitude: 44.4572
+    },
+    date: "2026-08-12",
+    time: "21:00",
+    timezone: "GMT+4",
+    gameType: "Practice",
+    level: ["Lower Intermediate","Beginner"],
+    maxPlayers: 12,
+    courtBooked: false,
+    price: 0,
+    host: { id: "u1", name: "Lolig", verified: true, profilePhoto: null },
+    players: [
+      { id: "u1", name: "Lolig", profilePhoto: basketballSportIcon },
+      { id: "u10", name: "Levon", profilePhoto: null },
+    ],
+    pendingRequests: [],
+    invitedPlayers: [],
+    rejectedPlayers: [],
+    verifiedOnly: false,
+    visibility: "private",
+       chatId: "chat_game_003",
+    status: "active",
+    createdAt: "2025-06-15T08:45:00Z"
   }
 ];
