@@ -23,18 +23,12 @@ const GameDetails = ({navigation}) => {
   const route = useRoute();
   const { theme } = useTheme();
   const styles = getStyles(theme);
-  const {t, i18n} = useTranslation();
+  const {t} = useTranslation();
   const { gameId, tab } = route.params;
-
-  const game = useSelector((state) =>
-    state.gameEvents?.events?.find((g) => g.id === gameId)
-  );
+  const game = useSelector((state) => state.gameEvents?.events?.find((g) => g.id === gameId));
   const userId = useSelector(selectCurrentUserId)
   const isHost = game?.host?.id === userId;
   const isPlayer = !!game?.players?.some(p => p.id === userId);
-  const canChat = isHost || isPlayer;
-
-  
   // Fallbacks (prevents crash if game missing)
   if (!game) {
     return (
@@ -47,11 +41,10 @@ const GameDetails = ({navigation}) => {
 const date = new Date(game.date);
 const monthKey = date.toLocaleString('en-US', { month: 'short' });
 const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
+const formattedTime = new Date(`${game.date}T${game.time}`).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
 
+const invitePlayers = () => navigation.navigate('Profile',{playerId: 'u1'})
 
-  const formattedTime = new Date(
-    `${game.date}T${game.time}`
-  ).toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -81,7 +74,7 @@ const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
       ),
 
       headerRight: () => (
-        <GameDetailsHeaderRight tab={tab} isHost={isHost} isPlayer={isPlayer} />
+        <GameDetailsHeaderRight tab={tab} isHost={isHost} isPlayer={isPlayer} game={game} invitePlayers={invitePlayers}/>
       ),
 
 
@@ -136,6 +129,7 @@ const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
                   <TouchableOpacity
                     key={`empty-${i}`}
                     style={[styles.avatar, styles.emptyAvatar]}
+                    onPress={invitePlayers}
                   >
                     {isHost && <Text style={{color:theme.colors.text, fontSize:20}}>+</Text> }
                   </TouchableOpacity>
@@ -255,7 +249,7 @@ const formattedDate = `${t(monthKey)} ${date.getDate()}, ${date.getFullYear()}`;
 
       {/* BOTTOM BAR */}
 
-      <GameDetailsButtons game={game} loggedUser={userId} tab={tab}/>
+      <GameDetailsButtons game={game} loggedUser={userId} tab={tab} invitePlayers={invitePlayers}/>
     
     </View>
   );

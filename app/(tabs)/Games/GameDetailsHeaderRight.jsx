@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next"
 import { View, TouchableOpacity, Modal, Text, StyleSheet, Share } from "react-native"
 import * as Clipboard from 'expo-clipboard';
 
-const GameDetailsHeaderRight = ({tab, isHost, isPlayer, navigation}) => {
+const GameDetailsHeaderRight = ({tab, isHost, isPlayer, navigation, game, invitePlayers}) => {
 
     const {t} = useTranslation();
     const [isModalVisible, setModalVisible] = useState(false);
@@ -20,7 +20,7 @@ const GameDetailsHeaderRight = ({tab, isHost, isPlayer, navigation}) => {
 
     const hostActions = [
   { label: t("editGame"), onPress: () => navigation.navigate("EditGame") },
-  { label: t("InvitePlayers"), onPress: () => navigation.navigate("InvitePlayers") },
+  { label: t("InvitePlayers"), onPress: invitePlayers },
   { label: t("ShareGame"), onPress: () => openShareModal() },
   { label: t("CancelGame"), onPress: () => navigation.navigate("CancelGame") },
 ];
@@ -29,14 +29,13 @@ const GameDetailsHeaderRight = ({tab, isHost, isPlayer, navigation}) => {
   { label: t("ShareGame"), onPress: () => openShareModal() },
   { label: t("LeaveGame"), onPress: () => navigation.navigate("LeaveGame") },
 ];
-    const actions = isHost ? hostActions : playerActions;
-  const playerName = "Faj";
-  const profileUrl = "https://www.sportmate.com/profile?id=12345";
+  const actions = isHost ? hostActions : playerActions;
+  const gameURL = `https://www.sportmate.com/matches/${game.id}`;
 
-  const message = `Hello, here is ${playerName}'s profile on SportMate! Check it out to connect and play sports together!\n${profileUrl}`;
+  const message = `Hello, check out this ${game.sportName} match at ${game?.venue?.stadiumName}. It still has open spots, you might want to join it \n${gameURL}`;
 
   const copyToClipboard = async () => {
-    await Clipboard.setStringAsync(profileUrl);
+    await Clipboard.setStringAsync(gameURL);
     };
 
   const openShareSheet = async () => {

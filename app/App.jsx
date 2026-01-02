@@ -7,7 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Provider } from "react-redux";
 import { store } from "../src/store/store";
 import { ThemeProvider, useTheme } from "../src/theme/themeContext";
-
+import * as Linking from "expo-linking";
 import {
   SafeAreaProvider,
   useSafeAreaInsets,
@@ -173,12 +173,25 @@ const ThemedNavigator = () => {
 };
 
 /* ================= ROOT ================= */
+
+const linking = {
+  prefixes: [
+    Linking.createURL("/"), // Expo Go internal support
+    "sportmate://",         // your custom scheme
+  ],
+  config: {
+    screens: {
+      GameDetails: "matches/:gameId",
+    },
+  },
+};
+
 export default function App() {
   return (
     <Provider store={store}>
       <ThemeProvider>
         <SafeAreaProvider>
-          <NavigationContainer>
+          <NavigationContainer linking={linking}>
             <ThemedNavigator />
           </NavigationContainer>
         </SafeAreaProvider>

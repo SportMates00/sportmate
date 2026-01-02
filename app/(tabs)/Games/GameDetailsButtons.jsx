@@ -10,14 +10,13 @@ import { useTheme } from "@/src/theme/themeContext";
 import { useTranslation } from "react-i18next";
 import { useNavigation } from "@react-navigation/native";
 
-const GameDetailsButtons = ({ game, loggedUser, tab }) => {
+const GameDetailsButtons = ({ game, loggedUser, tab, invitePlayers}) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
   const { t } = useTranslation();
   const navigation = useNavigation();
 
   const userId = loggedUser;
-console.log(tab);
 
   /* ---------- ROLE FLAGS ---------- */
   const isHost = game?.host?.id === userId;
@@ -70,10 +69,6 @@ console.log(tab);
     Alert.alert(t("Joined") || "Joined");
   };
 
-  const handleInvitePlayers = () => {
-    navigation.navigate("InvitePlayers", { gameId: game.id });
-  };
-
   /* ---------- PAST GAMES → HIDE FOOTER ---------- */
   if (tab === "past") return null;
 
@@ -102,7 +97,7 @@ console.log(tab);
 
       {/* RIGHT BUTTON LOGIC */}
       {isHost ? (
-        <TouchableOpacity style={styles.joinBtn} onPress={handleInvitePlayers}>
+        <TouchableOpacity style={styles.joinBtn} onPress={invitePlayers}>
           <Text style={styles.joinText}>{t("InvitePlayers")}</Text>
         </TouchableOpacity>
       ) : isPlayer ? (
