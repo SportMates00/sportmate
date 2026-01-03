@@ -221,10 +221,10 @@ export const gameEvents = [
   },
         {
     id: "game_008",
-    sport: "Football",
-    sportName: "Football",
+    sport: "Basketball",
+    sportName: "Basketball",
     venue: {
-      id: 3, stadiumName: "Yerablur Sports Hall", city: "Yerevan", location: "Malatia-Sebastia",
+      id: 3, stadiumName: "Dinamo Indoor Court", city: "Yerevan", location: "Kentron",
       hours: "07:00 - 00:00", price: "20,000 AMD", latitude: 40.1596, longitude: 44.4572
     },
     date: "2026-08-12",

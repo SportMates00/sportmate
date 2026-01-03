@@ -19,7 +19,7 @@ const GameDetailsHeaderRight = ({tab, isHost, isPlayer, navigation, game, invite
 
 
     const hostActions = [
-  { label: t("editGame"), onPress: () => navigation.navigate("EditGame") },
+  { label: t("editGame"), onPress: () => navigation.navigate("CreateGameComponent", { mode: "edit", gameId: game.id,})},
   { label: t("InvitePlayers"), onPress: invitePlayers },
   { label: t("ShareGame"), onPress: () => openShareModal() },
   { label: t("CancelGame"), onPress: () => navigation.navigate("CancelGame") },

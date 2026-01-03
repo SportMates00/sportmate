@@ -90,6 +90,10 @@ const GameCardButtons = ({ game, loggedUser, tab }) => {
   if (state === "INVITED_CURRENT") {
     return (
       <View style={styles.actions}>
+        
+        <TouchableOpacity style={[styles.primaryBtn, styles.rejectBtn]} onPress={rejectInvite}>
+          <Text style={styles.primaryText}>{t("Reject")}</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           style={[
             styles.primaryBtn,
@@ -98,10 +102,6 @@ const GameCardButtons = ({ game, loggedUser, tab }) => {
           onPress={acceptInvite}
         >
           <Text style={styles.primaryText}>{t("Accept")}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={[styles.primaryBtn, styles.rejectBtn]} onPress={rejectInvite}>
-          <Text style={styles.primaryText}>{t("Reject")}</Text>
         </TouchableOpacity>
       </View>
     );

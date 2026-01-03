@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Alert, ScrollView, Platform, 
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
 import { useDispatch } from 'react-redux';
-import { resetUserInfo } from '@/src/store/authSlice';
+import { logout } from '@/src/store/authSlice';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import { useTheme } from '../../../../../src/theme/themeContext';
 import TopSettings from './top settings/TopSettings';
@@ -22,27 +22,30 @@ const Settings = () => {
     navigation.navigate('ContactUs');
   };
 
-  const handleLogout = () => {
-    Alert.alert(
-      t('LogoutTitle'),
-      t('LogoutMessage'),
-      [
-        { text: t('Cancel'), style: 'cancel' },
-        {
-          text: t('Logout'),
-          onPress: () => {
-            dispatch(resetUserInfo());
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name: 'Welcome' }],
-              })
-            );
-          },
+const handleLogout = () => {
+  Alert.alert(
+    t("LogoutTitle"),
+    t("LogoutMessage"),
+    [
+      { text: t("Cancel"), style: "cancel" },
+
+      {
+        text: t("Logout"),
+        style: "destructive",
+        onPress: () => {
+          dispatch(logout());
+
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "Welcome" }],
+            })
+          );
         },
-      ]
-    );
-  };
+      },
+    ]
+  );
+};
 
   const handleDeleteAccount = () => {
     navigation.navigate('DeleteAccount');

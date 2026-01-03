@@ -1,6 +1,6 @@
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { useTheme } from "@/src/theme/themeContext";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next"
@@ -10,6 +10,7 @@ import CreateGame1 from "./CreateGame1";
 import CreateGame2 from "./CreateGame2";
 import CreateGame3 from "./CreateGame3";
 import { selectCurrentUser } from "@/src/store/selectors";
+import { selectGameEvents } from "@/src/store/gameEventsSelector";
 
 /* ---------- EMPTY GAME TEMPLATE ---------- */
 const createEmptyGame = (loggedUser) => ({
@@ -73,9 +74,19 @@ const CreateGameComponent = () => {
   const loggedUser = useSelector(selectCurrentUser);
   const [step, setStep] = useState(1);
 
-  const [draftGame, setDraftGame] = useState(() =>
-    createEmptyGame(loggedUser)
-  );
+
+  const route = useRoute();
+  const { mode, gameId } = route.params || {};
+
+  const gameEvents = useSelector(selectGameEvents);
+  const existingGame = gameEvents.find(g => g.id === gameId);
+
+
+
+  const [draftGame, setDraftGame] = useState(() => {
+    if (mode === "edit" && existingGame) return existingGame;
+    return createEmptyGame(loggedUser);
+});
 
 
   const handleNext = () => {
@@ -86,10 +97,15 @@ const CreateGameComponent = () => {
     if (step > 1) setStep(step - 1);
   };
 
-  const handleCreate = () => {
+const handleSubmit = () => {
+  if (mode === "edit") {
+    dispatch(updateGameEvent(draftGame));
+  } else {
     dispatch(addGameEvent(draftGame));
-    navigation.goBack();
-  };
+  }
+
+  navigation.goBack();
+};
 
   const renderStep = () => {
     if (step === 1)
@@ -150,7 +166,7 @@ const CreateGameComponent = () => {
         )}
 
         {step === 3 && (
-          <TouchableOpacity style={styles.createBtn} onPress={handleCreate}>
+          <TouchableOpacity style={styles.createBtn} onPress={handleSubmit}>
             <Text style={styles.createText}>{t('Create')}</Text>
           </TouchableOpacity>
         )}

@@ -74,7 +74,7 @@ const invitePlayers = () => navigation.navigate('Profile',{playerId: 'u1'})
       ),
 
       headerRight: () => (
-        <GameDetailsHeaderRight tab={tab} isHost={isHost} isPlayer={isPlayer} game={game} invitePlayers={invitePlayers}/>
+        <GameDetailsHeaderRight tab={tab} isHost={isHost} isPlayer={isPlayer} game={game} invitePlayers={invitePlayers} navigation={navigation}/>
       ),
 
 

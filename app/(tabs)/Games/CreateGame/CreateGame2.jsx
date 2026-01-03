@@ -10,20 +10,52 @@ import {
 import { useTheme } from "@/src/theme/themeContext";
 import { useTranslation } from "react-i18next";
 
-const CreateGame2 = () => {
+const CreateGame2 = ({draftGame, setDraftGame}) => {
   const { theme } = useTheme();
   const styles = getStyles(theme);
   const { t } = useTranslation();
-
-  const [maxPlayers, setMaxPlayers] = useState(null);
+  const levels = [
+    { id: "Starter", label: t("Starter") },
+    { id: "Beginner", label: t("Beginner") },
+    { id: "Lower Intermediate", label: t("Lower Intermediate") },
+    { id: "Intermediate", label: t("Intermediate") },
+    { id: "Advanced", label: t("Advanced") },
+    { id: "Professional", label: t("Professional") },
+  ];
 
   /* ---------- STATE ---------- */
-  const [isFlexible, setIsFlexible] = useState(false);
+  const [maxPlayers, setMaxPlayers] = useState(draftGame?.maxPlayers);
+  const [isFlexible, setIsFlexible] = useState(draftGame?.flexible);
   const [selectedDay, setSelectedDay] = useState(null);
 
-  const [timeMode, setTimeMode] = useState("exact");
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
+  const [timeMode, setTimeMode] = useState(
+    draftGame?.flexible ? "range" : "exact"
+  );
+  const [startTime, setStartTime] = useState(draftGame?.timeStart);
+  const [endTime, setEndTime] = useState(draftGame?.timeEnd);
+  const [selectedLevels, setSelectedLevels] = useState(
+    draftGame?.level || []
+  );
+
+const toggleLevel = (levelId) => {
+  setSelectedLevels((prev) => {
+    let updated;
+
+    if (prev.includes(levelId)) {
+      updated = prev.filter((lvl) => lvl !== levelId);
+    } else {
+      updated = [...prev, levelId];
+    }
+
+    // sync to draftGame also
+    setDraftGame((prevGame) => ({
+      ...prevGame,
+      level: updated,
+    }));
+
+    return updated;
+  });
+};
 
   /* ---------- HELPERS ---------- */
   const generateDays = () => {
@@ -70,23 +102,26 @@ const CreateGame2 = () => {
           {t("MatchLevel")}
         </Text>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <TouchableOpacity style={styles.levelCard}>
-            <Text style={styles.levelCardText}>{t("Beginner")}</Text>
-          </TouchableOpacity>
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+            {levels.map((level) => {
+              const active = selectedLevels.includes(level.id);
 
-          <TouchableOpacity style={[styles.levelCard, styles.levelCardActive]}>
-            <Text style={styles.levelCardText}>{t("Intermediate")}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.levelCard}>
-            <Text style={styles.levelCardText}>{t("Advanced")}</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.levelCard}>
-            <Text style={styles.levelCardText}>{t("Professional")}</Text>
-          </TouchableOpacity>
-        </ScrollView>
+              return (
+                <TouchableOpacity
+                  key={level.id}
+                  onPress={() => toggleLevel(level.id)}
+                  style={[
+                    styles.levelCard,
+                    active && styles.levelCardActive
+                  ]}
+                >
+                  <Text style={styles.levelCardText}>
+                    {t(level.id)}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </ScrollView>
       </View>
 
       {/* MAX PLAYERS */}

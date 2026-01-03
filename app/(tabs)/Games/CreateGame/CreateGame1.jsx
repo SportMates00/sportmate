@@ -22,13 +22,11 @@ const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
   /* ---------- USER MAIN SPORT ---------- */
   const userMainSport = loggedUser?.profileInfo?.mainSport?.toLowerCase();
 
+  console.log('creategame', draftGame?.sportName)
   /* ---------- SPORT STATE ---------- */
-  const [sport, setSport] = useState(() => {
-    if (userMainSport && gamesTable[userMainSport]) {
-      return userMainSport;
-    }
-    return Object.keys(gamesTable)[0] || null;
-  });
+const [sport, setSport] = useState(() =>
+  draftGame?.sportName || userMainSport || Object.keys(gamesTable)[0]
+);
 
   // Sync when user changes main sport later
   useEffect(() => {
@@ -90,7 +88,8 @@ const CreateGame1 = ({ loggedUser, draftGame, setDraftGame }) => {
     return gamesTable[sport]?.stadiums || [];
   }, [sport]);
 
-  const [selectedVenue, setSelectedVenue] = useState(null);
+const [selectedVenue, setSelectedVenue] = useState(draftGame?.venue || null);
+
 
   // Auto-select first venue when sport changes
   useEffect(() => {
